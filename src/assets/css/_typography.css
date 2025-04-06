@@ -1,0 +1,20 @@
+html {
+    font: 14px/1.5 'Open Sans', sans-serif;
+}
+
+body, table, input, textarea, button {
+    font: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+p, ul, ol {
+    padding-bottom: 1.5em;
+}
+
+ul, ol {
+    padding-left: 1.5em
+}

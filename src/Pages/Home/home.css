@@ -1,0 +1,17 @@
+a {
+    text-decoration: none;
+}
+ul{
+    display: flex;
+    gap: 2em;
+    align-items: baseline;
+    margin: 1em;
+}
+li {
+    display: flex;
+    gap: 2em;
+}
+
+nav {
+    border: 2px solid black;
+}
