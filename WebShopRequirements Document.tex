@@ -1,0 +1,110 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{E-Commerce Webshop Prototype \\
+	Requirements Document}
+\author{
+	Group Members: \\
+	John Doe, john.doe@example.com, 12345678 \\
+	Jane Smith, jane.smith@example.com, 87654321 \\
+	Alice Brown, alice.brown@example.com, 11223344 \\
+	Bob Johnson, bob.johnson@example.com, 44332211
+}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Project Overview}
+	Our project is the development of an E-Commerce Webshop Prototype, which enables users to browse products, add items to a shopping cart, and complete a checkout process. The goal of this application is to simulate an online shopping experience with a focus on usability, modern design, and core e-commerce functionalities.
+	
+	\textbf{Target Users:}  
+	General consumers interested in purchasing products online. Secondary users include shop administrators who manage the product catalog and orders.
+	
+	\textbf{Application Goals:}
+	\begin{itemize}
+		\item Provide a smooth and intuitive shopping experience.
+		\item Enable easy product discovery, selection, and purchase.
+		\item Implement a basic backend to manage product data and order processing.
+		\item Ensure responsive and accessible design for all devices.
+	\end{itemize}
+	
+	\section{Key Features}
+	\begin{itemize}
+		\item \textbf{Product Catalog} (Must-have): Browse products with images, descriptions, prices, and categories.
+		\item \textbf{Product Search and Filters} (Must-have): Allow users to search and filter products by category, price, etc.
+		\item \textbf{Shopping Cart} (Must-have): Add, update, and remove products; view total cost.
+		\item \textbf{Checkout Process} (Must-have): Collect shipping and payment information; confirm order.
+		\item \textbf{User Authentication} (Nice-to-have): Sign up, login, and order history for registered users.
+		\item \textbf{Admin Dashboard} (Nice-to-have): Manage products, view orders, update statuses.
+		\item \textbf{Order Confirmation Email} (Nice-to-have): Send a confirmation email upon successful order.
+	\end{itemize}
+	
+	\section{User Roles and Interactions}
+	\subsection{Customer}
+	\begin{itemize}
+		\item Browse the product catalog.
+		\item Search for specific products.
+		\item Add products to the shopping cart.
+		\item Proceed to checkout and place an order.
+		\item (If registered) View order history.
+	\end{itemize}
+	
+	\subsection{Administrator}
+	\begin{itemize}
+		\item Add, edit, and delete products.
+		\item View all orders placed.
+		\item Update order statuses (e.g., Processing, Shipped).
+	\end{itemize}
+	
+	\section{User Stories}
+	\begin{enumerate}
+		\item \textbf{As a customer}, I want to browse products by category so that I can easily find items I'm interested in.
+		\item \textbf{As a customer}, I want to add multiple items to my shopping cart so that I can purchase everything in one transaction.
+		\item \textbf{As a customer}, I want to see the total price of my shopping cart so that I can stay within my budget.
+		\item \textbf{As a customer}, I want to complete the checkout process with minimal steps so that my shopping experience is fast and convenient.
+		\item \textbf{As an administrator}, I want to add new products to the store so that I can expand our offerings.
+		\item \textbf{As an administrator}, I want to view all incoming orders so that I can manage fulfillment.
+		\item \textbf{As a customer}, I want to receive an order confirmation email so that I have a record of my purchase.
+	\end{enumerate}
+	
+	\section{Non-Functional Requirements}
+	\begin{itemize}
+		\item \textbf{Usability:} Clean, modern, and intuitive user interface.
+		\item \textbf{Responsiveness:} Application must work seamlessly on desktops, tablets, and smartphones.
+		\item \textbf{Accessibility:} Follow WCAG 2.1 guidelines to ensure access for users with disabilities.
+		\item \textbf{Performance:} Fast page loading and smooth user interactions.
+		\item \textbf{Maintainability:} Modular codebase with reusable components.
+		\item \textbf{Error Handling:} Graceful handling of errors (e.g., out-of-stock items, network issues).
+	\end{itemize}
+	
+	\section{Technology Assumptions}
+	\begin{itemize}
+		\item \textbf{Frontend:} React.js (mandatory for this course).
+		\item \textbf{Backend:} Node.js with Express.js or Python with Flask (TBD by group).
+		\item \textbf{API Communication:} RESTful API for communication between frontend and backend.
+		\item \textbf{Database:} MongoDB or PostgreSQL for storing product and order data.
+		\item \textbf{Styling:} Tailwind CSS for fast and responsive UI design.
+		\item \textbf{Email Service:} (Optional) Use an external service like SendGrid for order confirmations.
+	\end{itemize}
+	
+	\section{Project Constraints}
+	\begin{itemize}
+		\item \textbf{Time Constraint:} Completion of the project before end of semester, with focus on core features first.
+		\item \textbf{Resource Constraint:} Small team size, limited development hours per week.
+		\item \textbf{Technical Constraint:} Mandatory use of React.js for frontend; backend technology choice is flexible.
+		\item \textbf{Open Questions:}
+		\begin{itemize}
+			\item Will we integrate payment gateways (like Stripe) or simulate payments?
+			\item Scope of admin features: full CRUD or minimal inventory management?
+			\item Do we include user profiles and order history or focus solely on guest checkout?
+		\end{itemize}
+	\end{itemize}
+	
+	\section{Acknowledgment of AI Technologies}
+	This document was drafted and refined using GPT-4o based on an outline containing related information. The authors reviewed, revised, and enhanced the GPT-4o output with additional content. The document was then edited for improved readability and active tense, partially using Grammarly.
+	
+\end{document}
