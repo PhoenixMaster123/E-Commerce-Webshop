@@ -190,16 +190,62 @@ Customers are users who have registered an account on the webshop. They can expl
 		\item \textbf{Error Handling:} Graceful handling of errors (e.g., out-of-stock items, network issues).
 	\end{itemize}
 	
-	\section{Non-Functional Requirements Orik}
-	\begin{itemize}
-			\item \textbf{Notizen:} NavLink ist schneller
-		\item \textbf{Usability:} Clean, modern, and intuitive user interface.
-		\item \textbf{Responsiveness:} Application must work seamlessly on desktops, tablets, and smartphones.
-		\item \textbf{Accessibility:} Follow WCAG 2.1 guidelines to ensure access for users with disabilities.
-		\item \textbf{Performance:} Fast page loading and smooth user interactions.
-		\item \textbf{Maintainability:} Modular codebase with reusable components.
-		\item \textbf{Error Handling:} Graceful handling of errors (e.g., out-of-stock items, network issues).
-	\end{itemize}
+	\section{Non-Functional Requirements}
+
+Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly experience. The following non-functional requirements describe the quality standards we aim to follow throughout the development:
+
+\begin{itemize}
+    \item \textbf{Usability:}  
+    \begin{itemize}
+        \item \textbf{Intuitive Navigation:}  
+        We want users to find their way around easily. That’s why we’re going for clear and consistent menus (using tools like \texttt{NavLink} for faster routing).
+
+        \item \textbf{User-Friendly Design:}  
+        The design will be clean and modern, with a focus on readability. We’ll stick to a consistent color scheme, readable fonts, and buttons that look and feel familiar, so users don’t have to think twice about how to interact with the site.
+
+        \item \textbf{Efficient Checkout Process:}  
+        No one likes a complicated checkout. Progress indicators like “Step 1 of 3: Shipping” will help users know where they are in the process and what’s next.
+    \end{itemize}
+
+    \item \textbf{Responsiveness:}  
+    Whether users are shopping on a desktop, tablet, or phone, the webshop should feel natural to use. Everything should adapt cleanly to different screen sizes without breaking the layout.
+
+    \item \textbf{Performance:}  
+    \begin{itemize}
+        \item \textbf{Loading Speed:}  
+        Nobody likes waiting, so we’re aiming for pages that load in under two seconds for most users. Images that aren’t immediately visible will be loaded lazily to avoid slowing things down.
+
+        \item \textbf{Optimized Assets:}  
+        To keep things fast, we’ll compress images (using formats like WebP where possible).
+
+        \item \textbf{Smooth Interactions:}  
+        Features like search should feel instant. We'll debounce inputs to avoid spamming the backend with requests, and we’ll cache frequently used data like product listings on the client side so everything feels snappy.
+    \end{itemize}
+
+    \item \textbf{Maintainability:}  
+    We’re keeping things modular and organized. Reusable components and a clean file structure will make it easier to make changes later or onboard new team members if needed.
+
+    \item \textbf{Error Handling:}  
+        When something goes wrong, we’ll show helpful messages—like “Item out of stock—try similar products”—instead of confusing errors. If an API call fails, we’ll display fallback content and a “Retry” button where it makes sense.
+    
+    \item \textbf{Security:}  
+    Since we’re handling user input and possibly sensitive data, we’ll validate inputs and follow common security practices to prevent things like cross-site scripting (XSS) or other web attacks.
+
+    \item \textbf{Scalability:}  
+    The webshop shouldn’t feel limited. As the number of users and products grows, the system should still perform well without requiring major rewrites.
+
+    \item \textbf{Reliability:}  
+    The app should work as expected—even under load. During sales or other busy times, it needs to stay up and running smoothly without crashing or freezing.
+
+    \item \textbf{Internationalization}
+    \begin{itemize}
+        \item \textbf{Multi-Language Support:}  
+        Even if we only launch in one language at first, we’ll prepare the app with translation files (like \texttt{en.json} and \texttt{de.json}) so we can easily add support for other languages later.
+
+        \item \textbf{Localized Content:}  
+        Things like currency, dates, and measurements should adapt to where the user is from, so the experience feels natural to them no matter the region.
+    \end{itemize}
+\end{itemize}
 	
 	\section{Technology Assumptions// machen wir später}
 	\begin{itemize}
