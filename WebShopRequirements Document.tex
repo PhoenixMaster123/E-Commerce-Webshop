@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt]{article.cls}
 \usepackage[utf8]{inputenc}
 \usepackage{enumitem}
 \usepackage{hyperref}
@@ -18,7 +18,7 @@
 	
 	\maketitle
 	
-\section{Project Overview Enrico}
+\section{Project Overview}
 
 Our e-commerce webshop has a focus on a simple and modern shopping experience. There are the essential shopping features implemented, such as searching for products, filtering by category and adding them to the cart, and we want to include some extras that improve the user experience, like the option to switch between light and dark mode.
 
@@ -52,33 +52,143 @@ Our target group are normal online shoppers. This includes people browsing on th
 		\item \textbf{Order Confirmation Email} (Nice-to-have): Send a confirmation email upon successful order.
 	\end{itemize}
 	
-	\section{User Roles and Interactions Kristian }
-	\subsection{Customer}
+
+	\section{User Roles and Interactions}
+	This section explains the different types of users who interact with our e-commerce webshop, their permissions, and the actions they can typically perform.
+	\subsection*{Administrator/Admin}
+	The Administrator oversees the overall management of the webshop. This role has the highest level of access and can modify nearly every aspect of the site. \\ \\
+	\textbf{Typical Actions and Expected Outcomes:}
 	\begin{itemize}
-		\item Browse the product catalog.
-		\item Search for specific products.
-		\item Add products to the shopping cart.
-		\item Proceed to checkout and place an order.
-		\item (If registered) View order history.
+		\item The admin can add, update, or remove products from the catalog, and these changes will be reflected immediately for customers browsing the site.
+		\item The admin can view or remove user accounts and monitor and update the status of customer orders (e.g., pending, shipped, delivered, or canceled). Additionally, the admin has access to a detailed purchase history for each customer, including their name, purchased items, purchase date, order status, and total amount spent. For example, the admin can see that \textit{User123} purchased  \textit{"Wireless Headphones"} on \textit{March 15, 2025}, for a total of \textit{\euro{}129.99}.
 	\end{itemize}
-	
-	\subsection{Administrator}
+
+	\subsection*{Customer (Registered User)}
+Customers are users who have registered an account on the webshop. They can explore products, place orders, and manage their personal details and order history. \\ \\
+	\textbf{Typical Actions and Expected Outcomes:}
 	\begin{itemize}
-		\item Add, edit, and delete products.
-		\item View all orders placed.
-		\item Update order statuses (e.g., Processing, Shipped).
+  		\item Customers can browse all available products, read detailed descriptions, check prices, and view customer reviews.
+    		\item They can also use the search bar or apply filters such as category, price, brand, or rating to find specific items.
+    		\item Add products to the shopping cart for quick purchase.
+    		\item Proceed to checkout, choose payment and shipping options, and place an order.
+    		\item Update personal information, including name, email, password, and delivery addresses.
 	\end{itemize}
-	
-	\section{User Stories/Use Cases Kristian}
+
+	\subsection*{Guest User (Unregistered User)}
+	A guest user can browse the webshop without creating an account, though their access is limited. \\ \\
+	\textbf{Typical Actions and Expected Outcomes:}
+	\begin{itemize}
+		\item Can browse the products without logging in.
+		\item Can register or Sign In.
+		\item Can add products to the cart, but the cart will remain active only while they are on the website. Once they leave, everything will be removed. The users must have an account to purchase the products otherwise it will be not possible.
+	\end{itemize}
+	\section{User Stories/Use Cases´}
+	\subsection*{Use Case 1: Register a New User}
+	\textbf{Actor(s):} Visitor \\ \\
+	\textbf{Description:} A visitor creates a new account to access personalized features \\ \\
+	\textbf{Preconditions:} The user is not logged in. \\ \\
+	\textbf{Main Flow:}
 	\begin{enumerate}
-		\item \textbf{As a customer}, I want to browse products by category so that I can easily find items I'm interested in.
-		\item \textbf{As a customer}, I want to add multiple items to my shopping cart so that I can purchase everything in one transaction.
-		\item \textbf{As a customer}, I want to see the total price of my shopping cart so that I can stay within my budget.
-		\item \textbf{As a customer}, I want to complete the checkout process with minimal steps so that my shopping experience is fast and convenient.
-		\item \textbf{As an administrator}, I want to add new products to the store so that I can expand our offerings.
-		\item \textbf{As an administrator}, I want to view all incoming orders so that I can manage fulfillment.
-		\item \textbf{As a customer}, I want to receive an order confirmation email so that I have a record of my purchase.
+    		\item The user clicks on the ``Sign Up'' button.
+    		\item The system presents a registration form.
+    		\item The user enters their name, email, password, and other required data.
+    		\item The system validates the data.
+    		\item The system creates a new user account.
+    		\item A confirmation message or email is sent to the user.
+    \end{enumerate}
+    \textbf{Postconditions:} A new user is registered. \\ \\
+    \textbf{Alternative Flows:} If the email exists, the system shows an error message.
+
+
+    \subsection*{Use Case 2: Log in to the Account}
+	\textbf{Actor(s):} Registered User \\ \\
+	\textbf{Description:} A user logs into their account to access their profile and order history. \\ \\
+	\textbf{Preconditions:} User is registered. \\ \\
+	\textbf{Main Flow:}
+	\begin{enumerate}
+  		\item The user clicks on the ``Login'' button.
+  		\item The system displays the login form.
+  		\item The user provides email and password.
+  		\item The system authenticates the user.
+  		\item On success, the user is redirected to the dashboard/homepage.
 	\end{enumerate}
+	\textbf{Postconditions:} User is logged in. \\ \\
+	\textbf{Alternative Flows:} If login credentials are invalid, an error message is shown.
+	\subsection*{Use Case 3: Add/Remove Product to/from the Cart}
+	\textbf{Actor(s):} Logged-in or guest user \\ \\
+	\textbf{Description:} The user adds/removes a product to/from the shopping cart. \\ \\
+	\textbf{Preconditions:} The product needs to exist/needs to be added or removed. \\ \\
+	\textbf{Main Flow:}
+	\begin{enumerate}
+  		\item The user clicks on a product.
+  		\item The system shows product details.
+  		\item The user selects size/quantity if applicable.
+  		\item The user clicks ``Add to Cart'' or ``Remove from Cart''.
+  		\item The system adds or removes the item from the cart accordingly.
+	\end{enumerate}
+	\textbf{Postconditions:} Product is either added or removed from the cart.
+	\subsection*{Use Case 4: Checkout and Place Order}
+	\textbf{Actor(s):} Logged-in user \\ \\
+	\textbf{Description:} The user completes the purchase of products in the cart. \\ \\
+	\textbf{Preconditions:} User has items in their cart and is logged in. \\ \\
+	\textbf{Main Flow:}
+	\begin{enumerate}
+  		\item The user views the cart and clicks ``Checkout.''
+  		\item The system prompts for a shipping address and payment method.
+  		\item The user enters or confirms the information.
+  		\item The system verifies payment and places the order.
+  		\item An order confirmation page is shown.
+	\end{enumerate}
+	\textbf{Postconditions:} Order is saved, and confirmation is sent.
+	\subsection*{Use Case 5: View Order History}
+	\textbf{Actor(s):} Logged-in user \\ \\
+	\textbf{Description:} The user views a list of their past orders. \\ \\
+	\textbf{Preconditions:} The user has placed at least one order. \\ \\
+	\textbf{Main Flow:}
+	\begin{enumerate}
+  		\item The user navigates to ``My Account'' → ``Order History.''
+  		\item The system displays a list of previous orders with status and details.
+  		\item The user clicks on an order to view more information.
+	\end{enumerate}
+	\textbf{Postconditions:} User sees order details.
+	\subsection*{Use Case 6: Search for a Product}
+	\textbf{Actor(s):} Any user (guest or registered) \\ \\
+	\textbf{Description:} The user searches for a specific product using a search bar. \\ \\
+	\textbf{Preconditions:} None \\ \\
+	\textbf{Main Flow:}
+	\begin{enumerate}
+  		\item The user types a keyword in the search bar.
+  		\item The system displays matching products.
+  		\item The user clicks on one to see details.
+	\end{enumerate}
+	\textbf{Postconditions:} Matching products are shown. \\ \\
+	\textbf{Alternative Flows:} If no matches are found, the system shows nothing.
+	\subsection{Use Case 7: Apply Discount Code}
+	\textbf{Actor(s):} Logged-in \\ \\
+	\textbf{Description:} The user applies a discount code during checkout to receive a \\ reduction in
+	price. \\ \\
+	\textbf{Preconditions:} A valid discount code is available. \\ \\
+	\textbf{Main Flow:}
+	\begin{enumerate}
+  		\item The user proceeds to checkout.
+  		\item The system displays a field to enter the discount code.
+  		\item The user enters the discount code and clicks ``Apply.''
+  		\item The system validates the code and applies the discount to the order total.
+  		\item The user reviews the updated order price.
+	\end{enumerate}
+	\textbf{Postconditions:} The total price is reduced by the discount.
+
+
+	\section{Non-Functional Requirements Orik}
+	\begin{itemize}
+			\item \textbf{Notizen:} NavLink ist schneller
+		\item \textbf{Usability:} Clean, modern, and intuitive user interface.
+		\item \textbf{Responsiveness:} Application must work seamlessly on desktops, tablets, and smartphones.
+		\item \textbf{Accessibility:} Follow WCAG 2.1 guidelines to ensure access for users with disabilities.
+		\item \textbf{Performance:} Fast page loading and smooth user interactions.
+		\item \textbf{Maintainability:} Modular codebase with reusable components.
+		\item \textbf{Error Handling:} Graceful handling of errors (e.g., out-of-stock items, network issues).
+	\end{itemize}
 	
 	\section{Non-Functional Requirements Orik}
 	\begin{itemize}
