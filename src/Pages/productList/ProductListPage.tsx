@@ -73,7 +73,7 @@ export const ProductListPage: React.FC = () => {
             setTotalProducts(total);
         } catch (err) {
             console.error(err);
-            setError('Produkte konnten nicht geladen werden.');
+            setError('Product not found');
         } finally {
             setIsLoading(false);
         }
@@ -114,15 +114,15 @@ export const ProductListPage: React.FC = () => {
 
     return (
         <div className="product-list-page">
-            <h1>Produkte</h1>
+            <h1>Products</h1>
 
             <div className="filters">
-                <label htmlFor="search-input">Suche:</label>
+                <label htmlFor="search-input">Search:</label>
                 <input
                     id="search-input"
                     type="text"
                     className="search-input"
-                    placeholder="Produkt suchen…"
+                    placeholder="Product search…"
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
@@ -131,16 +131,16 @@ export const ProductListPage: React.FC = () => {
                     onClick={applySearch}
                     disabled={isLoading}
                 >
-                    Los
+                    GO!
                 </button>
 
-                <label htmlFor="category-select">Kategorie:</label>
+                <label htmlFor="category-select">Category:</label>
                 <select
                     id="category-select"
                     value={currentCategory}
                     onChange={handleCategoryChange}
                 >
-                    <option value="">Alle anzeigen</option>
+                    <option value="">Show all</option>
                     {categories.map(cat => (
                         <option key={cat} value={cat}>
                             {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -157,7 +157,7 @@ export const ProductListPage: React.FC = () => {
                         {products.length > 0 ? (
                             products.map(p => <ProductCard key={p.id} product={p} />)
                         ) : (
-                            <p>Keine Produkte gefunden.</p>
+                            <p>No Products found.</p>
                         )}
                     </div>
 
