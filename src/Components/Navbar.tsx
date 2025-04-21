@@ -19,9 +19,26 @@ interface ApiResponse {
 
 const Navbar: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    // Prüfe localStorage beim Initialisieren
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark';
+    // Prüfe auch Systempräferenz, falls nichts gespeichert ist
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]); // Dieser Effekt läuft, wenn isDarkMode sich ändert
+
+
 
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -31,7 +48,7 @@ const Navbar: React.FC = () => {
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
 
   const toggleTheme = (): void => {
-    setIsDarkMode(!isDarkMode);
+    setIsDarkMode(prevMode => !prevMode);
   };
 
   const toggleSearch = (): void => {
@@ -50,7 +67,7 @@ const Navbar: React.FC = () => {
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     console.log('Searching for:', searchTerm);
-    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    navigate(`/products?search=${encodeURIComponent(searchTerm)}&page=1`);
     setIsSearchActive(false);
     setSearchTerm('');
   };
@@ -119,7 +136,7 @@ const Navbar: React.FC = () => {
         <nav>
           {}
           <button className="aside-toggle-button" onClick={toggleAside}>
-            <FontAwesomeIcon icon={faBars} />
+            <FontAwesomeIcon icon={faBars}/>
           </button>
 
           <div className="logo">
@@ -128,7 +145,7 @@ const Navbar: React.FC = () => {
 
           <ul className="main-nav">
             <li><Link to="/home">Home</Link></li>
-            <li><NavLink to="/products" className={({ isActive }) => isActive ? 'active' : ''}>Products</NavLink></li>
+            <li><NavLink to="/products" className={({isActive}) => isActive ? 'active' : ''}>Products</NavLink></li>
             {}
             <li className="products-button-li">
               <button className="products-button" onClick={toggleAside}>
@@ -144,7 +161,7 @@ const Navbar: React.FC = () => {
 
           <ul className="user-actions">
             <li className="search-toggle">
-              <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={toggleSearch} />
+              <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={toggleSearch}/>
             </li>
             {isSearchActive && (
                 <div className="search-modal">
@@ -159,7 +176,7 @@ const Navbar: React.FC = () => {
                           className="search-input"
                       />
                       <button type="button" onClick={toggleSearch} className="close-modal-button">
-                        <FontAwesomeIcon icon={faTimes} />
+                        <FontAwesomeIcon icon={faTimes}/>
                       </button>
                     </form>
 
@@ -185,7 +202,7 @@ const Navbar: React.FC = () => {
             {/* Theme Toggle */}
             <li className="theme-toggle">
               <button onClick={toggleTheme} className="theme-button">
-                <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
+                <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon}/>
               </button>
             </li>
 
@@ -194,7 +211,7 @@ const Navbar: React.FC = () => {
             <li><Link to="/wishlist">Wishlist</Link></li>
             <li className="cart">
               <Link to="/cart">
-                <FontAwesomeIcon icon={faCartShopping} />
+                <FontAwesomeIcon icon={faCartShopping}/>
                 <span className="cart-count">0</span>
               </Link>
             </li>
@@ -203,17 +220,22 @@ const Navbar: React.FC = () => {
 
         <aside className={`categories-aside ${isAsideOpen ? 'open' : ''}`}>
           <button className="aside-close-button" onClick={toggleAside}>
-            <FontAwesomeIcon icon={faTimes} /> Close
+            <FontAwesomeIcon icon={faTimes}/> Close
           </button>
           <h2>Categories</h2>
+          {/* Verwende `Link` mit Query-Parametern */}
           <ul>
+            {/* Electronics */}
             <li className="sub-dropdown">
               <a>Electronics</a>
               <ul>
-                <li><Link to="/products/smartphones">Smartphones</Link></li>
-                <li><Link to="/products/laptops">Laptops</Link></li>
-                <li><Link to="/products/tablets">Tablets</Link></li>
-                <li><Link to="/products/mobile-accessories">Mobile Accessories</Link></li>
+                {/* Beispiel: Verwende 'smartphones' als Kategorie-Wert */}
+                <li><Link to="/products?category=smartphones">Smartphones</Link></li>
+                <li><Link to="/products?category=laptops">Laptops</Link></li>
+                {/* Annahme: 'tablets' existiert als Kategorie */}
+                <li><Link to="/products?category=tablets">Tablets</Link></li>
+                {/* Annahme: 'mobile-accessories' existiert */}
+                <li><Link to="/products?category=mobile-accessories">Mobile Accessories</Link></li>
               </ul>
             </li>
 
@@ -221,9 +243,9 @@ const Navbar: React.FC = () => {
             <li className="sub-dropdown">
               <a>Men's Fashion</a>
               <ul>
-                <li><Link to="/products/mens-shirts">Shirts</Link></li>
-                <li><Link to="/products/mens-shoes">Shoes</Link></li>
-                <li><Link to="/products/mens-watches">Watches</Link></li>
+                <li><Link to="/products?category=mens-shirts">Shirts</Link></li>
+                <li><Link to="/products?category=mens-shoes">Shoes</Link></li>
+                <li><Link to="/products?category=mens-watches">Watches</Link></li>
               </ul>
             </li>
 
@@ -231,12 +253,12 @@ const Navbar: React.FC = () => {
             <li className="sub-dropdown">
               <a>Women's Fashion</a>
               <ul>
-                <li><Link to="/products/womens-dresses">Dresses</Link></li>
-                <li><Link to="/products/womens-shoes">Shoes</Link></li>
-                <li><Link to="/products/womens-bags">Bags</Link></li>
-                <li><Link to="/products/womens-jewellery">Jewellery</Link></li>
-                <li><Link to="/products/womens-watches">Watches</Link></li>
-                <li><Link to="/products/tops">Tops</Link></li>
+                <li><Link to="/products?category=womens-dresses">Dresses</Link></li>
+                <li><Link to="/products?category=womens-shoes">Shoes</Link></li>
+                <li><Link to="/products?category=womens-bags">Bags</Link></li>
+                <li><Link to="/products?category=womens-jewellery">Jewellery</Link></li>
+                <li><Link to="/products?category=womens-watches">Watches</Link></li>
+                <li><Link to="/products?category=tops">Tops</Link></li>
               </ul>
             </li>
 
@@ -244,9 +266,11 @@ const Navbar: React.FC = () => {
             <li className="sub-dropdown">
               <a>Beauty</a>
               <ul>
-                <li><Link to="/products/beauty">Beauty</Link></li>
-                <li><Link to="/products/skin-care">Skin Care</Link></li>
-                <li><Link to="/products/fragrances">Fragrances</Link></li>
+                {/* dummyjson hat 'skincare' und 'fragrances' */}
+                <li><Link to="/products?category=beauty">Beauty</Link></li>
+                {/* Evtl. Oberkategorie behalten? */}
+                <li><Link to="/products?category=skincare">Skin Care</Link></li>
+                <li><Link to="/products?category=fragrances">Fragrances</Link></li>
               </ul>
             </li>
 
@@ -254,22 +278,24 @@ const Navbar: React.FC = () => {
             <li className="sub-dropdown">
               <a>Home & Living</a>
               <ul>
-                <li><Link to="/products/furniture">Furniture</Link></li>
-                <li><Link to="/products/home-decoration">Home Decoration</Link></li>
-                <li><Link to="/products/kitchen-accessories">Kitchen Accessories</Link></li>
+                <li><Link to="/products?category=furniture">Furniture</Link></li>
+                <li><Link to="/products?category=home-decoration">Home Decoration</Link></li>
+                <li><Link to="/products?category=kitchen-accessories">Kitchen Accessories</Link></li>
               </ul>
             </li>
 
             {/* Standalone Categories */}
-            <li><Link to="/products/sunglasses">Sunglasses</Link></li>
-            <li><Link to="/products/sports-accessories">Sports Accessories</Link></li>
+            <li><Link to="/products?category=sunglasses">Sunglasses</Link></li>
+            <li><Link to="/products?category=sports-accessories">Sports Accessories</Link></li>
+
 
             {/* Automotive */}
             <li className="sub-dropdown">
               <a>Automotive</a>
               <ul>
-                <li><Link to="/products/vehicle">Vehicle</Link></li>
-                <li><Link to="/products/motorcycle">Motorcycle</Link></li>
+                {/* dummyjson hat 'automotive' und 'motorcycle' */}
+                <li><Link to="/products?category=automotive">Vehicle</Link></li>
+                <li><Link to="/products?category=motorcycle">Motorcycle</Link></li>
               </ul>
             </li>
           </ul>
