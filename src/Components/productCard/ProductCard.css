@@ -1,0 +1,60 @@
+/* ProductCard.css */
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-card a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    padding: 1rem;
+}
+
+.product-card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+    display: block;
+}
+
+.product-card-title {
+    font-size: 1.1rem;
+    margin: 0.75rem 0 0.5rem;
+    line-height: 1.2;
+}
+
+.product-card-category {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+}
+
+.product-card-price {
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.discounted-price {
+    color: #d9534f;
+}
+
+.original-price {
+    font-size: 0.85rem;
+    color: #999;
+    text-decoration: line-through;
+}
