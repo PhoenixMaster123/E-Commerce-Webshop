@@ -26,19 +26,21 @@ The shop should work smoothly on both mobile devices and desktop computers, so u
 
 Our main features will be things like category filtering and a search function, so users can quickly search and find what they’re looking for. The user is able to add products to the cart, update the quantities, and remove items. There will also be a checkout page. For better user experience, we will implement a switch where the user can choose between light and dark mode.
 
-\textbf{Target Users: }  
-Our target group are normal online shoppers. This includes people browsing on their laptops or using their SmartPhones.
+\textbf{Target Users:}
+Our target groups are \emph{regular online shoppers}—people browsing on their laptops or smartphones—and \emph{store administrators} who manage catalog and user data.
 
 \textbf{Application Goals:}
 \begin{itemize}
-	\item Build a clean and user-friendly webshop with modern design.
+	\item Build a clean, user‑friendly webshop with a modern design.
 	\item Make product search and category filtering fast and intuitive.
-	\item Allow users to create accounts, log in securely, and manage their shopping activities.
-	\item Enable full shopping cart functionality: add, update, and delete items.
+	\item Allow shoppers to create accounts and log in securely.
+	\item Enable full shopping‑cart functionality: add, update, and delete items.
+	\item Provide an \emph{admin panel} to create, update, and delete products and to manage (or remove) user accounts.
 	\item Support both light mode and dark mode for better user comfort.
-	\item Ensure a responsive design for both mobile and desktop views.
-	\item Keep the scope manageable but realistic for a fully working prototype.
+	\item Ensure a fully responsive design for mobile and desktop views.
+
 \end{itemize}
+	
 	
 	\section{Key Features Gilson}
 
@@ -243,16 +245,25 @@ Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly 
     The app should work as expected—even under load. During sales or other busy times, it needs to stay up and running smoothly without crashing or freezing.
 \end{itemize}
 
+\section{Technology Assumptions}
+
+To build a responsive, maintainable, and feature‑rich e‑commerce
+application, we adopt a modern React‑based stack that balances developer
+productivity, performance, and industry best practices.  
+The key technologies are:
+
+\begin{itemize}
+	\item \textbf{React 19 + TypeScript} – modern SPA framework with compile‑time type safety
+	\item \textbf{Vite} – fast dev server and lightweight production builds
+	\item \textbf{Tailwind CSS 4.1} + \textit{react‑bootstrap} – utility‑first styling plus ready‑made, accessible components
+	\item \textbf{React Router 7} – client‑side routing with nested layouts
+	\item \textbf{Redux Toolkit} – centralized state management (cart, auth)
+	\item \textbf{Font Awesome 6 / Lucide‑React} – comprehensive SVG icon sets
+	\item \textbf{Slick Carousel} – responsive product sliders
+	\item \textbf{React‑Hook‑Form + Yup} – performant form handling \& schema‑based validation
+	\item \textbf{Axios} over HTTPS REST‑JSON – promise‑based HTTP client
+\end{itemize}
 	
-	\section{Technology Assumptions// machen wir später}
-	\begin{itemize}
-		\item \textbf{Frontend:} React.js (mandatory for this course).
-	
-		\item \textbf{API Communication:} RESTful API for communication between frontend and backend.
-		\item \textbf{Database:} MongoDB or PostgreSQL for storing product and order data.
-		\item \textbf{Styling:} Tailwind CSS for fast and responsive UI design.
-		\item \textbf{Email Service:} (Optional) Use an external service like SendGrid for order confirmations.
-	\end{itemize}
 	
 	\section{Project Constraints//machen wir später }
 	\begin{itemize}
