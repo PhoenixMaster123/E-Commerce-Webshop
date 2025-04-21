@@ -13,13 +13,13 @@ const SEARCH_DEBOUNCE_DELAY = 500; // time search
 export const ProductListPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [totalProducts, setTotalProducts] = useState(0);
-    const [isLoading, setIsLoading] = useState(true); 
+    const [isLoading, setIsLoading] = useState(true); // Behalte isLoading für die Datenabfrage
     const [error, setError] = useState<string | null>(null);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const currentPage = parseInt(searchParams.get('page') || '1', 10);
     const currentCategory = searchParams.get('category') || '';
-    const currentSearchParam = searchParams.get('search') || '';
+    const currentSearchParam = searchParams.get('search') || ''; // Wert aus der URL
 
     // get the input field
     const [searchTerm, setSearchTerm] = useState(currentSearchParam);
@@ -107,7 +107,7 @@ export const ProductListPage: React.FC = () => {
 
 
         return () => {
-            clearTimeout(debounceTimer);
+            clearTimeout(debounceTimer); // Löscht den vorherigen Timer, bevor ein neuer gestartet wird
         };
 
     }, [searchTerm, currentSearchParam, searchParams, setSearchParams]);
@@ -122,13 +122,13 @@ export const ProductListPage: React.FC = () => {
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const cat = e.target.value;
-        const newSearchParams = new URLSearchParams(searchParams);
+        const newSearchParams = new URLSearchParams(searchParams); // Kopie erstellen
         if (cat) {
             newSearchParams.set('category', cat);
         } else {
             newSearchParams.delete('category');
         }
-        newSearchParams.set('page', '1');
+        newSearchParams.set('page', '1'); // Bei Kategorieänderung auch auf Seite 1
         setSearchParams(newSearchParams);
     };
 
@@ -143,6 +143,8 @@ export const ProductListPage: React.FC = () => {
 
     return (
         <div className="product-list-page">
+            {/* Titel kann bleiben */}
+            {/* <h1>Products</h1> */}
 
             <div className="filters">
 
@@ -154,14 +156,23 @@ export const ProductListPage: React.FC = () => {
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
-
+                {/* Der "GO!" Button wird entfernt */}
+                {/*
+                <button
+                    className="search-button"
+                    onClick={applySearch} // Nicht mehr benötigt
+                    disabled={isLoading} // Nicht mehr benötigt
+                >
+                    GO!
+                </button>
+                */}
 
                 <label htmlFor="category-select">Category:</label>
                 <select
                     id="category-select"
                     value={currentCategory}
                     onChange={handleCategoryChange}
-                    disabled={isLoading}
+                    disabled={isLoading} // Optional: Deaktivieren während des Ladens
                 >
                     <option value="">Show all</option>
                     {categories.map(cat => (
@@ -172,9 +183,9 @@ export const ProductListPage: React.FC = () => {
                 </select>
             </div>
 
-
-            {isLoading && <p>Loading products...</p>}
-            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+            {/* Anzeige von Loading / Error / Produkten (unverändert) */}
+            {isLoading && <p>Loading products...</p>} {/* Einfache Ladeanzeige */}
+            {error && <p style={{ color: 'red' }}>Error: {error}</p>} {/* Einfache Fehleranzeige */}
 
             {!isLoading && !error && (
                 <>
@@ -182,7 +193,7 @@ export const ProductListPage: React.FC = () => {
                         {products.length > 0 ? (
                             products.map(p => <ProductCard key={p.id} product={p} />)
                         ) : (
-
+                            // Angepasste Nachricht, berücksichtigt Suche/Kategorie
                             <p>
                                 {currentSearchParam || currentCategory
                                     ? 'No products found matching your criteria.'
@@ -191,7 +202,7 @@ export const ProductListPage: React.FC = () => {
                         )}
                     </div>
 
-                    {totalProducts > PRODUCTS_PER_PAGE && totalPages > 1 && ( // show only wwhen more the one page
+                    {totalProducts > PRODUCTS_PER_PAGE && totalPages > 1 && ( // Zeige Paginierung nur, wenn mehr als eine Seite
                         <div className="pagination">
                             <button
                                 onClick={() => handlePageChange(currentPage - 1)}
