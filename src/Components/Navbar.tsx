@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faMoon, faSun, faSearch, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import "./Navbar.css";
+import "./navbar.css";
 
 interface Product {
   id: number;
