@@ -227,22 +227,19 @@ Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly 
     \item \textbf{Usability:}  
     \begin{itemize}
         \item \textbf{Intuitive Navigation:}  
-        We want users to find their way around easily. That’s why we’re going for clear and consistent menus (using tools like \texttt{NavLink} for faster routing).
+        We want users to find their way around easily. That’s why we’re going for clear and consistent menus.
 
         \item \textbf{User-Friendly Design:}  
         The design will be clean and modern, with a focus on readability. We’ll stick to a consistent color scheme, readable fonts, and buttons that look and feel familiar, so users don’t have to think twice about how to interact with the site.
     \end{itemize}
 
     \item \textbf{Responsiveness:}  
-    Whether users are shopping on a desktop, tablet, or phone, the webshop should feel natural to use. Everything should adapt cleanly to different screen sizes without breaking the layout.
+    It doesn't matter if users are shopping on a desktop, tablet, or phone, the webshop should feel natural to use. Everything should adapt cleanly to different screen sizes without breaking the layout.
 
     \item \textbf{Performance:}  
     \begin{itemize}
         \item \textbf{Loading Speed:}  
-        Nobody likes waiting, so we’re aiming for pages that load in under two seconds for most users. Images that aren’t immediately visible will be loaded lazily to avoid slowing things down.
-
-        \item \textbf{Optimized Assets:}  
-        To keep things fast, we’ll compress images (using formats like WebP where possible).
+        Nobody likes waiting, so we're aiming for pages that load in under two seconds for most users.
 
         \item \textbf{Smooth Interactions:}  
         Features like search should feel instant. We'll debounce inputs to avoid spamming the backend with requests, and we’ll cache frequently used data like product listings on the client side so everything feels snappy.
@@ -252,13 +249,7 @@ Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly 
     We’re keeping things modular and organized. Reusable components and a clean file structure will make it easier to make changes later or onboard new team members if needed.
 
     \item \textbf{Error Handling:}  
-        When something goes wrong, we’ll show helpful messages—like “Item out of stock—try similar products”—instead of confusing errors. If an API call fails, we’ll display fallback content and a “Retry” button where it makes sense.
-
-    \item \textbf{Scalability:}  
-    The webshop shouldn’t feel limited. As the number of users and products grows, the system should still perform well without requiring major rewrites.
-
-    \item \textbf{Reliability:}  
-    The app should work as expected—even under load. During sales or other busy times, it needs to stay up and running smoothly without crashing or freezing.
+        When something goes wrong, we'll show helpful messages like “Item out of stock—try similar products” instead of confusing errors. If an API call fails, we’ll display fallback content and a “Retry” button where it makes sense.
 \end{itemize}
 
 \section{Technology Assumptions}
