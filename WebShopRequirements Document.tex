@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{enumitem}
 \usepackage{hyperref}
+\usepackage[none]{hyphenat}
+\setlength{\parindent}{0pt}
 
 \title{E-Commerce Webshop Prototype \\
 	Requirements Document}
@@ -20,27 +22,30 @@
 	
 \section{Project Overview}
 
-Our e-commerce webshop has a focus on a simple and modern shopping experience. There are the essential shopping features implemented, such as searching for products, filtering by category and adding them to the cart, and we want to include some extras that improve the user experience, like the option to switch between light and dark mode.
+Our e-commerce webshop has a focus on a simple and modern shopping experience. There are the essential shopping features implemented, such as searching for products, filtering by category and adding them to the cart, and we want to include some extras that improve the user experience, like the option to switch between light and dark mode. \\
 
-The shop should work smoothly on both mobile devices and desktop computers, so users can shop on both devices. Also, we are planning to add user logins so people can sign up and log in.
+The shop should work smoothly on both mobile devices and desktop computers, so users can shop on both devices. Also, we are planning to add user logins so people can sign up and log in.\\
 
-Our main features will be things like category filtering and a search function, so users can quickly search and find what they’re looking for. The user is able to add products to the cart, update the quantities, and remove items. There will also be a checkout page. For better user experience, we will implement a switch where the user can choose between light and dark mode.
+Our main features will be things like category filtering and a search function, so users can quickly search and find what they’re looking for. The user is able to add products to the cart, update the quantities, and remove items. There will also be a checkout page. For better user experience, we will implement a switch where the user can choose between light and dark mode.\\
 
-\textbf{Target Users: }  
-Our target group are normal online shoppers. This includes people browsing on their laptops or using their SmartPhones.
+\textbf{Target Users:}
+Our target groups are \emph{regular online shoppers}—people browsing on their laptops or smartphones—and \emph{store administrators} who manage catalog and user data.\\\\
 
 \textbf{Application Goals:}
 \begin{itemize}
-	\item Build a clean and user-friendly webshop with modern design.
+	\item Build a clean, user‑friendly webshop with a modern design.
 	\item Make product search and category filtering fast and intuitive.
-	\item Allow users to create accounts, log in securely, and manage their shopping activities.
-	\item Enable full shopping cart functionality: add, update, and delete items.
+	\item Allow shoppers to create accounts and log in securely.
+	\item Enable full shopping‑cart functionality: add, update, and delete items.
+	\item Provide an \emph{admin panel} to create, update, and delete products and to manage (or remove) user accounts.
 	\item Support both light mode and dark mode for better user comfort.
-	\item Ensure a responsive design for both mobile and desktop views.
-	\item Keep the scope manageable but realistic for a fully working prototype.
+	\item Ensure a fully responsive design for mobile and desktop views.
+
 \end{itemize}
 	
-	\section{Key Features Gilson}
+	
+	
+	\section{Key Features}
 
 The following features define the core and extended functionality of our webshop. Each feature is marked as either \textbf{Must-Have} (essential for MVP) or \textbf{Nice-to-Have} (optional improvements).
 
@@ -60,20 +65,28 @@ The following features define the core and extended functionality of our webshop
     \item \textbf{Light/Dark Mode Toggle (Must-Have):}  
     Users can switch between light and dark themes for improved visual comfort.
     
-    \item \textbf{User Authentication (Nice-to-Have):}  
-    Includes user sign-up, login, and personalized account management such as order history.
+    \item \textbf{User Authentication (Must-to-Have):}
+    Includes user sign-up, login, and personalized account management.
     
-    \item \textbf{Admin Dashboard (Nice-to-Have):}  
-    Admins can manage products (CRUD operations), track and update orders, and monitor platform activity.
+    \item \textbf{Admin Dashboard (Must-to-Have):}
+    Admins can manage products (CRUD operations).
+
+
+    \item \textbf{Wishlist / Favorites (Nice-to-Have):}  
+    Allows users to save products for later or mark as favorites.
+
+
+    \item \textbf{Product Reviews and Ratings (Nice-to-Have):}  
+    Enables users to leave product reviews and ratings for community feedback.
+
+    \item \textbf{Multi-language Support (Nice-to-Have):}  
+    Adds support for multiple languages using localization files..
     
-    \item \textbf{Order Confirmation Email (Nice-to-Have):}  
-    Automatically sends confirmation emails to users after successful purchases.
-    
-    \item \textbf{Discount Codes (Nice-to-Have):}  
-    Users can enter promo codes at checkout for price reductions.
 \end{itemize}
 
 	
+
+
 
 	\section{User Roles and Interactions}
 	This section explains the different types of users who interact with our e-commerce webshop, their permissions, and the actions they can typically perform.
@@ -81,20 +94,26 @@ The following features define the core and extended functionality of our webshop
 	The Administrator oversees the overall management of the webshop. This role has the highest level of access and can modify nearly every aspect of the site. \\ \\
 	\textbf{Typical Actions and Expected Outcomes:}
 	\begin{itemize}
-		\item The admin can add, update, or remove products from the catalog, and these changes will be reflected immediately for customers browsing the site.
-		\item The admin can view or remove user accounts and monitor and update the status of customer orders (e.g., pending, shipped, delivered, or canceled). Additionally, the admin has access to a detailed purchase history for each customer, including their name, purchased items, purchase date, order status, and total amount spent. For example, the admin can see that \textit{User123} purchased  \textit{"Wireless Headphones"} on \textit{March 15, 2025}, for a total of \textit{129.99€}.
+		\item The admin can add, update, and remove products from the catalog, any changes are instantly visible to customers. For example, the admin might add a new product, such as  \textit{wireless headphones}, with a price of \textit{129.99\,€}.
+		\item The admin can also manage user accounts – such as viewing user \\ information or deleting accounts if it's needed.
 	\end{itemize}
 
+
+
+
 	\subsection*{Customer (Registered User)}
-Customers are users who have registered an account on the webshop. They can explore products, place orders, and manage their personal details and order history. \\ \\
+	Customers are users who have registered an account on the webshop. They can explore products, place orders, and manage their personal details and order history. \\ \\
 	\textbf{Typical Actions and Expected Outcomes:}
 	\begin{itemize}
-  		\item Customers can browse all available products, read detailed descriptions, check prices, and view customer reviews.
-    		\item They can also use the search bar or apply filters such as category, price, brand, or rating to find specific items.
+  		\item Customers can browse all available products, read detailed descriptions, and check their prices.
+    		\item They can also use the search bar or apply filters, such as by category to narrow down the results.
     		\item Add products to the shopping cart for quick purchase.
-    		\item Proceed to checkout, choose payment and shipping options, and place an order.
-    		\item Update personal information, including name, email, password, and delivery addresses.
+    		\item Can proceed to checkout, choose a payment method, and complete their order easily.
+    		\item Update personal information, including name, email, and password.
 	\end{itemize}
+
+
+
 
 	\subsection*{Guest User (Unregistered User)}
 	A guest user can browse the webshop without creating an account, though their access is limited. \\ \\
@@ -104,7 +123,9 @@ Customers are users who have registered an account on the webshop. They can expl
 		\item Can register or Sign In.
 		\item Can add products to the cart, but the cart will remain active only while they are on the website. Once they leave, everything will be removed. The users must have an account to purchase the products otherwise it will be not possible.
 	\end{itemize}
-	\section{User Stories/Use Cases´}
+
+	\section{User Stories/Use Cases}
+
 	\subsection*{Use Case 1: Register a New User}
 	\textbf{Actor(s):} Visitor \\ \\
 	\textbf{Description:} A visitor creates a new account to access personalized features \\ \\
@@ -113,18 +134,17 @@ Customers are users who have registered an account on the webshop. They can expl
 	\begin{enumerate}
     		\item The user clicks on the ``Sign Up'' button.
     		\item The system presents a registration form.
-    		\item The user enters their name, email, password, and other required data.
+    		\item The user enters their username, email, and password.
     		\item The system validates the data.
     		\item The system creates a new user account.
-    		\item A confirmation message or email is sent to the user.
+    		\item A confirmation message is sent to the user.
     \end{enumerate}
     \textbf{Postconditions:} A new user is registered. \\ \\
     \textbf{Alternative Flows:} If the email exists, the system shows an error message.
 
-
     \subsection*{Use Case 2: Log in to the Account}
 	\textbf{Actor(s):} Registered User \\ \\
-	\textbf{Description:} A user logs into their account to access their profile and order history. \\ \\
+	\textbf{Description:} A user logs into their account to access their profile. \\ \\
 	\textbf{Preconditions:} User is registered. \\ \\
 	\textbf{Main Flow:}
 	\begin{enumerate}
@@ -136,6 +156,7 @@ Customers are users who have registered an account on the webshop. They can expl
 	\end{enumerate}
 	\textbf{Postconditions:} User is logged in. \\ \\
 	\textbf{Alternative Flows:} If login credentials are invalid, an error message is shown.
+
 	\subsection*{Use Case 3: Add/Remove Product to/from the Cart}
 	\textbf{Actor(s):} Logged-in or guest user \\ \\
 	\textbf{Description:} The user adds/removes a product to/from the shopping cart. \\ \\
@@ -149,30 +170,36 @@ Customers are users who have registered an account on the webshop. They can expl
   		\item The system adds or removes the item from the cart accordingly.
 	\end{enumerate}
 	\textbf{Postconditions:} Product is either added or removed from the cart.
+
 	\subsection*{Use Case 4: Checkout and Place Order}
 	\textbf{Actor(s):} Logged-in user \\ \\
-	\textbf{Description:} The user completes the purchase of products in the cart. \\ \\
-	\textbf{Preconditions:} User has items in their cart and is logged in. \\ \\
+	\textbf{Description:} The user completes the purchase of products in their cart. \\ \\
+	\textbf{Preconditions:} User has one or more items in the cart and is logged in. \\ \\
 	\textbf{Main Flow:}
 	\begin{enumerate}
   		\item The user views the cart and clicks ``Checkout.''
-  		\item The system prompts for a shipping address and payment method.
-  		\item The user enters or confirms the information.
-  		\item The system verifies payment and places the order.
-  		\item An order confirmation page is shown.
+  		\item The user waits for 5 seconds while the system processes the order.
+  		\item An order confirmation page is displayed.
 	\end{enumerate}
-	\textbf{Postconditions:} Order is saved, and confirmation is sent.
-	\subsection*{Use Case 5: View Order History}
-	\textbf{Actor(s):} Logged-in user \\ \\
-	\textbf{Description:} The user views a list of their past orders. \\ \\
-	\textbf{Preconditions:} The user has placed at least one order. \\ \\
+	\textbf{Postconditions:} The order is saved, and confirmation message is sent to the user.
+
+	\subsection*{Use Case 5: Manage Product Catalog}
+	\textbf{Actor(s):} Admin \\ \\
+	\textbf{Description:} The admin can add new products to the catalog or remove existing ones. \\ \\			\textbf{Preconditions:} The admin is logged in and has the necessary permissions to manage products.
+	\\ \\
 	\textbf{Main Flow:}
 	\begin{enumerate}
-  		\item The user navigates to ``My Account'' → ``Order History.''
-  		\item The system displays a list of previous orders with status and details.
-  		\item The user clicks on an order to view more information.
+  	\item The admin navigates to the ``Product Management'' section in the \\ admin dashboard.
+  	\item To add a product, the admin clicks on ``Add New Product,'' fills in the product details (such
+  	as name, price, description, and category), and submits the form.
+  	\item To remove a product, the admin selects an existing product from the list, clicks on
+  	``Delete,'' and confirms the action.
+  	\item The system updates the product catalog, reflecting the changes \\ immediately on the customer
+  	facing site.
 	\end{enumerate}
-	\textbf{Postconditions:} User sees order details.
+	\textbf{Postconditions:} New products are added to the catalog or existing products are removed, and
+	changes are visible to customers.
+
 	\subsection*{Use Case 6: Search for a Product}
 	\textbf{Actor(s):} Any user (guest or registered) \\ \\
 	\textbf{Description:} The user searches for a specific product using a search bar. \\ \\
@@ -184,23 +211,23 @@ Customers are users who have registered an account on the webshop. They can expl
   		\item The user clicks on one to see details.
 	\end{enumerate}
 	\textbf{Postconditions:} Matching products are shown. \\ \\
-	\textbf{Alternative Flows:} If no matches are found, the system shows nothing.
-	\subsection*{Use Case 7: Apply Discount Code}
-	\textbf{Actor(s):} Logged-in \\ \\
-	\textbf{Description:} The user applies a discount code during checkout to receive a \\ reduction in
-	price. \\ \\
-	\textbf{Preconditions:} A valid discount code is available. \\ \\
+	\textbf{Alternative Flows:} If no matches are found, the system displays the \\ message: ``No products
+	found.''
+
+	\subsection*{Use Case 7: Update User Profile}
+	\textbf{Actor(s):} Logged-in user \\ \\
+	\textbf{Description:} The user updates their account information such as name, email, or password. \\ \\
+	\textbf{Preconditions:} The user is logged in. \\ \\ \\
 	\textbf{Main Flow:}
 	\begin{enumerate}
-  		\item The user proceeds to checkout.
-  		\item The system displays a field to enter the discount code.
-  		\item The user enters the discount code and clicks ``Apply.''
-  		\item The system validates the code and applies the discount to the order total.
-  		\item The user reviews the updated order price.
+	\item The user navigates to the `My Account' or `Profile' section.
+	\item The user clicks on `Edit Profile.'
+	\item The user updates the necessary fields (e.g., name, email, password).
+	\item The user clicks `Save Changes.'
+	\item The system saves the updated details and confirms the changes.
 	\end{enumerate}
-	\textbf{Postconditions:} The total price is reduced by the discount.
+	\textbf{Postconditions:} The user's profile is updated with new information.
 
-	
 	\section{Non-Functional Requirements}  
 
 Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly experience. The following non-functional requirements describe the quality standards we aim to follow throughout the development:
@@ -218,47 +245,56 @@ Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly 
     \item \textbf{Responsiveness:}  
     It doesn't matter if users are shopping on a desktop, tablet, or phone, the webshop should feel natural to use. Everything should adapt cleanly to different screen sizes without breaking the layout.
 
-    \item \textbf{Performance:}  
-    \begin{itemize}
-        \item \textbf{Loading Speed:}  
-        Nobody likes waiting, so we're aiming for pages that load in under two seconds for most users.
-
-        \item \textbf{Smooth Interactions:}  
-        Features like search should feel instant. We'll debounce inputs to avoid spamming the backend with requests, and we’ll cache frequently used data like product listings on the client side so everything feels snappy.
-    \end{itemize}
+    \item \textbf{Response Time:}  
+    The system shall respond to 95\% of user requests within 2 seconds under normal load.
 
     \item \textbf{Maintainability:}  
-    We're keeping things modular and organized. Reusable components and a clean file structure will make it easier to make changes later or onboard new team members if needed.
+    We’re keeping things modular and organized. Reusable components and a clean file structure will make it easier to make changes later or onboard new team members if needed.
 
     \item \textbf{Error Handling:}  
-        When something goes wrong, we'll show helpful messages like “Item out of stock—try similar products” instead of confusing errors. If an API call fails, we’ll display fallback content and a “Retry” button where it makes sense.
+        When something goes wrong, we'll show helpful messages like “Item out of stock—try similar products” instead of confusing errors.
 \end{itemize}
 
-	
-	\section{Technology Assumptions// machen wir später}
+\section{Technology Assumptions}
+
+To build a responsive, maintainable, and feature‑rich e‑commerce
+application, we adopt a modern React‑based stack that balances developer
+productivity, performance, and industry best practices.  
+The key technologies are:
+
+\begin{itemize}
+	\item \textbf{React + TypeScript} – modern SPA framework with compile‑time type safety
+	\item \textbf{Vite} – fast dev server and lightweight production builds
+	\item \textbf{Tailwind CSS 4.1} + \textit{react‑bootstrap} – utility‑first styling plus ready‑made, accessible components
+	\item \textbf{MUI (Material UI) }and its @mui/icons‑material set for consistent, accessible design
+	\item \textbf{Axios} over HTTPS REST‑JSON – promise‑based HTTP client
+\end{itemize}
+
+
+\section{Project Constraints}
 	\begin{itemize}
-		\item \textbf{Frontend:} React.js (mandatory for this course).
-	
-		\item \textbf{API Communication:} RESTful API for communication between frontend and backend.
-		\item \textbf{Database:} MongoDB or PostgreSQL for storing product and order data.
-		\item \textbf{Styling:} Tailwind CSS for fast and responsive UI design.
-		\item \textbf{Email Service:} (Optional) Use an external service like SendGrid for order confirmations.
-	\end{itemize}
-	
-	\section{Project Constraints//machen wir später }
-	\begin{itemize}
-		\item \textbf{Time Constraint:} Completion of the project before end of semester, with focus on core features first.
+		\item \textbf{Time Constraint:}  The project must be completed by the end of the semester.
+		Because of the limited time, we'll focus on implementing the core features first. If there's
+		still time left, we can start working on optional features.
 		\item \textbf{Resource Constraint:} Small team size, limited development hours per week.
-		\item \textbf{Technical Constraint:} Mandatory use of React.js for frontend; backend technology choice is flexible.
+		\item \textbf{Technical Constraint:} The front-end of the application must be \\ developed using
+		\textbf{React.js}, as per course guidelines. The back-end \\ technology stack choice is flexible.
+		\item \textbf{Knowledge Constraint:} Team members are still in the learning phase for some
+		technologies, which may impact the speed of implementation and require additional time for
+		research and troubleshooting.
 		\item \textbf{Open Questions:}
 		\begin{itemize}
-			\item Will we integrate payment gateways (like Stripe) or simulate payments?
-			\item Scope of admin features: full CRUD or minimal inventory management?
-			\item Do we include user profiles and order history or focus solely on guest checkout?
+			\item Will we integrate a real payment gateway (e.g., Stripe, PayPal) or simulate payments
+			for the purpose of the project?
+			\item Should we implement a loyalty program where users can earn points for each purchase
+			that can later be redeemed for discounts, exclusive offers, or early access to sales?
+			\item Should we integrate an AI chatbot to guide users through the shopping process, offer
+			product recommendations, or help with issues like order tracking, or should we rely on
+			traditional customer service?
 		\end{itemize}
 	\end{itemize}
-	
-	\section{Acknowledgment of AI Technologies}
+
+\section{Acknowledgment of AI Technologies}
 	This document was drafted and refined using GPT-4o based on an outline containing related information. The authors reviewed, revised, and enhanced the GPT-4o output with additional content. The document was then edited for improved readability and active tense, partially using Grammarly.
 	
 \end{document}
