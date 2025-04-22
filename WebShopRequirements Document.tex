@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{enumitem}
 \usepackage{hyperref}
+\usepackage[none]{hyphenat}
+\setlength{\parindent}{0pt}
 
 \title{E-Commerce Webshop Prototype \\
 	Requirements Document}
@@ -20,14 +22,14 @@
 	
 \section{Project Overview}
 
-Our e-commerce webshop has a focus on a simple and modern shopping experience. There are the essential shopping features implemented, such as searching for products, filtering by category and adding them to the cart, and we want to include some extras that improve the user experience, like the option to switch between light and dark mode.
+Our e-commerce webshop has a focus on a simple and modern shopping experience. There are the essential shopping features implemented, such as searching for products, filtering by category and adding them to the cart, and we want to include some extras that improve the user experience, like the option to switch between light and dark mode. \\
 
-The shop should work smoothly on both mobile devices and desktop computers, so users can shop on both devices. Also, we are planning to add user logins so people can sign up and log in.
+The shop should work smoothly on both mobile devices and desktop computers, so users can shop on both devices. Also, we are planning to add user logins so people can sign up and log in.\\
 
-Our main features will be things like category filtering and a search function, so users can quickly search and find what they’re looking for. The user is able to add products to the cart, update the quantities, and remove items. There will also be a checkout page. For better user experience, we will implement a switch where the user can choose between light and dark mode.
+Our main features will be things like category filtering and a search function, so users can quickly search and find what they’re looking for. The user is able to add products to the cart, update the quantities, and remove items. There will also be a checkout page. For better user experience, we will implement a switch where the user can choose between light and dark mode.\\
 
 \textbf{Target Users:}
-Our target groups are \emph{regular online shoppers}—people browsing on their laptops or smartphones—and \emph{store administrators} who manage catalog and user data.
+Our target groups are \emph{regular online shoppers}—people browsing on their laptops or smartphones—and \emph{store administrators} who manage catalog and user data.\\\\
 
 \textbf{Application Goals:}
 \begin{itemize}
@@ -40,6 +42,7 @@ Our target groups are \emph{regular online shoppers}—people browsing on their 
 	\item Ensure a fully responsive design for mobile and desktop views.
 
 \end{itemize}
+	
 	
 	
 	\section{Key Features}
@@ -260,14 +263,10 @@ productivity, performance, and industry best practices.
 The key technologies are:
 
 \begin{itemize}
-	\item \textbf{React 19 + TypeScript} – modern SPA framework with compile‑time type safety
+	\item \textbf{React + TypeScript} – modern SPA framework with compile‑time type safety
 	\item \textbf{Vite} – fast dev server and lightweight production builds
 	\item \textbf{Tailwind CSS 4.1} + \textit{react‑bootstrap} – utility‑first styling plus ready‑made, accessible components
-	\item \textbf{React Router 7} – client‑side routing with nested layouts
-	\item \textbf{Redux Toolkit} – centralized state management (cart, auth)
-	\item \textbf{Font Awesome 6 / Lucide‑React} – comprehensive SVG icon sets
-	\item \textbf{Slick Carousel} – responsive product sliders
-	\item \textbf{React‑Hook‑Form + Yup} – performant form handling \& schema‑based validation
+	\item \textbf{MUI (Material UI) }and its @mui/icons‑material set for consistent, accessible design
 	\item \textbf{Axios} over HTTPS REST‑JSON – promise‑based HTTP client
 \end{itemize}
 
