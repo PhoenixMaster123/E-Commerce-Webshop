@@ -1,11 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "./Components/Navbar";
+import Navbar from "../Components/Main_Components/Navbar/Navbar";
 
 
 const MainLayout = () => (
     <>
         <Navbar />
-        {/* Hier rendert React Router die Kind‑Route */}
         <Outlet />
     </>
 );

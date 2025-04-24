@@ -1,27 +1,42 @@
-import { Route, Routes, Navigate } from "react-router-dom";
-import Home from "./Pages/Home/Home";
-import Login from "./Pages/Login/Login";
-import Register from "./Pages/Register/Register";
-import "./assets/css/_reset.css"
-import {ProductListPage} from "./Pages/productList/ProductListPage.tsx";
-import MainLayout from "./MainLayout.tsx";
+//import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate} from "react-router-dom";
 
-const App= () => (
-    <Routes>
-        {}
-        <Route path="/" element={<Navigate to="/home" replace />} />
+// Pages & Layouts
+import Home from "./Pages/Main/Home/Home";
+import Login from "./Pages/Main/Login/Login";
+import Register from "./Pages/Main/Register/Register";
+import { ProductListPage } from "./Pages/Main/productList/ProductListPage.tsx";
+import MainLayout from "./Layout/MainLayout.tsx";
+import OverviewPage from "./Pages/Admin/OverviewPage.tsx";
+import AdminLayout from "./Layout/AdminLayout.tsx";
 
-        {/* Alle „normalen“ Seiten bekommen die Navbar automatisch */}
-        <Route element={<MainLayout />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/products" element={<ProductListPage />} />
-            {/* weitere Routen mit Navbar hier einhängen … */}
-        </Route>
+// CSS
+import React from "react";
+import ProductsPage from "./Pages/Admin/ProductsPage.tsx";
 
-        {/* Auth‑Seiten OHNE Navbar */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-    </Routes>
-);
+// --- App Component ---
+
+const App: React.FC = () => {
+    return (
+        <Routes>
+
+            <Route path="/" element={<Navigate to="/home" replace />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            <Route path="/admin" element={<AdminLayout />}>
+                <Route path="dashboard" element={<OverviewPage />} />
+                <Route path="products" element={<ProductsPage />} />
+            </Route>
+
+            <Route element={<MainLayout />}>
+                <Route path="/home" element={<Home />} />
+                <Route path="/products" element={<ProductListPage />} />
+            </Route>
+
+        </Routes>
+    )
+};
 
 export default App;

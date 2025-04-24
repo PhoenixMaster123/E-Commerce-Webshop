@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Product } from '../../types';
-import * as api from '../../services/api';
-import { ProductCard } from '../../Components/productCard/ProductCard';
+import { Product } from '../../../types';
+import * as api from '../../../services/api.ts';
+import { ProductCard } from '../../../Components/Main_Components/productCard/ProductCard.tsx';
 //import { LoadingSpinner } from '../components/LoadingSpinner';
 //import { ErrorMessage } from '../components/ErrorMessage';
 import './ProductListPage.css';

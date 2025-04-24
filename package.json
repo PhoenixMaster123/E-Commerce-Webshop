@@ -1,4 +1,3 @@
-
 {
   "name": "webshop",
   "private": true,
@@ -11,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.8.4",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -29,24 +27,25 @@
     "@nivo/geo": "^0.88.0",
     "@nivo/line": "^0.88.0",
     "@nivo/pie": "^0.88.0",
-    "@tailwindcss/vite": "^4.1.3",
+    "@reduxjs/toolkit": "^2.7.0",
+    "@tailwindcss/vite": "^4.1.4",
+    "axios": "^1.8.4",
+    "boxicons": "^2.1.4",
     "formik": "^2.4.6",
+    "framer-motion": "^12.9.1",
     "lucide-react": "^0.487.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
     "react-pro-sidebar": "^1.1.0",
     "react-redux": "^9.2.0",
     "react-router": "^7.5.0",
     "react-router-dom": "^7.5.0",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
-    "tailwindcss": "^4.1.3",
-    "yup": "^1.6.1",
-    "@reduxjs/toolkit": "^2.7.0",
-    "boxicons": "^2.1.4",
-    "react-icons": "^5.5.0",
-    "stripe": "^18.0.0"
+    "stripe": "^18.0.0",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -54,10 +53,13 @@
     "@types/react-dom": "^19.0.4",
     "@types/stripe": "^8.0.416",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.4",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0"

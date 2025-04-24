@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Product } from '../../types';
+import { Product } from '../../../types';
 import './ProductCard.css'; // Erstelle diese CSS-Datei
 
 interface ProductCardProps {

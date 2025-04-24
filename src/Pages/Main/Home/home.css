@@ -12,6 +12,6 @@ li {
     gap: 2em;
 }
 
-nav {
+.navigation {
     border: 2px solid black;
 }

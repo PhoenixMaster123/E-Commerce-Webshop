@@ -133,7 +133,7 @@ const Navbar: React.FC = () => {
 
   return (
       <>
-        <nav>
+        <nav className='navigation'>
           {}
           <button className="aside-toggle-button" onClick={toggleAside}>
             <FontAwesomeIcon icon={faBars}/>
