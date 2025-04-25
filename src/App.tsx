@@ -1,20 +1,22 @@
-//import React, { useState, useEffect } from "react";
+// General
 import { Routes, Route, Navigate} from "react-router-dom";
+import React from "react";
 
-// Pages & Layouts
+// Main Pages
 import Home from "./Pages/Main/Home/Home";
 import Login from "./Pages/Main/Login/Login";
 import Register from "./Pages/Main/Register/Register";
 import { ProductListPage } from "./Pages/Main/productList/ProductListPage.tsx";
-import MainLayout from "./Layout/MainLayout.tsx";
-import OverviewPage from "./Pages/Admin/OverviewPage.tsx";
-import AdminLayout from "./Layout/AdminLayout.tsx";
-
-// CSS
-import React from "react";
 import ProductsPage from "./Pages/Admin/ProductsPage.tsx";
 
-// --- App Component ---
+// Layouts
+import MainLayout from "./Layout/MainLayout.tsx";
+import AdminLayout from "./Layout/AdminLayout.tsx";
+
+// Admin Pages
+import OverviewPage from "./Pages/Admin/OverviewPage.tsx";
+import UsersPage from "./Pages/Admin/UsersPage.tsx";
+import SettingsPage from "./Pages/Admin/SettingsPage.tsx";
 
 const App: React.FC = () => {
     return (
@@ -26,8 +28,10 @@ const App: React.FC = () => {
             <Route path="/register" element={<Register />} />
 
             <Route path="/admin" element={<AdminLayout />}>
-                <Route path="dashboard" element={<OverviewPage />} />
+                <Route path="" element={<OverviewPage />} />
                 <Route path="products" element={<ProductsPage />} />
+                <Route path="users" element={<UsersPage />} />
+                <Route path="settings" element={<SettingsPage />} />
             </Route>
 
             <Route element={<MainLayout />}>
