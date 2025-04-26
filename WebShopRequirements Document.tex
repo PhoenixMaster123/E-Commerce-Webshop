@@ -1,3 +1,4 @@
+
 \documentclass[a4paper,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{enumitem}
@@ -5,31 +6,38 @@
 \usepackage[none]{hyphenat}
 \setlength{\parindent}{0pt}
 
+
 \title{E-Commerce Webshop Prototype \\
 	Requirements Document}
 \author{
 	Group Members: \\
 	Enrico Ebert, enrico.ebert@study.thws.de, 5123098 \\
-	Kristian Popov, 5123029, kristian.popov@study.thws.de \\
+	Kristian Popov, kristian.popov@study.thws.de, 5123029 \\
 	Glison Doci, glison.doci@study.thws.de, 5123136 \\
 	Orik Mazreku, orik.mazreku@study.thws.de, 5123144
 }
 \date{\today}
 
+
 \begin{document}
-	
+
 	\maketitle
-	
+
 \section{Project Overview}
+
 
 Our e-commerce webshop has a focus on a simple and modern shopping experience. There are the essential shopping features implemented, such as searching for products, filtering by category and adding them to the cart, and we want to include some extras that improve the user experience, like the option to switch between light and dark mode. \\
 
+
 The shop should work smoothly on both mobile devices and desktop computers, so users can shop on both devices. Also, we are planning to add user logins so people can sign up and log in.\\
+
 
 Our main features will be things like category filtering and a search function, so users can quickly search and find what they’re looking for. The user is able to add products to the cart, update the quantities, and remove items. There will also be a checkout page. For better user experience, we will implement a switch where the user can choose between light and dark mode.\\
 
+
 \textbf{Target Users:}
 Our target groups are \emph{regular online shoppers}—people browsing on their laptops or smartphones—and \emph{store administrators} who manage catalog and user data.\\\\
+
 
 \textbf{Application Goals:}
 \begin{itemize}
@@ -41,50 +49,62 @@ Our target groups are \emph{regular online shoppers}—people browsing on their 
 	\item Support both light mode and dark mode for better user comfort.
 	\item Ensure a fully responsive design for mobile and desktop views.
 
+
 \end{itemize}
-	
-	
-	
+
+
+
 	\section{Key Features}
+
 
 The following features define the core and extended functionality of our webshop. Each feature is marked as either \textbf{Must-Have} (essential for MVP) or \textbf{Nice-to-Have} (optional improvements).
 
+
 \begin{itemize}
-    \item \textbf{Product Search and Filters (Must-Have):}  
+    \item \textbf{Product Search and Filters (Must-Have):}
     Users can search for products using keywords and filter by categories, price range, or other attributes.
-    
-    \item \textbf{Shopping Cart (Must-Have):}  
+
+    \item \textbf{Shopping Cart (Must-Have):}
     Allows users to add products, update quantities, and remove items. A live total cost is shown and updated dynamically.
-    
-    \item \textbf{Checkout Process (Must-Have):}  
+
+    \item \textbf{Checkout Process (Must-Have):}
     A guided, multi-step form to collect shipping and payment information. Ends with an order confirmation page.
-    
-    \item \textbf{Responsive Design (Must-Have):}  
+
+    \item \textbf{Responsive Design (Must-Have):}
     Full support for both mobile and desktop views, ensuring a smooth and consistent experience across devices.
-    
-    \item \textbf{Light/Dark Mode Toggle (Must-Have):}  
+
+    \item \textbf{Light/Dark Mode Toggle (Must-Have):}
     Users can switch between light and dark themes for improved visual comfort.
-    
+
     \item \textbf{User Authentication (Must-to-Have):}
     Includes user sign-up, login, and personalized account management.
-    
+
     \item \textbf{Admin Dashboard (Must-to-Have):}
     Admins can manage products (CRUD operations).
 
 
-    \item \textbf{Wishlist / Favorites (Nice-to-Have):}  
+
+
+    \item \textbf{Wishlist / Favorites (Nice-to-Have):}
     Allows users to save products for later or mark as favorites.
 
 
-    \item \textbf{Product Reviews and Ratings (Nice-to-Have):}  
+
+
+    \item \textbf{Product Reviews and Ratings (Nice-to-Have):}
     Enables users to leave product reviews and ratings for community feedback.
 
-    \item \textbf{Multi-language Support (Nice-to-Have):}  
+
+    \item \textbf{Multi-language Support (Nice-to-Have):}
     Adds support for multiple languages using localization files..
-    
+
 \end{itemize}
 
-	
+
+
+
+
+
 
 
 
@@ -97,6 +117,10 @@ The following features define the core and extended functionality of our webshop
 		\item The admin can add, update, and remove products from the catalog, any changes are instantly visible to customers. For example, the admin might add a new product, such as  \textit{wireless headphones}, with a price of \textit{129.99\,€}.
 		\item The admin can also manage user accounts – such as viewing user \\ information or deleting accounts if it's needed.
 	\end{itemize}
+
+
+
+
 
 
 
@@ -115,6 +139,10 @@ The following features define the core and extended functionality of our webshop
 
 
 
+
+
+
+
 	\subsection*{Guest User (Unregistered User)}
 	A guest user can browse the webshop without creating an account, though their access is limited. \\ \\
 	\textbf{Typical Actions and Expected Outcomes:}
@@ -124,7 +152,9 @@ The following features define the core and extended functionality of our webshop
 		\item Can add products to the cart, but the cart will remain active only while they are on the website. Once they leave, everything will be removed. The users must have an account to purchase the products otherwise it will be not possible.
 	\end{itemize}
 
+
 	\section{User Stories/Use Cases}
+
 
 	\subsection*{Use Case 1: Register a New User}
 	\textbf{Actor(s):} Visitor \\ \\
@@ -142,6 +172,7 @@ The following features define the core and extended functionality of our webshop
     \textbf{Postconditions:} A new user is registered. \\ \\
     \textbf{Alternative Flows:} If the email exists, the system shows an error message.
 
+
     \subsection*{Use Case 2: Log in to the Account}
 	\textbf{Actor(s):} Registered User \\ \\
 	\textbf{Description:} A user logs into their account to access their profile. \\ \\
@@ -157,6 +188,7 @@ The following features define the core and extended functionality of our webshop
 	\textbf{Postconditions:} User is logged in. \\ \\
 	\textbf{Alternative Flows:} If login credentials are invalid, an error message is shown.
 
+
 	\subsection*{Use Case 3: Add/Remove Product to/from the Cart}
 	\textbf{Actor(s):} Logged-in or guest user \\ \\
 	\textbf{Description:} The user adds/removes a product to/from the shopping cart. \\ \\
@@ -171,6 +203,7 @@ The following features define the core and extended functionality of our webshop
 	\end{enumerate}
 	\textbf{Postconditions:} Product is either added or removed from the cart.
 
+
 	\subsection*{Use Case 4: Checkout and Place Order}
 	\textbf{Actor(s):} Logged-in user \\ \\
 	\textbf{Description:} The user completes the purchase of products in their cart. \\ \\
@@ -182,6 +215,7 @@ The following features define the core and extended functionality of our webshop
   		\item An order confirmation page is displayed.
 	\end{enumerate}
 	\textbf{Postconditions:} The order is saved, and confirmation message is sent to the user.
+
 
 	\subsection*{Use Case 5: Manage Product Catalog}
 	\textbf{Actor(s):} Admin \\ \\
@@ -200,6 +234,7 @@ The following features define the core and extended functionality of our webshop
 	\textbf{Postconditions:} New products are added to the catalog or existing products are removed, and
 	changes are visible to customers.
 
+
 	\subsection*{Use Case 6: Search for a Product}
 	\textbf{Actor(s):} Any user (guest or registered) \\ \\
 	\textbf{Description:} The user searches for a specific product using a search bar. \\ \\
@@ -213,6 +248,7 @@ The following features define the core and extended functionality of our webshop
 	\textbf{Postconditions:} Matching products are shown. \\ \\
 	\textbf{Alternative Flows:} If no matches are found, the system displays the \\ message: ``No products
 	found.''
+
 
 	\subsection*{Use Case 7: Update User Profile}
 	\textbf{Actor(s):} Logged-in user \\ \\
@@ -228,47 +264,60 @@ The following features define the core and extended functionality of our webshop
 	\end{enumerate}
 	\textbf{Postconditions:} The user's profile is updated with new information.
 
-	\section{Non-Functional Requirements}  
+
+	\section{Non-Functional Requirements}
+
 
 Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly experience. The following non-functional requirements describe the quality standards we aim to follow throughout the development:
 
+
 \begin{itemize}
-    \item \textbf{Usability:}  
+    \item \textbf{Usability:}
     \begin{itemize}
-        \item \textbf{Intuitive Navigation:}  
+        \item \textbf{Intuitive Navigation:}
         We want users to find their way around easily. That’s why we’re going for clear and consistent menus.
 
-        \item \textbf{User-Friendly Design:}  
+
+        \item \textbf{User-Friendly Design:}
         The design will be clean and modern, with a focus on readability. We’ll stick to a consistent color scheme, readable fonts, and buttons that look and feel familiar, so users don’t have to think twice about how to interact with the site.
     \end{itemize}
 
-    \item \textbf{Responsiveness:}  
+
+    \item \textbf{Responsiveness:}
     It doesn't matter if users are shopping on a desktop, tablet, or phone, the webshop should feel natural to use. Everything should adapt cleanly to different screen sizes without breaking the layout.
 
-    \item \textbf{Response Time:}  
-    The system shall respond to 95\% of user requests within 2 seconds under normal load.
 
-    \item \textbf{Maintainability:}  
+    \item \textbf{Response Time:}
+    The system shall respond to 95\% of user requests within 2 seconds under normal load.
+
+
+    \item \textbf{Maintainability:}
     We’re keeping things modular and organized. Reusable components and a clean file structure will make it easier to make changes later or onboard new team members if needed.
 
-    \item \textbf{Error Handling:}  
+
+    \item \textbf{Error Handling:}
         When something goes wrong, we'll show helpful messages like “Item out of stock—try similar products” instead of confusing errors.
 \end{itemize}
 
+
 \section{Technology Assumptions}
+
 
 To build a responsive, maintainable, and feature‑rich e‑commerce
 application, we adopt a modern React‑based stack that balances developer
-productivity, performance, and industry best practices.  
+productivity, performance, and industry best practices.
 The key technologies are:
 
+
 \begin{itemize}
-	\item \textbf{React + TypeScript} – modern SPA framework with compile‑time type safety
+	\item \textbf{React + TypeScript} – modern SPA framework with compile‑time type safety
 	\item \textbf{Vite} – fast dev server and lightweight production builds
-	\item \textbf{Tailwind CSS 4.1} + \textit{react‑bootstrap} – utility‑first styling plus ready‑made, accessible components
+	\item \textbf{Tailwind CSS 4.1} + \textit{react‑bootstrap} – utility‑first styling plus ready‑made, accessible components
 	\item \textbf{Lucide icons} (a versatile icon library) and \textbf{Recharts} (a charting library for React) for consistent and accessible visual design.
 	\item \textbf{Axios} over HTTPS REST‑JSON – promise‑based HTTP client
 \end{itemize}
+
+
 
 
 \section{Project Constraints}
@@ -294,7 +343,9 @@ The key technologies are:
 		\end{itemize}
 	\end{itemize}
 
+
 \section{Acknowledgment of AI Technologies}
 	This document was drafted and refined using GPT-4o based on an outline containing related information. The authors reviewed, revised, and enhanced the GPT-4o output with additional content. The document was then edited for improved readability and active tense, partially using Grammarly.
-	
+
 \end{document}
+
