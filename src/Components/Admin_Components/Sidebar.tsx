@@ -1,4 +1,4 @@
-import { BarChart2, Menu, Settings, ShoppingBag, Users } from "lucide-react";
+import { BarChart2, Menu, Settings, ShoppingBag, Users, User} from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -11,7 +11,8 @@ const SIDEBAR_ITEMS = [
     href: "/admin",
   },
   { name: "Products", icon: ShoppingBag, color: "#8B5CF6", href: "/admin/products" },
-  { name: "Users", icon: Users, color: "#EC4899", href: "/admin/users" },
+  { name: "Customers", icon: Users, color: "#EC4899", href: "/admin/users" },
+  { name: "Account", icon: User, color: "#3B82F6", href: "/admin/account" },
   { name: "Settings", icon: Settings, color: "#6EE7B7", href: "/admin/settings" },
 ];
 

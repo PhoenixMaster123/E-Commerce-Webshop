@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 type StatProps = {
     name: string;
     icon: LucideIcon;
-    value: string;
+    value: string | number;
     color: string;
 };
 
