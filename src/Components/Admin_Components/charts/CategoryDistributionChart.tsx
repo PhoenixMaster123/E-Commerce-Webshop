@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { useTheme } from "next-themes";
 
 interface CustomLegendPayload {
     value: string;
@@ -22,13 +23,13 @@ const renderCustomLegend = ({ payload }: CustomLegendProps) => {
             {payload.map((entry, index) => (
                 <li
                     key={`legend-item-${index}`}
-                    className="flex items-center space-x-0.5 space-y-1 text-gray-300 text-sm cursor-pointer"
+                    className="flex items-center space-x-0.5 space-y-1 text-sm cursor-pointer"
                 >
                     <div
                         className="w-3 h-3 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: entry.color }} 
+                        style={{ backgroundColor: entry.color }}
                     />
-                    <span>{entry.value}</span> 
+                    <span>{entry.value}</span>
                 </li>
             ))}
         </ul>
@@ -57,16 +58,22 @@ const COLORS: string[] = [
     "#06B6D4", // Cyan
 ];
 
-
 const CategoryDistributionChart = () => {
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
+
     return (
         <motion.div
-            className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700'
+            className={`bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border ${
+                isDark
+                    ? 'bg-gray-800 border-gray-700 text-gray-100'
+                    : 'bg-white border-gray-300 text-gray-900'
+            }`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
         >
-            <h2 className='text-lg font-medium mb-4 text-gray-100'>Category Distribution</h2>
+            <h2 className='text-lg font-medium mb-4'>Category Distribution</h2>
             <div className='h-96'>
                 <ResponsiveContainer width={"100%"} height={"100%"}>
                     <PieChart>
@@ -76,8 +83,7 @@ const CategoryDistributionChart = () => {
                             cy={"50%"}
                             labelLine={false}
                             outerRadius={80}
-                            fill='#8884d8'
-                            dataKey='value'
+                            dataKey="value"
                         >
                             {categoryData.map((_entry, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -85,18 +91,17 @@ const CategoryDistributionChart = () => {
                         </Pie>
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: "rgba(31, 41, 55, 0.8)",
-                                borderColor: "#4B5563",
+                                backgroundColor: isDark ? "rgba(31, 41, 55, 0.8)" : "rgba(255, 255, 255, 0.9)",
+                                borderColor: isDark ? "#4B5563" : "#D1D5DB",
                             }}
-                            itemStyle={{ color: "#E5E7EB" }}
+                            itemStyle={{ color: isDark ? "#E5E7EB" : "#1F2937" }}
                         />
-                        {/* Use the custom legend component by passing the function reference */}
                         <Legend
-                            content={renderCustomLegend} // <-- Corrected this line
-                            layout="horizontal" // Hint layout, but custom content controls rendering
-                            align="center"     // Hint alignment, but custom content controls rendering
-                            verticalAlign="bottom" // Position the legend below the chart
-                            wrapperStyle={{ paddingTop: '16px' }} // Add some space above the legend
+                            content={renderCustomLegend}
+                            layout="horizontal"
+                            align="center"
+                            verticalAlign="bottom"
+                            wrapperStyle={{ paddingTop: '16px' }}
                         />
                     </PieChart>
                 </ResponsiveContainer>

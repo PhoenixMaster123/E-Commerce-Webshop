@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Moon, Sun } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import ToggleTheme from './ToggleTheme';
 import { useTheme } from 'next-themes';
 
 interface HeaderProps {
@@ -7,34 +7,27 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
-    const { setTheme, theme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const { theme } = useTheme();
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    const toggleTheme = () => {
-        setTheme(theme === 'light' ? 'dark' : 'light');
-    };
+    if (!mounted) return null;
+
+    const headerBg =
+        theme === 'dark'
+            ? 'bg-gray-800 bg-opacity-50 border-gray-700'
+            : 'bg-white bg-opacity-80 border-gray-300';
+
+    const titleColor = theme === 'dark' ? 'text-gray-100' : 'text-gray-900';
 
     return (
-        <header className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg border-b border-gray-700'>
+        <header className={`backdrop-blur-md shadow-lg border-b ${headerBg}`}>
             <div className='max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between'>
-                <h1 className='text-2xl font-semibold text-gray-100'>{title}</h1>
-                {mounted && (
-                    <button
-                        onClick={toggleTheme}
-                        className="theme-button text-gray-300 hover:text-white transition-colors" // Added classes
-                        aria-label="Toggle Theme"
-                    >
-                        {theme === 'dark' ? (
-                            <Sun className="h-5 w-5" />
-                        ) : (
-                            <Moon className="h-5 w-5" />
-                        )}
-                    </button>
-                )}
+                <h1 className={`text-2xl font-semibold ${titleColor}`}>{title}</h1>
+                <ToggleTheme />
             </div>
         </header>
     );

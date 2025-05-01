@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+
 type ToggleProps = {
 	label: string;
 	isOn: boolean;
@@ -6,25 +8,31 @@ type ToggleProps = {
 };
 
 const ToggleSwitch = ({ label, isOn, onToggle }: ToggleProps) => {
+	const { theme } = useTheme();
+
+	const labelColor =
+		theme === "dark" ? "text-gray-300" : isOn ? "text-gray-800" : "text-gray-600";
+
 	return (
-		<div className='flex items-center justify-between py-3'>
-			<span className='text-gray-300'>{label}</span>
+		<div className="flex items-center justify-between py-3">
+			<span className={labelColor}>{label}</span>
 			<button
 				className={`
-        relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none
-        ${isOn ? "bg-indigo-600" : "bg-gray-600"}
+          relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none
+          ${isOn ? "bg-indigo-600" : "bg-gray-600"}
         `}
 				onClick={onToggle}
 			>
 				<motion.span
 					layout
 					className={`
-						inline-block size-4 bg-white rounded-full
-						${isOn ? "translate-x-6" : "translate-x-1"}
-					`}
+            inline-block size-4 bg-white rounded-full
+            ${isOn ? "translate-x-6" : "translate-x-1"}
+          `}
 				/>
 			</button>
 		</div>
 	);
 };
+
 export default ToggleSwitch;

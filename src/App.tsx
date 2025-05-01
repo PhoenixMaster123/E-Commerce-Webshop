@@ -31,7 +31,7 @@ const App: React.FC = () => {
             <Route path="/admin" element={<AdminLayout />}>
                 <Route path="" element={<OverviewPage />} />
                 <Route path="products" element={<ProductsPage />} />
-                <Route path="users" element={<UsersPage />} />
+                <Route path="customers" element={<UsersPage />} />
                 <Route path="account" element={<AccountAdmin />} />
                 <Route path="settings" element={<SettingsPage />} />
             </Route>

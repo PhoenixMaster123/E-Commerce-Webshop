@@ -4,12 +4,15 @@ import App from "./App.tsx";
 import './assets/css/main.css'
 import './index.css'
 
-import { BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from 'next-themes';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
-            <App />
+            <ThemeProvider attribute="class">
+                <App />
+            </ThemeProvider>
         </BrowserRouter>
     </StrictMode>
 )
