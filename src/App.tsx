@@ -17,7 +17,13 @@ import AdminLayout from "./Layout/AdminLayout.tsx";
 import OverviewPage from "./Pages/Admin/OverviewPage.tsx";
 import UsersPage from "./Pages/Admin/UsersPage.tsx";
 import SettingsPage from "./Pages/Admin/SettingsPage.tsx";
-import AccountAdmin from "./Pages/Admin/AccountAdmin.tsx";
+import AdminAccountLayout from "./Layout/AdminAccountLayout.tsx";
+import ProfileSettingsPage from "./Pages/Admin/Account/ProfileSettingsPage.tsx";
+import PasswordPage from "./Pages/Admin/Account/PasswordPage.tsx";
+import NotificationsPage from "./Pages/Admin/Account/NotificationsPage.tsx";
+import SocialPage from "./Pages/Admin/Account/SocialPage.tsx";
+import DeletePage from "./Pages/Admin/Account/DeletePage.tsx";
+import AccountPage from "./Pages/Admin/Account/AccountPage.tsx";
 
 const App: React.FC = () => {
     return (
@@ -32,7 +38,14 @@ const App: React.FC = () => {
                 <Route path="" element={<OverviewPage />} />
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="customers" element={<UsersPage />} />
-                <Route path="account" element={<AccountAdmin />} />
+                <Route path="account" element={<AdminAccountLayout />}>
+                    <Route index element={<AccountPage />} />
+                    <Route path="settings" element={<ProfileSettingsPage />} />
+                    <Route path="password" element={<PasswordPage />} />
+                    <Route path="notifications" element={<NotificationsPage />} />
+                    <Route path="social" element={<SocialPage />} />
+                    <Route path="delete" element={<DeletePage />} />
+                </Route>
                 <Route path="settings" element={<SettingsPage />} />
             </Route>
 

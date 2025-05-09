@@ -14,7 +14,7 @@ const SIDEBAR_ITEMS = [
   { name: "Products", icon: ShoppingBag, color: "#8B5CF6", href: "/admin/products" },
   { name: "Customers", icon: Users, color: "#EC4899", href: "/admin/customers" },
   { name: "Account", icon: User, color: "#3B82F6", href: "/admin/account" },
-  { name: "Settings", icon: Settings, color: "#6EE7B7", href: "/admin/settings" },
+  { name: "General Settings", icon: Settings, color: "#6EE7B7", href: "/admin/settings" },
 ];
 
 const Sidebar = () => {
