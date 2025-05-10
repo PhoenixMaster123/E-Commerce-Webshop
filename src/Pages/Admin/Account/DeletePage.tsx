@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Trash2, Loader2, XCircle, CheckCircle } from "lucide-react"; // Added Loader2, XCircle, CheckCircle icons
+import { Trash2, Loader2, XCircle, CheckCircle } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const DeleteAccountPage: React.FC = () => {
-  const [confirming, setConfirming] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>(""); // State for password input
-  const [loading, setLoading] = useState<boolean>(false); // State for loading indicator
-  const [error, setError] = useState<string | null>(null); // State for error messages
-  const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false); // State for initial 'deleting...' message
-  const [finalSuccess, setFinalSuccess] = useState<boolean>(false); // State for final success message
+  const { theme } = useTheme();
+  const isDarkTheme = theme === 'dark';
 
-  // Effect to manage the 'deleting...' message visibility and trigger final state
+  const [confirming, setConfirming] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false);
+  const [finalSuccess, setFinalSuccess] = useState<boolean>(false);
+
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
 
     if (deleteSuccess) {
-      // Set a timer to hide the 'deleting...' message after 2 seconds
       timer = setTimeout(() => {
-        setDeleteSuccess(false); // Hide the initial message
-        setFinalSuccess(true); // Show the final success message or trigger redirect
+        setDeleteSuccess(false);
+        setFinalSuccess(true);
         // In a real app, you'd likely redirect here:
         // navigate('/'); // Example using React Router
         console.log("Account successfully processed, ready for redirect/final message.");
-      }, 2000); // Show 'deleting...' message for 2 seconds
+      }, 2000);
     }
 
     // Cleanup function to clear the timer
@@ -30,32 +32,30 @@ const DeleteAccountPage: React.FC = () => {
         clearTimeout(timer);
       }
     };
-  }, [deleteSuccess]); // This effect runs whenever deleteSuccess changes
+  }, [deleteSuccess]);
 
   const handleDeleteAccount = async () => {
-    setError(null); // Clear previous errors
-    setLoading(true); // Start loading
-    setDeleteSuccess(false); // Hide any previous messages
-    setFinalSuccess(false); // Hide any previous messages
+    setError(null);
+    setLoading(true)
+    setDeleteSuccess(false);
+    setFinalSuccess(false);
 
     // --- Simulate Backend Operations ---
-    // In a real app, replace this with your actual API call
     try {
-      // Simulate password validation (replace with actual API validation)
-      if (password !== "correctpassword") { // Use a placeholder password
+      if (password !== "correctpassword") {
         throw new Error("Incorrect password.");
       }
 
       // Simulate the deletion process API call
       await new Promise((resolve, reject) => {
-        const success = Math.random() > 0.2; // 80% chance of success, 20% failure for demo
+        const success = Math.random() > 0.2;
         setTimeout(() => {
           if (success) {
             resolve(null);
           } else {
             reject(new Error("Backend deletion failed."));
           }
-        }, 1500); // Simulate network delay
+        }, 1500);
       });
 
       // If simulation successful:
@@ -66,8 +66,8 @@ const DeleteAccountPage: React.FC = () => {
       // If simulation failed or password incorrect:
       setLoading(false);
       setError(err.message || "An unknown error occurred during deletion.");
-      setDeleteSuccess(false); // Ensure message is not shown
-      setFinalSuccess(false); // Ensure message is not shown
+      setDeleteSuccess(false);
+      setFinalSuccess(false);
     }
     // --- End Simulation ---
   };
@@ -84,101 +84,101 @@ const DeleteAccountPage: React.FC = () => {
 
   // Show the final success message block if deletion was ultimately successful
   if (finalSuccess) {
-      return (
-          <div className="container mx-auto p-6 flex justify-center items-center min-h-screen">
-              <div className="flex flex-col items-center bg-green-900 bg-opacity-50 backdrop-filter backdrop-blur-lg shadow-lg rounded-xl p-8 border border-green-700 text-center">
-                  <CheckCircle className="text-green-500 w-12 h-12 mb-4" />
-                  <h2 className="text-2xl font-semibold text-white mb-4">Account Deleted Successfully</h2>
-                  <p className="text-white mb-6">Your account and all associated data have been permanently removed.</p>
-                  {/* You might add a button here to go to the homepage or login page */}
-                  {/* <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">Go to Homepage</button> */}
-              </div>
+    return (
+        <div className="container mx-auto p-6 flex justify-center items-center min-h-screen">
+          <div className={`flex flex-col items-center shadow-lg rounded-xl p-8 border text-center
+                          ${isDarkTheme ? 'bg-green-900 bg-opacity-50 backdrop-filter backdrop-blur-lg border-green-700' : 'bg-green-100 border-green-200 shadow-md'}`}>
+            <CheckCircle className={`w-12 h-12 mb-4 ${isDarkTheme ? 'text-green-500' : 'text-green-700'}`} />
+            <h2 className={`text-2xl font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-green-900'}`}>Account Deleted Successfully</h2>
+            <p className={`mb-6 ${isDarkTheme ? 'text-white' : 'text-green-800'}`}>Your account and all associated data have been permanently removed.</p>
+            <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">Go to Homepage</button>
           </div>
-      );
+        </div>
+    );
   }
 
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex flex-col items-center bg-red-900 bg-opacity-50 backdrop-filter backdrop-blur-lg shadow-lg rounded-xl p-6 border border-red-700 mb-8">
-        {/* Delete Confirmation Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <Trash2 className="text-red-600 w-9 h-10" />
-          <h2 className="text-2xl font-semibold text-white-900">
-            Delete Your Account
-          </h2>
-        </div>
+      <div className="container mx-auto p-6">
+        <div className={`flex flex-col items-center shadow-lg rounded-xl p-6 border mb-8
+                   ${isDarkTheme ? 'bg-red-900 bg-opacity-50 backdrop-filter backdrop-blur-lg border-red-700' : 'bg-red-100 border-red-200 shadow-md'}`}>
+          <div className="flex items-center gap-3 mb-8">
+            <Trash2 className={`w-9 h-10 ${isDarkTheme ? 'text-red-500' : 'text-red-600'}`} />
+            <h2 className={`text-2xl font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>
+              Delete Your Account
+            </h2>
+          </div>
 
-        {/* Warning Message */}
-        <p className="text-lg text-white mb-6">
-          Are you sure you want to delete your account? This action cannot be undone.
-        </p>
+          {/* Warning Message */}
+          <p className={`text-lg mb-6 ${isDarkTheme ? 'text-white' : 'text-gray-700'}`}>
+            Are you sure you want to delete your account? This action cannot be undone.
+          </p>
 
-        {/* Confirmation Prompt */}
-        {confirming ? (
-          <div className="space-y-4 w-full max-w-sm"> {/* Added w-full max-w-sm for better input styling */}
-             <p className="text-sm text-white text-center">
-               Warning: Deleting your account will erase all your data and preferences permanently.
-               <br/> To confirm, please enter your password below.
-             </p>
-             <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="w-full px-4 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-                disabled={loading} // Disable input while loading
-             />
+          {/* Confirmation Prompt */}
+          {confirming ? (
+              <div className="space-y-4 w-full max-w-sm">
+                <p className={`text-sm text-center ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>
+                  Warning: Deleting your account will erase all your data and preferences permanently.
+                  <br/> To confirm, please enter your password below.
+                </p>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className={`w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500
+                            ${isDarkTheme ? 'bg-gray-700 text-white placeholder-gray-400 border border-gray-600' : 'bg-white text-gray-900 placeholder-gray-500 border border-gray-300'}`}
+                    disabled={loading}
+                />
 
-             {/* Error Message */}
-             {error && (
-                <div className="text-red-400 text-sm text-center flex items-center justify-center gap-2">
-                    <XCircle size={18} />
-                    {error}
+                {/* Error Message */}
+                {error && (
+                    <div className={`text-sm text-center flex items-center justify-center gap-2 ${isDarkTheme ? 'text-red-400' : 'text-red-600'}`}>
+                      <XCircle size={18} />
+                      {error}
+                    </div>
+                )}
+
+
+                <div className="flex gap-4 justify-center">
+                  <button
+                      onClick={handleDeleteAccount}
+                      className={`px-6 py-3 bg-red-600 text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2
+                           ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700'}`}
+                      disabled={loading || !password}
+                  >
+                    {loading && <Loader2 className="animate-spin" size={20} />}
+                    {loading ? 'Deleting...' : 'Yes, Delete My Account'}
+                  </button>
+                  <button
+                      onClick={handleCancelConfirmation}
+                      className={`px-6 py-3 font-semibold rounded-md transition-colors
+                           ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                           ${isDarkTheme ? 'bg-gray-600 text-white hover:bg-gray-700' : 'bg-gray-300 text-gray-800 hover:bg-gray-400'}`}
+                      disabled={loading}
+                  >
+                    Cancel
+                  </button>
                 </div>
-             )}
+              </div>
+          ) : (
+              <div>
+                <button
+                    onClick={() => setConfirming(true)}
+                    className="px-6 py-3 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition-colors"
+                >
+                  Delete My Account
+                </button>
+              </div>
+          )}
 
-
-            <div className="flex gap-4 justify-center"> {/* Centered buttons */}
-              <button
-                onClick={handleDeleteAccount}
-                className={`px-6 py-3 bg-red-600 text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2
-                          ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700'}`}
-                disabled={loading || !password} // Disable if loading or password is empty
-              >
-                {loading && <Loader2 className="animate-spin" size={20} />}
-                {loading ? 'Deleting...' : 'Yes, Delete My Account'}
-              </button>
-              <button
-                onClick={handleCancelConfirmation} // Use new cancel handler
-                className={`px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-md transition-colors
-                          ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'}`}
-                 disabled={loading} // Disable cancel while loading
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <button
-              onClick={() => setConfirming(true)}
-              className="px-6 py-3 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition-colors"
-            >
-              Delete My Account
-            </button>
-          </div>
-        )}
-
-        {/* Initial Success Message - "Your account is being deleted..." */}
-        {/* This message is shown briefly after clicking delete if the process starts */}
-        {deleteSuccess && (
-          <div className="mt-6 text-center text-green-600">
-            <p>Your account is being deleted...</p>
-          </div>
-        )}
+          {deleteSuccess && (
+              <div className={`mt-6 text-center ${isDarkTheme ? 'text-green-400' : 'text-green-600'}`}>
+                <p>Your account is being deleted...</p>
+              </div>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
