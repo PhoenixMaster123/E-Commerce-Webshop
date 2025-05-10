@@ -1,10 +1,14 @@
 import { useTheme } from "next-themes";
 import Header from "../../Components/Admin_Components/Header";
 import Profile from "../../Components/Admin_Components/settings/Profile";
-import Notifications from "../../Components/Admin_Components/settings/Notifications";
-import Security from "../../Components/Admin_Components/settings/Security";
-import ConnectedAccounts from "../../Components/Admin_Components/settings/ConnectedAccounts";
-import DangerZone from "../../Components/Admin_Components/settings/DangerZone";
+import LanguageSettings from "../../Components/Admin_Components/settings/LanguageSettings";
+import TimezoneSettings from "../../Components/Admin_Components/settings/TimezoneSettings";
+import DateTimeFormatSettings from "../../Components/Admin_Components/settings/DateTimeFormatSettings";
+import AccessibilitySettings from "../../Components/Admin_Components/settings/AccessibilitySettings";
+import AutosaveSettings from "../../Components/Admin_Components/settings/AutosaveSettings";
+import DataManagementSettings from "../../Components/Admin_Components/settings/DataManagementSettings";
+import DefaultFileLocationSettings from "../../Components/Admin_Components/settings/DefaultFileLocationSettings";
+import ExportDataSettings from "../../Components/Admin_Components/settings/ExportDataSettings";
 
 const SettingsPage = () => {
     const { theme } = useTheme();
@@ -18,10 +22,14 @@ const SettingsPage = () => {
             <Header title="Settings"/>
             <main className={`max-w-4xl mx-auto py-6 px-4 lg:px-8 ${textClass}`}>
                 <Profile />
-                <Notifications />
-                <Security />
-                <ConnectedAccounts />
-                <DangerZone />
+                <LanguageSettings />
+                <TimezoneSettings />
+                <DateTimeFormatSettings />
+                <AccessibilitySettings />
+                <DataManagementSettings />
+                <AutosaveSettings />
+                <DefaultFileLocationSettings />
+                <ExportDataSettings />
             </main>
         </div>
     );
