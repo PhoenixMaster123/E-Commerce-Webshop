@@ -8,6 +8,7 @@ import Login from "./Pages/Main/Login/Login";
 import Register from "./Pages/Main/Register/Register";
 import { ProductListPage } from "./Pages/Main/productList/ProductListPage.tsx";
 import ProductsPage from "./Pages/Admin/ProductsPage.tsx";
+import CartPage from "./Pages/Main/Cart/cart";
 
 // Layouts
 import MainLayout from "./Layout/MainLayout.tsx";
@@ -52,6 +53,7 @@ const App: React.FC = () => {
             <Route element={<MainLayout />}>
                 <Route path="/home" element={<Home />} />
                 <Route path="/products" element={<ProductListPage />} />
+                <Route path="/cart" element={<CartPage />} />
             </Route>
 
         </Routes>
