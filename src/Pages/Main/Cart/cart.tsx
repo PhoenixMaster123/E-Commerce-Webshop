@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './cart.css';
-import { getMyCart } from '../../../services/api.ts';
+// Remove getMyCart import if you fetch cart by user instead
+// import { getMyCart } from '../../../services/api.ts';
 import { Cart } from '../../../types';
 
 const CartPage = () => {
@@ -9,8 +10,21 @@ const CartPage = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                const data = await getMyCart();
-                setCart(data);
+                // 1. Get current user (you might have a user context, or fetch from /auth/me)
+                const userRes = await fetch('/auth/me', { credentials: 'include' });
+                const user = await userRes.json();
+                const userId = user.id;
+
+                // 2. Fetch user's cart(s)
+                const cartsRes = await fetch(`/carts/user/${userId}`);
+                const carts = await cartsRes.json();
+
+                // 3. Use the first cart if it exists
+                if (carts.carts && carts.carts.length > 0) {
+                    setCart(carts.carts[0]);
+                } else {
+                    setCart(null);
+                }
             } catch (error) {
                 console.error('Failed to load cart:', error);
             }
