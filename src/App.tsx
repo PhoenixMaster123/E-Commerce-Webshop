@@ -25,8 +25,9 @@ import NotificationsPage from "./Pages/Admin/Account/NotificationsPage.tsx";
 import SocialPage from "./Pages/Admin/Account/SocialPage.tsx";
 import DeletePage from "./Pages/Admin/Account/DeletePage.tsx";
 import AccountPage from "./Pages/Admin/Account/AccountPage.tsx";
+import ProductDetailPage from "./Pages/Main/ProductDetails.tsx";
 
-const App: React.FC = () => {
+const App: React.FC = () => {   
     return (
         <Routes>
 
@@ -53,6 +54,7 @@ const App: React.FC = () => {
             <Route element={<MainLayout />}>
                 <Route path="/home" element={<Home />} />
                 <Route path="/products" element={<ProductListPage />} />
+                <Route path="/products/:id" element={<ProductDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
             </Route>
 
