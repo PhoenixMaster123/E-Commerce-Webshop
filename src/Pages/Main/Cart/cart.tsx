@@ -1,29 +1,16 @@
-import { useEffect, useState } from 'react';
-import { getMyCart } from '../../../services/api';
-import { Cart } from '../../../types';
+import { useCart } from '../../../contexts/CartContext';
 import './cart.css';
 
 const CartPage = () => {
-    const [cart, setCart] = useState<Cart | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { cart } = useCart();
 
-    useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                const cartData = await getMyCart();
-                setCart(cartData);
-            } catch (error) {
-                console.error('Failed to load cart:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchCart();
-    }, []);
+    const hasItems = cart.length > 0;
 
-    const hasItems = cart && cart.products && cart.products.length > 0;
-    const total = hasItems ? cart.discountedTotal : 0;
-    const estimatedTotal = total.toFixed(2);
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const estimatedTotal = subtotal.toFixed(2);
+    const discount = 0; // implement logic if you want later
+    const shipping = 'TBD';
+    const tax = 0;
 
     return (
         <div className="cart-container">
@@ -31,17 +18,15 @@ const CartPage = () => {
 
             <div className="cart-content">
                 <div className="cart-left">
-                    {isLoading ? (
-                        <p>Loading cart...</p>
-                    ) : hasItems ? (
-                        cart.products.map((product) => (
+                    {hasItems ? (
+                        cart.map((product) => (
                             <div key={product.id} className="cart-item">
                                 <img src={product.thumbnail} alt={product.title} className="cart-thumbnail" />
                                 <div className="cart-details">
                                     <h4>{product.title}</h4>
                                     <p>Quantity: {product.quantity}</p>
                                     <p>Price: €{product.price.toFixed(2)}</p>
-                                    <p>Total: €{product.total.toFixed(2)}</p>
+                                    <p>Total: €{(product.price * product.quantity).toFixed(2)}</p>
                                 </div>
                             </div>
                         ))
@@ -55,19 +40,19 @@ const CartPage = () => {
                         <h3>Order Summary</h3>
                         <div className="summary-row">
                             <span>Subtotal:</span>
-                            <span>€{hasItems ? cart.total.toFixed(2) : '0.00'}</span>
+                            <span>€{subtotal.toFixed(2)}</span>
                         </div>
                         <div className="summary-row">
                             <span>Shipping:</span>
-                            <span>TBD</span>
+                            <span>{shipping}</span>
                         </div>
                         <div className="summary-row">
                             <span>Discount:</span>
-                            <span>€{hasItems ? (cart.total - cart.discountedTotal).toFixed(2) : '0.00'}</span>
+                            <span>€{discount.toFixed(2)}</span>
                         </div>
                         <div className="summary-row">
                             <span>Tax:</span>
-                            <span>€0.00</span>
+                            <span>€{tax.toFixed(2)}</span>
                         </div>
                         <div className="summary-total">
                             <strong>Estimated Total:</strong>
