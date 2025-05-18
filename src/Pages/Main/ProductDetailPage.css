@@ -1,0 +1,149 @@
+.product-detail-page {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 32px 24px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  
+  .product-title {
+    margin-bottom: 8px;
+    font-size: 2em;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+  
+  .product-image {
+    display: block;
+    margin: 0 auto 18px;
+    max-width: 320px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  
+  .product-description {
+    margin: 24px 0;
+    font-size: 1.12em;
+    line-height: 1.7;
+    color: #fff; /* White for contrast */
+    background: url('https://t4.ftcdn.net/jpg/02/55/17/43/240_F_255174366_ojDuATz84e5h7lIlxh2moUJa9Kpd5wKk.jpg') center/cover no-repeat;
+    padding: 48px 24px 32px 24px;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    min-height: 220px;
+    overflow: hidden;
+  }
+  .product-description p {
+    margin: 0 0 12px 0;
+  }
+  .product-info-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+  }
+  
+  .product-info-list li {
+    margin-bottom: 8px;
+    font-size: 1.04em;
+    color: #333;
+  }
+  
+  .add-to-cart-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    background: linear-gradient(90deg, #2788f8 0%, #3bb273 100%);
+    color: #fff;
+    font-size: 1.15em;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(39,136,248,0.07);
+  }
+  
+  .add-to-cart-btn:hover {
+    background: linear-gradient(90deg, #3bb273 0%, #2788f8 100%);
+    box-shadow: 0 4px 16px rgba(39,136,248,0.12);
+  }
+
+  .product-detail-page {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 32px 24px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  
+  .product-title {
+    margin-bottom: 8px;
+    font-size: 2em;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+  
+  .product-image {
+    display: block;
+    margin: 0 auto 18px;
+    max-width: 320px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  
+  .product-description {
+    margin: 24px 0;
+    font-size: 1.12em;
+    line-height: 1.7;
+    color: #fff; /* White text for contrast on background */
+    background: url('https://t4.ftcdn.net/jpg/02/55/17/43/240_F_255174366_ojDuATz84e5h7lIlxh2moUJa9Kpd5wKk.jpg') center/cover no-repeat;
+    padding: 48px 24px 32px 24px;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    min-height: 220px;
+    overflow: hidden;
+  }
+  
+  .product-description p {
+    margin: 0 0 12px 0;
+  }
+  
+  .product-info-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+  }
+  
+  .product-info-list li {
+    margin-bottom: 8px;
+    font-size: 1.04em;
+    color: #333;
+  }
+  
+  .add-to-cart-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    background: linear-gradient(90deg, #2788f8 0%, #3bb273 100%);
+    color: #fff;
+    font-size: 1.15em;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(39,136,248,0.07);
+  }
+  
+  .add-to-cart-btn:hover {
+    background: linear-gradient(90deg, #3bb273 0%, #2788f8 100%);
+    box-shadow: 0 4px 16px rgba(39,136,248,0.12);
+  }
