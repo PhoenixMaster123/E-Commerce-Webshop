@@ -1,6 +1,14 @@
+// src/services/api.ts
 
 import axios from 'axios';
-import { Product, ProductsApiResponse, User, Cart, CartsApiResponse , RegisterUserPayload} from '../types';
+import {
+    Product,
+    ProductsApiResponse,
+    User,
+    Cart,
+    CartsApiResponse,
+    RegisterUserPayload
+} from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
 
@@ -11,78 +19,65 @@ const apiClient = axios.create({
     },
 });
 
-// Interceptor, to add the token
+// Interceptor to add auth token
 apiClient.interceptors.request.use(
-    (config) => {
+    config => {
         const token = localStorage.getItem('authToken');
         if (token && config.headers) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    error => Promise.reject(error)
 );
 
-
-export const getProducts = async (limit: number = 10, skip: number = 0, category?: string): Promise<ProductsApiResponse> => {
+// Fetch a list of products (optionally by category)
+export const getProducts = async (
+    limit = 10,
+    skip = 0,
+    category?: string
+): Promise<ProductsApiResponse> => {
     const params: { limit: number; skip: number; category?: string } = { limit, skip };
-    if (category) {
-        params.category = category;
-    }
-    try {
-        const response = await apiClient.get<ProductsApiResponse>('/products', { params });
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching products:", error);
-        throw error;
-    }
+    if (category) params.category = category;
+    const response = await apiClient.get<ProductsApiResponse>('/products', { params });
+    return response.data;
 };
 
+// Fetch single product by ID
 export const getProductById = async (id: number | string): Promise<Product> => {
-    try {
-        const response = await apiClient.get<Product>(`/products/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error(`Error fetching product ${id}:`, error);
-        throw error;
-    }
+    const response = await apiClient.get<Product>(`/products/${id}`);
+    return response.data;
 };
 
-export const searchProducts = async (query: string, limit: number = 10, skip: number = 0): Promise<ProductsApiResponse> => {
-    try {
-        const response = await apiClient.get<ProductsApiResponse>('/products/search', {
-            params: { q: query, limit, skip },
-        });
-        return response.data;
-    } catch (error) {
-        console.error("Error searching products:", error);
-        throw error;
-    }
+// Search products by query
+export const searchProducts = async (
+    query: string,
+    limit = 10,
+    skip = 0
+): Promise<ProductsApiResponse> => {
+    const response = await apiClient.get<ProductsApiResponse>('/products/search', {
+        params: { q: query, limit, skip },
+    });
+    return response.data;
 };
 
+// Fetch all categories
+export const getCategories = async (): Promise<string[]> => {
+    const response = await apiClient.get<string[]>('/products/categories');
+    return response.data;
+};
 
-
-
-export const login = async (username: string, password: string): Promise<User> => {
-    try {
-
-        const response = await apiClient.post<User>('/auth/login', { username, password });
-        // Save Token in LocalStorage
-        if (response.data.token) {
-            localStorage.setItem('authToken', response.data.token);
-            apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        }
-        return response.data;
-    } catch (error) {
-        console.error("Login failed:", error);
-
-        if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.message || 'Login failed');
-        }
-        throw new Error('An unknown error occurred during login.');
+// Authentication endpoints
+export const login = async (
+    username: string,
+    password: string
+): Promise<User> => {
+    const response = await apiClient.post<User>('/auth/login', { username, password });
+    if (response.data.token) {
+        localStorage.setItem('authToken', response.data.token);
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
     }
+    return response.data;
 };
 
 export const getMe = async (): Promise<User> => {
@@ -90,8 +85,6 @@ export const getMe = async (): Promise<User> => {
         const response = await apiClient.get<User>('/auth/me');
         return response.data;
     } catch (error) {
-        console.error("Error fetching current user:", error);
-        //  401 Unauthorized
         if (axios.isAxiosError(error) && error.response?.status === 401) {
             logoutUser();
         }
@@ -101,77 +94,37 @@ export const getMe = async (): Promise<User> => {
 
 export const logoutUser = (): void => {
     localStorage.removeItem('authToken');
-    // remove Auth-Header from axios
     delete apiClient.defaults.headers.common['Authorization'];
-    console.log("User logged out, token removed.");
 };
 
-
-// --- Warenkorb-Endpunkte ---
-
+// Cart endpoints
 export const getMyCart = async (): Promise<Cart> => {
-    try {
-
-        const response = await apiClient.get<Cart>('/cart');
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching cart:", error);
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
-            console.warn("Cart not found (404), returning empty structure.");
-        }
-        throw error;
-    }
+    const response = await apiClient.get<Cart>('/cart');
+    return response.data;
 };
 
-
-export const updateMyCart = async (products: { id: number, quantity: number }[]): Promise<Cart> => {
-    try {
-        const response = await apiClient.patch<Cart>('/cart', { products });
-        return response.data;
-    } catch (error) {
-        console.error("Error updating cart:", error);
-        throw error;
-    }
+export const updateMyCart = async (
+    products: { id: number; quantity: number }[]
+): Promise<Cart> => {
+    const response = await apiClient.patch<Cart>('/cart', { products });
+    return response.data;
 };
-
 
 export const deleteMyCart = async (): Promise<Cart> => {
-    try {
-
-        const response = await apiClient.delete<Cart>('/cart');
-        return response.data;
-    } catch (error) {
-        console.error("Error deleting cart:", error);
-        throw error;
-    }
+    const response = await apiClient.delete<Cart>('/cart');
+    return response.data;
 };
 
-// --- Admin/Übersicht (Beispiel) --- Noch add Products hinzufügen
+// Admin overview
 export const getAllCarts = async (): Promise<CartsApiResponse> => {
-    try {
-
-        const response = await apiClient.get<CartsApiResponse>('/carts');
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching all carts:", error);
-        throw error;
-    }
+    const response = await apiClient.get<CartsApiResponse>('/carts');
+    return response.data;
 };
 
-
-
+// User registration
 export const registerUser = async (
     data: RegisterUserPayload
 ): Promise<User> => {
-    try {
-        const response = await apiClient.post<User>('/users/add', data);
-        return response.data;
-    } catch (error) {
-        console.error('Error registering user:', error);
-
-        if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.message || 'Registrierung fehlgeschlagen.');
-        }
-        throw error;
-    }
+    const response = await apiClient.post<User>('/users/add', data);
+    return response.data;
 };

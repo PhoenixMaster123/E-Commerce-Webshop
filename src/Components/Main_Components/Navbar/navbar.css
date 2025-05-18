@@ -17,6 +17,14 @@ html, body {
   z-index: 99;
 }
 
+/* Korrigierte Dark Mode Stile für die Hauptnavigation */
+body.dark .navigation {
+  background-color: #333;
+  color: #f8f8f8;
+  border-bottom-color: #555;
+}
+
+
 .main-nav .products-button-li {
   display: none;
 }
@@ -37,6 +45,13 @@ html, body {
 .main-nav .categories-button:hover {
   background-color: #eee;
 }
+
+/* Dark Mode hover für Main Nav Buttons */
+body.dark .main-nav .products-button:hover,
+body.dark .main-nav .categories-button:hover {
+  background-color: #555;
+}
+
 
 .logo a {
   font-size: 1.5rem;
@@ -69,6 +84,13 @@ html, body {
   background-color: #eee;
 }
 
+/* Dark Mode hover/active für Main Nav Links */
+body.dark .main-nav li a:hover,
+body.dark .main-nav li a.active {
+  background-color: #555;
+}
+
+
 .user-actions {
   list-style: none;
   padding: 0;
@@ -78,109 +100,61 @@ html, body {
   align-items: center;
 }
 
-/* --- Search Bar Styles --- */
-.search-bar {
-  display: flex;
-  align-items: center;
-  position: relative;
+/* --- Search Bar Styles (Modal) --- */
+:root {
+  --background-color: #ffffff; /* Default light mode */
+  --text-color: #333;
+  --placeholder-color: #888;
+  --input-background: #fff;
+  --border-color: #ccc;
+  --aside-background: #f8f8f8;
+  --aside-border-color: #eee;
+  --aside-text-color-main: #333;
+  --aside-text-color-sub: #555;
+  --aside-heading-color: #555;
+  --aside-hover-background: #eee;
+  --aside-sub-border-left: #ddd;
+  --aside-sub-hover-background: #e0e0e0;
+  --aside-sub-hover-text: #333;
+  --aside-close-button-color: #555;
+  --aside-close-button-border: #ccc;
+  --aside-close-button-hover-background: #eee;
+  --aside-close-button-hover-color: #333;
+  --aside-close-button-hover-border: #bbb;
 }
 
-.search-icon {
+/* Corrected dark mode selectors and increased specificity for aside text */
+body.dark {
+  --background-color: #000000;
+  --text-color: #f8f8f8;
+  --placeholder-color: #aaa;
+  --input-background: #444;
+  --border-color: #555; /* Adjusted for dark mode */
+  --aside-background: #333;
+  --aside-border-color: #555;
+  --aside-text-color-main: #f8f8f8;
+  --aside-text-color-sub: #ccc;
+  --aside-heading-color: #ccc;
+  --aside-hover-background: #555;
+  --aside-sub-border-left: #666;
+  --aside-sub-hover-background: #444;
+  --aside-sub-hover-text: #f8f8f8;
+  --aside-close-button-color: #ccc;
+  --aside-close-button-border: #666;
+  --aside-close-button-hover-background: #555;
+  --aside-close-button-hover-color: #f8f8f8;
+  --aside-close-button-hover-border: #777;
+}
+
+.search-toggle .search-icon {
   font-size: 1.2rem;
   cursor: pointer;
   padding: 8px;
   transition: transform 0.2s ease;
 }
 
-.search-icon:hover {
+.search-toggle .search-icon:hover {
   transform: scale(1.1);
-}
-
-.search-form {
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: hidden;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 250px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.search-bar.active .search-form {
-  opacity: 1;
-  visibility: visible;
-}
-
-.search-bar.active .search-icon {
-  display: none;
-}
-
-
-.search-input {
-  padding: 8px 10px;
-  border: none;
-  outline: none;
-  font-size: 0.9rem;
-  flex-grow: 1;
-  background: transparent;
-}
-
-.search-close-button {
-  background: none;
-  border: none;
-  padding: 8px 10px;
-  cursor: pointer;
-  color: #888;
-  font-size: 1rem;
-}
-.search-close-button:hover {
-  color: #333;
-}
-
-
-.search-results {
-  position: absolute;
-  top: calc(100% + 5px);
-  right: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 250px;
-  max-height: 300px;
-  overflow-y: auto;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 110;
-}
-
-.search-results li {
-  padding: 10px 15px;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-.search-results li:hover {
-  background-color: #f0f0f0;
-}
-.search-results li .category {
-  font-size: 0.8rem;
-  color: #777;
-  margin-left: 5px;
-}
-
-/* Modal content */
-:root {
-  --background-color: #ffffff;
 }
 
 .search-modal {
@@ -196,57 +170,89 @@ html, body {
 }
 
 .search-modal-content {
-  background: var(--background-color, #fff);
+  background: var(--background-color);
+  color: var(--text-color);
   padding: 2rem;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
   position: relative;
   z-index: 1001;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .search-modal-form {
   display: flex;
   align-items: center;
   gap: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .search-input {
   flex: 1;
   padding: 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  transition: border-color 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: var(--placeholder-color);
 }
 
 .close-modal-button {
   background: transparent;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
+  color: var(--text-color);
+  transition: color 0.2s ease;
 }
 
+.close-modal-button:hover {
+  color: #dc3545;
+}
+
+
 .search-results-modal {
-  margin-top: 1rem;
-  flex-direction: column;
-  max-height: 200px;
-  overflow-y: auto;
   list-style: none;
   padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .search-results-modal li {
-  padding: 0.5rem;
+  padding: 0.75rem 0.5rem;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--aside-border-color);
+  transition: background-color 0.2s ease;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-color);
+}
+
+.search-results-modal li:last-child {
+  border-bottom: none;
 }
 
 .search-results-modal li:hover {
-  background-color: #f0f0f0;
+  background-color: var(--aside-hover-background);
 }
 
-.search-toggle .search-icon {
-  cursor: pointer;
+.search-results-modal li .category {
+  font-size: 0.9rem;
+  color: var(--aside-text-color-sub);
+  margin-left: 10px;
 }
+
 
 /* Modal background overlay */
 .search-modal-overlay {
@@ -269,7 +275,7 @@ html, body {
   padding: 8px;
   border-radius: 50%;
   transition: transform 0.3s ease;
-  display: flex; /* Center icon */
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -291,6 +297,12 @@ html, body {
   background-color: #eee;
   transform: scale(1.05);
 }
+
+/* Dark Mode hover für User Actions Links */
+body.dark .user-actions li a:hover {
+  background-color: var(--aside-hover-background);
+}
+
 .user-actions .cart {
   position: relative;
 }
@@ -311,7 +323,12 @@ html, body {
   font-size: 0.8rem;
   padding: 3px 6px;
   border-radius: 50%;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1;
+  border: 1px solid var(--background-color);
 }
+
 
 /* --- Categories Aside Menu --- */
 .categories-aside {
@@ -319,9 +336,10 @@ html, body {
   left: 0;
   top: 0;
   width: 400px;
+  max-width: 80%;
   height: 100vh;
-  background-color: #f8f8f8;
-  border-right: 1px solid #eee;
+  background-color: var(--aside-background);
+  border-right: 1px solid var(--aside-border-color);
   padding: 20px;
   padding-top: 60px;
   box-sizing: border-box;
@@ -330,7 +348,20 @@ html, body {
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   will-change: transform;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  /* Set default text color here as a fallback */
+  color: var(--aside-text-color-main);
 }
+
+body.dark .categories-aside {
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  /* Ensure background and border are applied in dark mode */
+  background-color: var(--aside-background);
+  border-right-color: var(--aside-border-color);
+  /* Set the default text color for the aside itself in dark mode */
+  color: var(--aside-text-color-main);
+}
+
 
 .categories-aside.open {
   transform: translateX(0);
@@ -338,10 +369,18 @@ html, body {
 
 .categories-aside h2 {
   margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  color: #555;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  color: var(--aside-heading-color);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--aside-border-color);
 }
+
+/* Added body.dark for higher specificity on H2 color */
+body.dark .categories-aside h2 {
+  color: var(--aside-heading-color);
+}
+
 
 .categories-aside ul {
   list-style: none;
@@ -350,75 +389,104 @@ html, body {
 }
 
 .categories-aside > ul > li {
-  position: relative;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
-.categories-aside > ul > li > a,
-.categories-aside > ul > li > Link {
-  display: block;
+.categories-aside .category-item {
+  border-bottom: 1px solid var(--aside-border-color);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.categories-aside .category-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+
+.categories-aside .main-category,
+.categories-aside > ul > li > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px 15px;
   text-decoration: none;
-  color: #333;
+  /* Default color, overridden by specificity below in dark mode */
+  color: var(--aside-text-color-main);
   border-radius: 4px;
   transition: background-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
-.categories-aside > ul > li > a:hover,
-.categories-aside > ul > li > Link:hover {
-  background-color: #eee;
+/* Added body.dark for higher specificity on main category/link color */
+body.dark .categories-aside .main-category,
+body.dark .categories-aside > ul > li > a {
+  color: var(--aside-text-color-main);
 }
 
-.categories-aside > ul {
+
+.categories-aside .main-category:hover,
+.categories-aside > ul > li > a:hover {
+  background-color: var(--aside-hover-background);
+}
+
+.categories-aside .main-category svg {
+  margin-left: 10px;
+  transition: transform 0.2s ease;
+  /* Inherit color from parent link/div */
+  color: inherit;
+}
+
+/* Ensure caret color is correct in dark mode */
+body.dark .categories-aside .main-category svg {
+  color: inherit; /* Inherit from the dark mode main text color */
+}
+
+/* Rotate icon when subcategories are open */
+.categories-aside .main-category svg[data-icon="caret-up"] {
+  transform: rotate(180deg);
+}
+
+
+/* Sub-categories list */
+.categories-aside .sub-categories {
   list-style: none;
   padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  margin: 8px 0 0 20px;
+  border-left: 2px solid var(--aside-sub-border-left);
+  padding-left: 10px;
 }
 
-/* Sub-menu container */
-.categories-aside li.sub-dropdown > ul {
-  position: absolute;
-  left: 100%;
-  top: 0;
-  width: 200px;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 0 4px 4px 0;
-  list-style: none;
-  padding: 10px;
-  margin: 0;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 101;
-  display: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+
+.categories-aside .sub-categories li {
+  margin-bottom: 4px;
 }
 
-.categories-aside li.sub-dropdown:hover > ul {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Sub-menu item links */
-.categories-aside li.sub-dropdown ul li a {
+.categories-aside .sub-categories li a {
   display: block;
   padding: 8px 15px;
   text-decoration: none;
-  color: #333;
+  /* Default color, overridden by specificity below in dark mode */
+  color: var(--aside-text-color-sub);
   border-radius: 4px;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 1rem;
 }
 
-.categories-aside li.sub-dropdown ul li a:hover {
-  background-color: #f0f0f0;
+/* Added body.dark for higher specificity on subcategory link color */
+body.dark .categories-aside .sub-categories li a {
+  color: var(--aside-text-color-sub);
 }
+
+
+.categories-aside .sub-categories li a:hover {
+  background-color: var(--aside-sub-hover-background);
+  color: var(--aside-sub-hover-text);
+}
+
 
 /* --- Hamburger Toggle Button --- */
 .aside-toggle-button {
@@ -433,22 +501,31 @@ html, body {
 }
 .aside-close-button {
   background: none;
-  border: 1px solid #ccc;
-  color: #555;
+  border: 1px solid var(--aside-close-button-border);
+  color: var(--aside-close-button-color);
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 15px;
-  text-align: center;
   font-size: 0.9rem;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
+
 .aside-close-button:hover {
-  background-color: #eee;
+  background-color: var(--aside-close-button-hover-background);
+  color: var(--aside-close-button-hover-color);
+  border-color: var(--aside-close-button-hover-border);
 }
+
+
 .aside-close-button svg {
   margin-right: 5px;
+  color: inherit; /* Ensure icon color matches button text */
 }
+
 
 /* --- Overlay for Aside Menu --- */
 .aside-overlay {
@@ -464,11 +541,6 @@ html, body {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.aside-overlay.open {
-  opacity: 1;
-  visibility: visible;
-}
-
 body.aside-open .aside-overlay {
   opacity: 1;
   visibility: visible;
@@ -478,185 +550,6 @@ body.aside-open {
   overflow: hidden;
 }
 
-/* --- Dark Mode Styles --- */
-body.dark-mode {
-  --background-color: #000000;
-}
-
-body.dark-mode nav {
-  background-color: #333;
-  color: #f8f8f8;
-  border-bottom-color: #555;
-}
-body.dark-mode .main-nav li a:hover,
-body.dark-mode .main-nav li a.active {
-  background-color: #555;
-}
-
-body.dark-mode .main-nav .products-button,
-body.dark-mode .main-nav .categories-button {
-  color: #f8f8f8;
-}
-
-body.dark-mode .main-nav .products-button:hover,
-body.dark-mode .main-nav .categories-button:hover {
-  background-color: #555;
-}
-
-body.dark-mode .search-form {
-  background-color: #444;
-  border-color: #666;
-}
-
-body.dark-mode .search-input {
-  color: #f8f8f8;
-}
-
-body.dark-mode .search-close-button {
-  color: #aaa;
-}
-
-body.dark-mode .search-close-button:hover {
-  color: #f8f8f8;
-}
-
-body.dark-mode .search-results {
-  background-color: #444;
-  border-color: #666;
-}
-
-body.dark-mode .search-results li {
-  color: #f8f8f8;
-}
-
-body.dark-mode .search-results li:hover {
-  background-color: #555;
-}
-
-body.dark-mode .search-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-body.dark-mode .search-modal-content {
-  background: var(--background-color, #000000);
-  padding: 2rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  position: relative;
-  z-index: 1001;
-}
-
-body.dark-mode .search-modal-form {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-body.dark-mode .search-input {
-  flex: 1;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-body.dark-mode .close-modal-button {
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-body.dark-mode .search-results-modal {
-  margin-top: 1rem;
-  flex-direction: column;
-  max-height: 200px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 0;
-}
-
-body.dark-mode .search-results-modal li {
-  padding: 0.5rem;
-  cursor: pointer;
-  border-bottom: 1px solid #ddd;
-}
-
-body.dark-mode .search-results-modal li:hover {
-  background-color: rgba(240, 240, 240, 0.6);
-}
-
-body.dark-mode .search-toggle .search-icon {
-  cursor: pointer;
-}
-
-
-body.dark-mode .user-actions li a:hover {
-  background-color: #555;
-}
-
-body.dark-mode .categories-aside {
-  background-color: #333;
-  border-right-color: #555;
-  color: #f8f8f8;
-}
-
-body.dark-mode .categories-aside h2 {
-  color: #ccc;
-}
-
-body.dark-mode .categories-aside > ul > li > a,
-body.dark-mode .categories-aside > ul > li > Link {
-  color: #f8f8f8;
-}
-
-body.dark-mode .categories-aside > ul > li > a:hover,
-body.dark-mode .categories-aside > ul > li > Link:hover {
-  background-color: #555;
-}
-
-body.dark-mode .categories-aside > ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-body.dark-mode .categories-aside li.sub-dropdown > ul {
-  background-color: #444;
-  border-color: #666;
-}
-
-body.dark-mode .categories-aside li.sub-dropdown ul li a {
-  color: #f8f8f8;
-}
-
-body.dark-mode .categories-aside li.sub-dropdown ul li a:hover {
-  background-color: #555;
-}
-
-body.dark-mode .aside-toggle-button {
-  color: #f8f8f8;
-}
-
-body.dark-mode .aside-close-button {
-  color: #ccc;
-  border-color: #666;
-}
-
-body.dark-mode .aside-close-button:hover {
-  background-color: #555;
-}
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 991px) {
@@ -679,7 +572,7 @@ body.dark-mode .aside-close-button:hover {
   .user-actions .cart a {
     padding: 8px;
   }
-  .user-actions li:not(.search-bar):not(.theme-toggle):not(.cart) {
+  .user-actions li:not(.search-toggle):not(.theme-toggle):not(.cart) {
     display: none;
   }
 
@@ -689,11 +582,18 @@ body.dark-mode .aside-close-button:hover {
 
   .categories-aside {
     padding-top: 20px;
+    width: 300px;
+    max-width: 80%;
   }
-  .search-form {
-    width: 200px;
+
+  .categories-aside h2,
+  .categories-aside ul {
+    padding: 0 10px;
   }
-  .search-results {
-    width: 200px;
+
+  .categories-aside .main-category,
+  .categories-aside > ul > li > a,
+  .categories-aside .sub-categories li a {
+    padding: 10px;
   }
 }

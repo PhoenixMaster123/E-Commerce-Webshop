@@ -2,19 +2,20 @@
 
 /* --- Bestehende Stile oben --- */
 .product-list-page {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    width: 100%;
+    padding: 1rem 1rem;
     font-family: Arial, sans-serif;
-    color: #333; /* Standard Textfarbe (Light Mode) */
-    background-color: #fff; /* Standard Hintergrund (Light Mode) */
-    transition: background-color 0.3s, color 0.3s; /* Übergang für sanften Wechsel */
+    color: var(--text);
+    background-color: var(--bg);
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 0.5rem; /* abgerundete Ecken */
+    overflow: hidden; /* stellt sicher, dass Inhalt abgerundeten Ecken folgt */
 }
 
 .product-list-page h1 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    color: #007bff; /* Standard Überschriftfarbe (Light Mode) */
+    color: var(--accent);
     transition: color 0.3s;
 }
 
@@ -81,9 +82,10 @@
 /* Produkt-Grid */
 .product-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    /* auto-fit + minmax(120px,1fr) fürs Auffüllen mit möglichst vielen Kacheln */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    margin-top: 0.2rem;
 }
 
 @media (min-width: 600px) {
@@ -94,7 +96,7 @@
 
 @media (min-width: 900px) {
     .product-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
