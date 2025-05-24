@@ -5,6 +5,7 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import "./navbar.css";
 import { Product } from '../../../types/index'; // Stelle sicher, dass Product in deinen Types definiert ist
 import { searchProducts } from '../../../services/api';
+import { useCart } from '../../../contexts/CartContext';
 
 interface CategoryWithSubcategories {
   name: string;
@@ -87,6 +88,9 @@ const Navbar: React.FC = () => {
     },
   ]);
   const [openSubcategories, setOpenSubcategories] = useState<{ [key: string]: boolean }>({});
+
+  const { cart } = useCart();
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
 
   const toggleTheme = (): void => {
@@ -232,7 +236,7 @@ const Navbar: React.FC = () => {
             <li className="cart">
               <Link to="/cart">
                 <FontAwesomeIcon icon={faCartShopping}/>
-                <span className="cart-count">0</span>
+                <span className="cart-count">{cartCount}</span>
               </Link>
             </li>
           </ul>

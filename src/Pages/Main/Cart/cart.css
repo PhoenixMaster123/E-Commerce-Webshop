@@ -32,6 +32,7 @@
     padding: 1rem;
     border-bottom: 1px solid #ccc;
     align-items: center;
+    background-color: #fff;
 }
 
 .cart-thumbnail {
@@ -66,10 +67,6 @@
     border-radius: 4px;
 }
 
-.dark-mode .quantity-controls button {
-    color: #fff;
-}
-
 .quantity-controls span {
     min-width: 24px;
     text-align: center;
@@ -88,6 +85,7 @@
     background-color: #f8f8f8;
     padding: 1rem;
     border-radius: 8px;
+    border: 1.5px solid #e0e0e0;
 }
 
 .summary-box h3 {
@@ -125,6 +123,66 @@
     padding: 1rem;
 }
 
+/* Light mode styles */
+.cart-container,
+.summary-box,
+.cart-item {
+    background-color: #fff;
+    color: #222;
+}
+
+.cart-details h4,
+.cart-details p,
+.summary-row span,
+.summary-total strong {
+    color: #222;
+}
+
+/* Dark mode styles */
+.dark-mode .cart-container {
+    background-color: #121212;
+    color: #f1f1f1;
+}
+
+.dark-mode .cart-content,
+.dark-mode .cart-left,
+.dark-mode .cart-summary,
+.dark-mode .cart-item,
+.dark-mode .summary-box {
+    background-color: #1e1e1e !important;
+    color: #f1f1f1 !important;
+    border-color: #333 !important;
+}
+
+.dark-mode .summary-box h3,
+.dark-mode .summary-row span,
+.dark-mode .summary-total strong,
+.dark-mode .cart-details h4,
+.dark-mode .cart-details p {
+    color: #f1f1f1 !important;
+}
+
+.dark-mode .quantity-controls button {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.dark-mode .remove-btn {
+    background-color: #b22234;
+    color: #fff;
+}
+
+.dark-mode .empty-cart {
+    color: #bbb;
+}
+
+.dark-mode .checkout-button {
+    background-color: #2788f8;
+    color: #fff;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .cart-content {
         flex-direction: column;
