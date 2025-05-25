@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // <--- useNavigate is imported here
+import { useParams } from 'react-router-dom';
 import { getProductById } from '../../services/api';
 import { Product } from '../../types';
 import { useCart } from '../../contexts/CartContext';
 import './ProductDetailPage.css';
-
-
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,7 +11,7 @@ const ProductDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { addToCart } = useCart();
-  const navigate = useNavigate();
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -36,7 +34,8 @@ const ProductDetailPage: React.FC = () => {
 
   const handleAddToCart = () => {
     addToCart(product);
-    navigate('/cart'); // or '/shipping' if that's your route
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 2000); // Hide after 2 seconds
   };
 
   return (
@@ -57,9 +56,14 @@ const ProductDetailPage: React.FC = () => {
         <li><strong>Price:</strong> ${product.price}</li>
         <li><strong>Stock:</strong> {product.stock}</li>
       </ul>
-      <button className="add-to-cart-btn" onClick={handleAddToCart}>
+      <button className="add-to-cart-btn" onClick={handleAddToCart} type="button">
         🛒 Add to Cart
       </button>
+      {showMessage && (
+        <div className="add-to-cart-message">
+          Product added to cart!
+        </div>
+      )}
     </div>
   );
 };

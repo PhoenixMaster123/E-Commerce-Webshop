@@ -1,16 +1,23 @@
 import { useCart } from '../../../contexts/CartContext';
 import './cart.css';
 
+const FREE_SHIPPING_THRESHOLD = 39.99;
+const SHIPPING_COST = 3.99;
+
 const CartPage = () => {
-    const { cart } = useCart();
+    const {
+        cart,
+        increaseQuantity,
+        decreaseQuantity,
+        removeFromCart
+    } = useCart();
 
-    const hasItems = cart.length > 0;
+    const hasItems = cart && cart.length > 0;
 
-    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const estimatedTotal = subtotal.toFixed(2);
-    const discount = 0; // implement logic if you want later
-    const shipping = 'TBD';
-    const tax = 0;
+    const subtotal = cart.reduce((sum, product) => sum + product.price * product.quantity, 0);
+    const qualifiesForFreeShipping = subtotal > FREE_SHIPPING_THRESHOLD;
+    const shipping = hasItems ? (qualifiesForFreeShipping ? 0 : SHIPPING_COST) : 0;
+    const estimatedTotal = (subtotal + shipping).toFixed(2);
 
     return (
         <div className="cart-container">
@@ -24,9 +31,14 @@ const CartPage = () => {
                                 <img src={product.thumbnail} alt={product.title} className="cart-thumbnail" />
                                 <div className="cart-details">
                                     <h4>{product.title}</h4>
-                                    <p>Quantity: {product.quantity}</p>
                                     <p>Price: €{product.price.toFixed(2)}</p>
+                                    <div className="quantity-controls">
+                                        <button onClick={() => decreaseQuantity(product.id)}>-</button>
+                                        <span>{product.quantity}</span>
+                                        <button onClick={() => increaseQuantity(product.id)}>+</button>
+                                    </div>
                                     <p>Total: €{(product.price * product.quantity).toFixed(2)}</p>
+                                    <button className="remove-btn" onClick={() => removeFromCart(product.id)}>Remove</button>
                                 </div>
                             </div>
                         ))
@@ -44,24 +56,27 @@ const CartPage = () => {
                         </div>
                         <div className="summary-row">
                             <span>Shipping:</span>
-                            <span>{shipping}</span>
+                            <span>{qualifiesForFreeShipping ? 'Free' : `€${SHIPPING_COST.toFixed(2)}`}</span>
                         </div>
                         <div className="summary-row">
                             <span>Discount:</span>
-                            <span>€{discount.toFixed(2)}</span>
+                            <span>€0.00</span>
                         </div>
                         <div className="summary-row">
                             <span>Tax:</span>
-                            <span>€{tax.toFixed(2)}</span>
+                            <span>€0.00</span>
                         </div>
                         <div className="summary-total">
                             <strong>Estimated Total:</strong>
                             <strong>€{estimatedTotal}</strong>
                         </div>
-                        <button className="checkout-button" disabled={!hasItems}>
-                            Proceed to Checkout
-                        </button>
                     </div>
+                    <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.95rem', color: '#888' }}>
+                        Cart has to be over 39.99 to qualify for free shipping
+                    </div>
+                    <button className="checkout-button" disabled={!hasItems}>
+                        Proceed to Checkout
+                    </button>
                 </div>
             </div>
         </div>
