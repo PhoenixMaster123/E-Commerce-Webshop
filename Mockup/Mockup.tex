@@ -230,6 +230,232 @@ cards maximise tap targets on touch devices.
 		\end{tabular}
 	\end{table}
 	
+	
+	\section{Admin Design}\label{sec:admin-design}
+	\vspace{0.3cm}
+	
+	
+	\subsection{Admin Architecture}\label{subsec:admin-architecture}
+	The admin dashboard provides a comprehensive overview of key business metrics. It features six distinct pages, accessible via the left-hand navigation bar:
+	\begin{itemize}
+		\item \textbf{Overview} - This is the primary landing page, offering a high-level summary of performance.
+		\item \textbf{Products} - This page would likely allow administrators to view, add, edit, or delete products.
+		\item \textbf{Customers} - This page would provide tools for managing customer
+		\item \textbf{Account} - This page contains settings related to the administrator's account, including profile information, profile settings, password management, notification preferences, social account management, and the option to delete the account.
+		\item \textbf{Settings} - This page contains global settings for the platform, such as language and timezone preferences, date and time formats, accessibility options, and other general configurations.
+	\end{itemize}
+	\subsection{Overview Page}\label{subsec:overview-page}
+	
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=1\textwidth]{pictures/admin/Overview_Admin}
+		\caption{Overview page}\label{fig:figure1}
+	\end{figure}
+	\vspace{0.3cm}
+	The Overview Page serves as an analytics dashboard where administrators can track the platform’s performance in real time. \\ \\
+	At the top, four distinct cards display key performance indicators (KPIs):
+	\begin{itemize}
+		\item \textbf{Total Sales} – Displays the total revenue generated during the current month.
+		\item \textbf{New Users} – Shows the number of new user accounts created this month.
+		\item \textbf{Total Products} – Indicates the total number of products available in the webshop.
+		\item \textbf{Conversion Rate} – Represents the percentage of users who completed a purchase out of the total visitors.
+	\end{itemize}
+	Below the KPI cards, three graphical components offer deeper insights:
+	\begin{itemize}
+		\item \textbf{Sales Overview (Line Graph)} - Visualizes monthly revenue trends across different months.
+		\item \textbf{Category Distribution (Pie Chart)} - Shows the proportion of sales by product category, highlighting which categories perform best.
+		\item \textbf{Sales by Channel (Bar Chart)} - Breaks down sales by purchase channel—Website, Mobile App, Marketplace, and Social Media—revealing which channels drive the most revenue.
+	\end{itemize}
+	
+	
+	\subsection{Product Page}\label{subsec:product-page}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{pictures/admin/Products_Admin}
+		\caption{Products page}\label{fig:figure2}
+	\end{figure}
+	This page allows the administrator to manage products efficiently while monitoring key performance metrics. \\ \\
+	\textbf{KPI Cards} \\
+	At the top, four distinct cards display key performance indicators:
+	\begin{itemize}
+		\item \textbf{Total Products} – Shows the total number of products currently in the webshop.
+		\item \textbf{Top Selling} – Highlights the product with the highest number of sales.
+		\item \textbf{Low Stock} – Indicates the number of products with low inventory.
+		\item \textbf{Total Revenue} – Displays the total revenue generated for the current day.
+	\end{itemize}
+	Product List Section
+	Beneath the KPI cards is a prominent Product List presented in a tabular format. This section provides a detailed overview of all products.
+	\begin{itemize}
+		\item \textbf{Search Bar} – Located on the right, it allows real-time filtering of the products as the admin types.
+		\item \textbf{Add Product Button} – Positioned next to the search bar, this rectangular button enables the admin to add a new product. Upon clicking, a form/modal appears for entering the product’s details.
+	\end{itemize}
+	The table contains the following headers:
+	\begin{itemize}
+		\item \textbf{NAME} – Product name.
+		\item \textbf{CATEGORY} – The category the product belongs to.
+		\item \textbf{PRICE} – Product price.
+		\item \textbf{STOCK} – Current inventory count.
+		\item \textbf{SALES} – Number of units sold.
+		\item \textbf{ACTIONS} – Contains two buttons:
+		\begin{itemize}
+			\item \textbf{Edit} – Opens a form to modify product details.
+			\item \textbf{Delete} – Removes the product from the list.
+		\end{itemize}
+	\end{itemize}
+	At the bottom of the page, two main charts provide insights into product performance:
+	\begin{itemize}
+		\item \textbf{Sales Trend (Line Graph)} - Displays sales progression over time, helping track revenue trends.
+		\item \textbf{Category Distribution (Pie Chart)} - Visualizes how sales are distributed across product categories.
+	\end{itemize}
+	
+	
+	\subsection{Customers Page}\label{subsec:customers-page}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{pictures/admin/Customers_Admin}
+		\caption{Customers page}\label{fig:figure3}
+	\end{figure}
+	This page allows the administrator to manage customers/users efficiently. \\ \\
+	At the top, four distinct cards display key performance indicators:
+	\begin{itemize}
+		\item \textbf{Total Users} - Shows the total number of registered customers/users.
+		\item \textbf{New Users Today} - Displays the number of users who registered today.
+		\item \textbf{Active Users} - Indicates the current number of active users.
+		\item \textbf{Churn Rate} - Shows the percentage of users who have stopped engaging with the platform.
+	\end{itemize}
+	Customer List Section
+	Beneath the KPI cards is a prominent Customer List presented in a tabular format, providing a detailed overview of all registered users.
+	\begin{itemize}
+		\item \textbf{Search Bar} – Located on the right, it allows real-time filtering of the products as the admin types.
+		\item \textbf{Add Customer Button} – Positioned next to the search bar, this rectangular button enables the admin to add a new customer/user. Upon clicking, a form/modal appears for entering the product’s details.
+	\end{itemize}
+	The table includes the following columns:
+	\begin{itemize}
+		\item \textbf{NAME} – Full name of the customer.
+		\item \textbf{EMAIL} – Email address of the customer.
+		\item \textbf{ROLE} – Assigned role (e.g., User, Admin).
+		\item \textbf{STATUS} – Account status (e.g., Active, Inactive).
+		\item \textbf{ACTIONS} – Contains two buttons:
+		\begin{itemize}
+			\item \textbf{Edit} – Opens a form to modify customer details.
+			\item \textbf{Delete} – Removes the customer from the list.
+		\end{itemize}
+	\end{itemize}
+	At the bottom of the page, two visualizations provide additional insights:
+	\begin{itemize}
+		\item \textbf{User Growth (Line Graph)} - Displays the growth in user registrations over time.
+		\item \textbf{User Activity Heatmap (Bar Chart)} - Shows the distribution of user activity across different age groups or time periods.
+	\end{itemize}
+	
+	
+	\subsection{Account Page}\label{subsec:account-page}
+	
+	\subsubsection{Profile}
+	
+	\vspace{0.5cm}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{pictures/admin/Profile_Admin}
+		\caption{Profile page}\label{fig:figure4}
+	\end{figure}
+	This page displays the admin’s personal information, including name, email address, phone number, country, and the date the account was created.
+	
+	\subsubsection{Profile Settings}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{pictures/admin/ProfileSettings_Admin}
+		\caption{Profile settings page}\label{fig:figure5}
+	\end{figure}
+	This page allows the administrator to view and update their personal information.
+	It is organized into two main sections: \\
+	\textbf{Personal Information} \\
+	The admin can update the following fields: Name, Email Address, Phone Number \\ \\
+	\textbf{Address Information} \\
+	This section enables the admin to manage their address details:Country, City, Street Address, ZIP Code \\ \\
+	A \textbf{"Save Changes"} button is available at the bottom of the page to apply updates.
+	\subsubsection{Password \& Security}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{pictures/admin/Password_Admin}
+		\caption{Password and Security page}\label{fig:figure6}
+	\end{figure}
+	This page allows the administrator to change their password and manage two-factor authentication (2FA). It is organized into two main sections: \\ \\
+	\textbf{Change Password} \\
+	The admin can update their login password by entering:
+	\begin{itemize}
+		\item The current password
+		\item The new password
+		\item Confirm new password
+	\end{itemize}
+	A \textbf{"Change Password"} button is provided at the bottom of this section to apply the update. \\ \\
+	\textbf{Two-Factor Authentication (2FA)} \\
+	This section enables the administrator to enhance account security with 2FA. It includes: A toggle or switch to enable or disable 2FA
+	
+	
+	\subsubsection{Notifications}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{pictures/admin/Notifications_Admin}
+		\caption{Notifications page}\label{fig:figure7}
+	\end{figure}
+	This page displays notification settings.
+	It includes sections for Push Notifications, Email Notifications, and SMS Notifications. Each section has toggles to enable or disable different types of notifications, such as new messages, activity on posts, promotional updates, summary emails, and marketing updates. It also shows the email address and phone number where notifications are sent, and a "Save Settings" button at the bottom to apply the changes.
+	\subsubsection{Social Accounts}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{pictures/admin/Connected_Accounts_Admin}
+		\caption{Social Account page}\label{fig:figure8}
+	\end{figure}
+	This page provides the administrator with the ability to manage connections to various external social accounts such as Google, GitHub, and others. It displays a list of all currently connected accounts, including:
+	\begin{itemize}
+		\item \textbf{Account Provider} (e.g., Google, GitHub)
+		\item \textbf{Date of Connection}
+		\item \textbf{Status} (Connected/Disconnected)
+	\end{itemize}
+	Key Features:
+	\begin{itemize}
+		\item \textbf{Connect New Account:} A button or option allows the admin to link a new social account by authenticating with the selected provider.
+		\textbf{Disconnect Account:} For each connected account, there is an option to disconnect or revoke access.
+		\item \textbf{Connection History:} Displays the date and time when each account was connected.
+	\end{itemize}
+	The main purpose of this page is to give administrators full control over their linked external accounts, ensuring a secure and customizable login experience.
+	
+	
+	\subsubsection{Delete Account}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{pictures/admin/Delete_Admin}
+		\caption{Delete Account page}\label{fig:figure9}
+	\end{figure}
+	This page allows the administrator to delete their personal account.
+	To proceed, the administrator must enter their current password and then click the \textbf{"Yes, Delete My Account"} button or cancel the action.
+	
+	
+	\subsection{Settings}\label{subsec:settings}
+	
+	\vspace{0.4cm}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\textwidth]{pictures/admin/Settings_Admin}
+		\caption{Settings page}\label{fig:figure10}
+	\end{figure}
+	
+	This area consists of several distinct cards or sections, each focused on a specific category of settings:
+	\begin{itemize}
+		\item \textbf{Profile Section} - Contains a button labeled ``Update, '' which redirects the admin to the profile settings on the account page.
+		\item \textbf{Language Section} - A dropdown menu for selecting the preferred language of the platform interface.
+		\item \textbf{Timezone Section} - A dropdown menu for adjusting the system's timezone according to the admin’s location.
+		\item \textbf{Date/Time Format Section} - Offers radio buttons to switch between different date/time display formats (e.g., DD/MM/YYYY or MM/DD/YYYY).
+		\item \textbf{Accessibility Section} - A dropdown menu to change UI display size or enable accessibility features (e.g., larger text, high-contrast mode).
+		\item \textbf{Data Management Section} - Provides an option to clear cache to free up storage and refresh data.
+		\item \textbf{Balance Section} - A dropdown menu to set the auto-save frequency (e.g., every 5 minutes, 10 minutes).
+		\item \textbf{Default Files Location Section:} Allows the admin to set the default folder for downloads or exported files.
+		\item \textbf{Report Data Section:} Includes an ``Export Data'' button for downloading a complete copy of account-related data.
+	\end{itemize}
+	
+	
+	
 	% ==========================================================
 	\section{Navigation Flow}\label{sec:navigation-flow}
 
@@ -261,230 +487,6 @@ cards maximise tap targets on touch devices.
 
 
 
-
-
-\section{Admin Design}\label{sec:admin-design}
-	\vspace{0.3cm}
-
-
-\subsection{Admin Architecture}\label{subsec:admin-architecture}
-	The admin dashboard provides a comprehensive overview of key business metrics. It features six distinct pages, accessible via the left-hand navigation bar:
-\begin{itemize}
-\item \textbf{Overview} - This is the primary landing page, offering a high-level summary of performance.
-\item \textbf{Products} - This page would likely allow administrators to view, add, edit, or delete products.
-\item \textbf{Customers} - This page would provide tools for managing customer
-\item \textbf{Account} - This page contains settings related to the administrator's account, including profile information, profile settings, password management, notification preferences, social account management, and the option to delete the account.
-\item \textbf{Settings} - This page contains global settings for the platform, such as language and timezone preferences, date and time formats, accessibility options, and other general configurations.
-\end{itemize}
-\subsection{Overview Page}\label{subsec:overview-page}
-
-
-	\begin{figure}[h]
-    \centering
-    \includegraphics[width=1\textwidth]{pictures/admin/Overview_Admin}
-    \caption{Overview page}\label{fig:figure1}
-\end{figure}
-\vspace{0.3cm}
-The Overview Page serves as an analytics dashboard where administrators can track the platform’s performance in real time. \\ \\
-At the top, four distinct cards display key performance indicators (KPIs):
-\begin{itemize}
-\item \textbf{Total Sales} – Displays the total revenue generated during the current month.
-\item \textbf{New Users} – Shows the number of new user accounts created this month.
-\item \textbf{Total Products} – Indicates the total number of products available in the webshop.
-\item \textbf{Conversion Rate} – Represents the percentage of users who completed a purchase out of the total visitors.
-\end{itemize}
-Below the KPI cards, three graphical components offer deeper insights:
-\begin{itemize}
-\item \textbf{Sales Overview (Line Graph)} - Visualizes monthly revenue trends across different months.
-\item \textbf{Category Distribution (Pie Chart)} - Shows the proportion of sales by product category, highlighting which categories perform best.
-\item \textbf{Sales by Channel (Bar Chart)} - Breaks down sales by purchase channel—Website, Mobile App, Marketplace, and Social Media—revealing which channels drive the most revenue.
-\end{itemize}
-
-
-\subsection{Product Page}\label{subsec:product-page}
-	\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{pictures/admin/Products_Admin}
-     \caption{Products page}\label{fig:figure2}
-\end{figure}
-This page allows the administrator to manage products efficiently while monitoring key performance metrics. \\ \\
-\textbf{KPI Cards} \\
-At the top, four distinct cards display key performance indicators:
-\begin{itemize}
-\item \textbf{Total Products} – Shows the total number of products currently in the webshop.
-\item \textbf{Top Selling} – Highlights the product with the highest number of sales.
-\item \textbf{Low Stock} – Indicates the number of products with low inventory.
-\item \textbf{Total Revenue} – Displays the total revenue generated for the current day.
-\end{itemize}
-Product List Section
-Beneath the KPI cards is a prominent Product List presented in a tabular format. This section provides a detailed overview of all products.
-\begin{itemize}
-\item \textbf{Search Bar} – Located on the right, it allows real-time filtering of the products as the admin types.
-\item \textbf{Add Product Button} – Positioned next to the search bar, this rectangular button enables the admin to add a new product. Upon clicking, a form/modal appears for entering the product’s details.
-\end{itemize}
-The table contains the following headers:
-\begin{itemize}
-\item \textbf{NAME} – Product name.
-\item \textbf{CATEGORY} – The category the product belongs to.
-\item \textbf{PRICE} – Product price.
-\item \textbf{STOCK} – Current inventory count.
-\item \textbf{SALES} – Number of units sold.
-\item \textbf{ACTIONS} – Contains two buttons:
-\begin{itemize}
-\item \textbf{Edit} – Opens a form to modify product details.
-\item \textbf{Delete} – Removes the product from the list.
-\end{itemize}
-\end{itemize}
-At the bottom of the page, two main charts provide insights into product performance:
-\begin{itemize}
-\item \textbf{Sales Trend (Line Graph)} - Displays sales progression over time, helping track revenue trends.
-\item \textbf{Category Distribution (Pie Chart)} - Visualizes how sales are distributed across product categories.
-\end{itemize}
-
-
-\subsection{Customers Page}\label{subsec:customers-page}
-	\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{pictures/admin/Customers_Admin}
-     \caption{Customers page}\label{fig:figure3}
-\end{figure}
-This page allows the administrator to manage customers/users efficiently. \\ \\
-At the top, four distinct cards display key performance indicators:
-\begin{itemize}
-\item \textbf{Total Users} - Shows the total number of registered customers/users.
-\item \textbf{New Users Today} - Displays the number of users who registered today.
-\item \textbf{Active Users} - Indicates the current number of active users.
-\item \textbf{Churn Rate} - Shows the percentage of users who have stopped engaging with the platform.
-\end{itemize}
-Customer List Section
-Beneath the KPI cards is a prominent Customer List presented in a tabular format, providing a detailed overview of all registered users.
-\begin{itemize}
-\item \textbf{Search Bar} – Located on the right, it allows real-time filtering of the products as the admin types.
-\item \textbf{Add Customer Button} – Positioned next to the search bar, this rectangular button enables the admin to add a new customer/user. Upon clicking, a form/modal appears for entering the product’s details.
-\end{itemize}
-The table includes the following columns:
-\begin{itemize}
-\item \textbf{NAME} – Full name of the customer.
-\item \textbf{EMAIL} – Email address of the customer.
-\item \textbf{ROLE} – Assigned role (e.g., User, Admin).
-\item \textbf{STATUS} – Account status (e.g., Active, Inactive).
-\item \textbf{ACTIONS} – Contains two buttons:
-\begin{itemize}
-\item \textbf{Edit} – Opens a form to modify customer details.
-\item \textbf{Delete} – Removes the customer from the list.
-\end{itemize}
-\end{itemize}
-At the bottom of the page, two visualizations provide additional insights:
-\begin{itemize}
-\item \textbf{User Growth (Line Graph)} - Displays the growth in user registrations over time.
-\item \textbf{User Activity Heatmap (Bar Chart)} - Shows the distribution of user activity across different age groups or time periods.
-\end{itemize}
-
-
-\subsection{Account Page}\label{subsec:account-page}
-
-	\subsubsection{Profile}
-
-\vspace{0.5cm}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{pictures/admin/Profile_Admin}
-     \caption{Profile page}\label{fig:figure4}
-\end{figure}
-This page displays the admin’s personal information, including name, email address, phone number, country, and the date the account was created.
-
-\subsubsection{Profile Settings}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{pictures/admin/ProfileSettings_Admin}
-     \caption{Profile settings page}\label{fig:figure5}
-\end{figure}
-This page allows the administrator to view and update their personal information.
-It is organized into two main sections: \\
-\textbf{Personal Information} \\
-The admin can update the following fields: Name, Email Address, Phone Number \\ \\
-\textbf{Address Information} \\
-This section enables the admin to manage their address details:Country, City, Street Address, ZIP Code \\ \\
-A \textbf{"Save Changes"} button is available at the bottom of the page to apply updates.
-\subsubsection{Password \& Security}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{pictures/admin/Password_Admin}
-     \caption{Password and Security page}\label{fig:figure6}
-\end{figure}
-This page allows the administrator to change their password and manage two-factor authentication (2FA). It is organized into two main sections: \\ \\
-\textbf{Change Password} \\
-The admin can update their login password by entering:
-\begin{itemize}
-\item The current password
-\item The new password
-\item Confirm new password
-\end{itemize}
-A \textbf{"Change Password"} button is provided at the bottom of this section to apply the update. \\ \\
-\textbf{Two-Factor Authentication (2FA)} \\
-This section enables the administrator to enhance account security with 2FA. It includes: A toggle or switch to enable or disable 2FA
-
-
-\subsubsection{Notifications}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{pictures/admin/Notifications_Admin}
-     \caption{Notifications page}\label{fig:figure7}
-\end{figure}
-This page displays notification settings.
-It includes sections for Push Notifications, Email Notifications, and SMS Notifications. Each section has toggles to enable or disable different types of notifications, such as new messages, activity on posts, promotional updates, summary emails, and marketing updates. It also shows the email address and phone number where notifications are sent, and a "Save Settings" button at the bottom to apply the changes.
-\subsubsection{Social Accounts}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{pictures/admin/Connected_Accounts_Admin}
-     \caption{Social Account page}\label{fig:figure8}
-\end{figure}
-This page provides the administrator with the ability to manage connections to various external social accounts such as Google, GitHub, and others. It displays a list of all currently connected accounts, including:
-\begin{itemize}
-\item \textbf{Account Provider} (e.g., Google, GitHub)
-\item \textbf{Date of Connection}
-\item \textbf{Status} (Connected/Disconnected)
-\end{itemize}
-Key Features:
-\begin{itemize}
-\item \textbf{Connect New Account:} A button or option allows the admin to link a new social account by authenticating with the selected provider.
-\textbf{Disconnect Account:} For each connected account, there is an option to disconnect or revoke access.
-\item \textbf{Connection History:} Displays the date and time when each account was connected.
-\end{itemize}
-The main purpose of this page is to give administrators full control over their linked external accounts, ensuring a secure and customizable login experience.
-
-
-\subsubsection{Delete Account}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{pictures/admin/Delete_Admin}
-     \caption{Delete Account page}\label{fig:figure9}
-\end{figure}
-This page allows the administrator to delete their personal account.
-To proceed, the administrator must enter their current password and then click the \textbf{"Yes, Delete My Account"} button or cancel the action.
-
-
-\subsection{Settings}\label{subsec:settings}
-
-\vspace{0.4cm}
-	\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{pictures/admin/Settings_Admin}
-     \caption{Settings page}\label{fig:figure10}
-\end{figure}
-
-This area consists of several distinct cards or sections, each focused on a specific category of settings:
-\begin{itemize}
-\item \textbf{Profile Section} - Contains a button labeled ``Update, '' which redirects the admin to the profile settings on the account page.
-\item \textbf{Language Section} - A dropdown menu for selecting the preferred language of the platform interface.
-\item \textbf{Timezone Section} - A dropdown menu for adjusting the system's timezone according to the admin’s location.
-\item \textbf{Date/Time Format Section} - Offers radio buttons to switch between different date/time display formats (e.g., DD/MM/YYYY or MM/DD/YYYY).
-\item \textbf{Accessibility Section} - A dropdown menu to change UI display size or enable accessibility features (e.g., larger text, high-contrast mode).
-\item \textbf{Data Management Section} - Provides an option to clear cache to free up storage and refresh data.
-\item \textbf{Balance Section} - A dropdown menu to set the auto-save frequency (e.g., every 5 minutes, 10 minutes).
-\item \textbf{Default Files Location Section:} Allows the admin to set the default folder for downloads or exported files.
-\item \textbf{Report Data Section:} Includes an ``Export Data'' button for downloading a complete copy of account-related data.
-\end{itemize}
 
 
 	

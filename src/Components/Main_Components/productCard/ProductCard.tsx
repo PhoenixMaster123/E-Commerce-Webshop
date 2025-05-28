@@ -1,39 +1,55 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../../../types';
-import './ProductCard.css'; // Erstelle diese CSS-Datei
 
 interface ProductCardProps {
     product: Product;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+    const discountedPrice = (product.price * (1 - product.discountPercentage / 100)).toFixed(2);
+    const originalPrice = product.price.toFixed(2);
+
     return (
-        <div className="product-card">
-            <Link to={`/products/${product.id}`}>
+        <Link
+            to={`/products/${product.id}`}
+            className="block bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden"
+        >
+            <div className="aspect-w-1 aspect-h-1 w-full">
                 <img
-                    src={product.thumbnail || 'https://via.placeholder.com/150?text=No+Image'}
+                    src={product.thumbnail || 'https://via.placeholder.com/300?text=No+Image'}
                     alt={product.title}
-                    className="product-card-image"
+                    className="object-cover w-full h-full"
                 />
-                <h3 className="product-card-title">{product.title}</h3>
-                <p className="product-card-category">{product.category}</p>
-                <p className="product-card-price">
+            </div>
+            <div className="p-4 flex flex-col justify-between h-40">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">
+                        {product.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 capitalize">
+                        {product.category}
+                    </p>
+                </div>
+                <div className="mt-4">
                     {product.discountPercentage > 0 ? (
-                        <>
-              <span className="discounted-price">
-                ${(product.price * (1 - product.discountPercentage / 100)).toFixed(2)}
+                        <div className="flex items-baseline space-x-2">
+              <span className="text-lg font-bold text-green-600 dark:text-green-400">
+                ${discountedPrice}
               </span>
-                            <span className="original-price">${product.price.toFixed(2)}</span>
-                        </>
+                            <span className="text-sm line-through text-gray-500 dark:text-gray-500">
+                ${originalPrice}
+              </span>
+                        </div>
                     ) : (
-                        `$${product.price.toFixed(2)}`
+                        <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              ${originalPrice}
+            </span>
                     )}
-                </p>
-                {/* <p>Rating: {product.rating} ⭐</p> */}
-            </Link>
-            {/* Add to Cart Button direkt hier oder auf Detailseite */}
-        </div>
+                </div>
+            </div>
+        </Link>
     );
 };
+
+export default ProductCard;
