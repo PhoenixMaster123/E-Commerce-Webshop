@@ -142,7 +142,7 @@ cards maximise tap targets on touch devices.
 	\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
 		\toprule
 		\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-		Secondary navigation    & Lets users pivot between catalogue views (SPA routing).\\
+		Secondary navigation    & Lets users pivot between catalogue views .\\
 		Search field            & Supports goal-oriented discovery; full-width on desktop, icon on mobile.\\
 		Category dropdown       & Progressive narrowing while preserving context; default “Show all” reveals filter state.\\
 	
@@ -160,7 +160,7 @@ cards maximise tap targets on touch devices.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=\linewidth]{pictures/main/CartPage_Figma}%
-		\caption{Shopping cart page with order summary and checkout CTA.}
+		\caption{Shopping cart page with order summary and checkout.}
 		\label{fig:ui-cart}
 	\end{figure}
 
@@ -180,8 +180,8 @@ cards maximise tap targets on touch devices.
         	\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
 				Product rows            & Displays item names, images, and prices for verification. "Quantity" and "Remove" options allow instant edits. \\
         		Order summary           & Provides a clear breakdown of costs (e.g., subtotal, shipping) to reduce checkout abandonment. \\
-        		Proceed to Checkout (CTA) & High-contrast button positioned last in the visual flow to guide users toward conversion. \\
-        		Login/Register prompt   & Encourages account creation *after* cart engagement to avoid early friction. \\
+        		Proceed to Checkout  & High-contrast button positioned last in the visual flow to guide users toward conversion. \\
+        		Login/Register prompt   & Encourages account creation after cart engagement to avoid early friction. \\
         	\bottomrule
     	\end{tabular}
 
@@ -202,9 +202,8 @@ cards maximise tap targets on touch devices.
 	\end{figure}
 
 	\paragraph{Explanation}%
-	The login page prioritizes simplicity with a minimal form (email/password) and clear visual hierarchy.
-	A secondary call-to-action (*"Register"*) guides new users to account creation. The design reduces the chance for users to return while maintaining a path for conversion.
-
+	The login page prioritizes simplicity with a minimal form (email/password).
+	Register guides new users to account creation. 
 	\begin{table}[H]
 		\centering
 		\caption{Login screen – elements and rationale}
@@ -213,8 +212,8 @@ cards maximise tap targets on touch devices.
 			\toprule
 			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
 			Email/Password fields   & Standardized input format for familiarity and quick completion. \\
-			Login button (CTA)      & Primary action styled for prominence; triggers authentication. \\
-			Register prompt        & Secondary CTA for registration of new users. \\
+			Login button       & Primary action styled for prominence; triggers authentication. \\
+			Register prompt        & Registration of new users. \\
 			Minimal layout         & Focuses attention on form completion. \\
 			\bottomrule
 		\end{tabular}
@@ -447,11 +446,47 @@ cards maximise tap targets on touch devices.
 	
 	
 	% ==========================================================
-	\section{Navigation Flow}\label{sec:navigation-flow}
+\section{Design Decisions \& Rationale}
 
-	% ==========================================================
-	\section{Design Decisions \& Rationale}\label{sec:design-decisions-&-rationale}
-	....
+In this section, we walk through the main design choices we made, explaining how each one supports the needs of our two primary users: \textbf{Regular Shoppers} and \textbf{Store Administrators}. Our goal was always to make the experience intuitive and efficient for everyone.
+
+\subsection{Layout}
+\begin{itemize}
+	\item \textbf{Home Screen Flow}: We start with a clear welcome message, then introduce what we offer, and finally highlight a few featured categories in a carousel. This step‑by‑step approach helps new visitors discover and explore without feeling lost. (Regular Shoppers)
+	\item \textbf{Flexible Product Grid}: No matter the screen size, our product cards keep the same proportions so items are easy to compare. Shoppers appreciate the consistency, and admins get a reliable preview of the catalog. (Regular Shoppers \& Administrators)
+	\item \textbf{Two‑Column Detail Views}: For checkout and admin pages, we split the screen: one side shows details like your cart, and the other gives the summary. It’s easier on the eyes and speeds up decision‑making. (Regular Shoppers \& Administrators)
+\end{itemize}
+
+\subsection{Interaction Patterns}
+\begin{itemize}
+	\item \textbf{Always-Visible Top Bar}: Search, cart, and account buttons remain on screen at all times, allowing shoppers to switch effortlessly between browsing, their cart, and checkout with a single click. (Regular Shoppers)
+	
+	\item \textbf{Slide‑Out Filters}: On mobile, shoppers tap the hamburger icon; on desktop, a pill‑shaped button reveals filters. The page stays clean, and everyone can narrow down lists without losing context. (Regular Shoppers \& Administrators)
+	\item \textbf{Quick‑Edit Modals}: In admin pages, small pop‑ups let you edit products or users right where you are, without loading a new page. It cuts down on clicks and keeps your workflow smooth. (Administrators)
+\end{itemize}
+
+\subsection{Colors}
+\begin{itemize}
+	\item \textbf{Bold Accent for Actions}: We chose a bright color for key buttons like “Shop Now” and “Save Changes.” It instantly grabs attention and guides users to the next step. (Regular Shoppers \& Administrators)
+	\item \textbf{Calm, High‑Contrast Backgrounds}: Soft greys and clean whites let product images shine and ensure all text meets accessibility standards for contrast. (Accessibility)
+	\item \textbf{Light and Dark Modes}: Whether you prefer a bright interface by day or a darker one at night, we’ve got you covered. It’s easier on the eyes and adapts to any environment. (Regular Shoppers \& Administrators)
+\end{itemize}
+
+\subsection{Typography}
+\begin{itemize}
+	\item \textbf{Simple Sans‑Serif Font}: We picked a modern font that’s easy to read at any size. Headings and body text use different weights so you can scan titles and details at a glance. (Regular Shoppers \& Administrators)
+	\item \textbf{Readable Sizes and Spacing}: Body text is set to a comfy 16pt with generous line spacing. Larger headings help break up content and make busy pages feel more organized. (Accessibility)
+\end{itemize}
+
+\subsection{Accessibility}
+\begin{itemize}
+	\item \textbf{Keyboard Friendly}: You can navigate every button and link using just your keyboard. Visible focus outlines ensure you always know where you are. (Accessibility)
+	\item \textbf{Screen‑Reader Support}: We added ARIA labels and roles to menus, dialogs, and forms so that assistive tech can read out exactly what’s happening. (Accessibility)
+	\item \textbf{Respecting Reduced Motion}: Animations dial back automatically if you prefer minimal movement, reducing potential discomfort. (Accessibility)
+
+\end{itemize}
+
+
 	% ==========================================================
 	\section{Responsiveness \& Accessibility}\label{sec:responsiveness-&-accessibility}
 	Fluid CSS grid, break-points 1024 / 768 / 480 px, keyboard navigation, aria-labels, reduced-motion support.
@@ -464,15 +499,6 @@ cards maximise tap targets on touch devices.
 	\section{Conclusion}\label{sec:conclusion}
 	This portfolio meets all assignment requirements and provides a clear blueprint for development.
 	
-	% ==========================================================
-	\appendix
-	\section{Detailed Use-Case Flows}\label{sec:usecases}
-	(See attached PDF for step-by-step flows.)
-
-
-	% =======================================================
-	% Admin  -------------------------------
-	% =======================================================
 
 
 
