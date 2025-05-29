@@ -1,38 +1,176 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[12pt]{article}
+\usepackage{etoolbox}
 
-% ---------- PACKAGES ----------
-\usepackage[margin=2.5cm]{geometry}   % reasonable page margins
-\usepackage{graphicx}                 % \includegraphics
-\usepackage{float}                    % H = “exactly here” placement
-\usepackage{booktabs}                 % nicer tables
-\usepackage{array}                    % custom table column widths
-\usepackage[hidelinks]{hyperref}      % clickable refs, no coloured boxes
-\usepackage{caption}                  % better caption formatting
+% --- Schrift und Sprache ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage[none]{hyphenat}
 
-\setlength{\parskip}{6pt}             % small breathing space between paragraphs
+% --- Mathematik ---
+\usepackage{amsmath, amssymb, amsfonts}
 
-% -----------------------------------------------------------
-%          D O C U M E N T
-% -----------------------------------------------------------
-\begin{document}
-	
-	% ------------------------- Title Page ---------------------
-	\title{\textbf{E-Commerce Webshop Prototype\\UX Design Portfolio Report}}
-	\author{Enrico Ebert \and Kristian Popov \and Glison Doci \and Orik Mazreku}
-	\date{\today}
-	\maketitle
-	\thispagestyle{empty}
+% --- Layout und Seitenränder ---
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+% --- Grafiken und Zeichnungen ---
+\usepackage{graphicx}
+\usepackage{stackengine}
+\usepackage{scalerel}
+\usepackage{tikz}
+\usetikzlibrary{matrix, positioning}
+
+% --- Listings (z.B. Python-Code) ---
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{courier}   % Schriftart für Listings
+
+
+% --- Tabellen, Bildunterschriften, Zitate ---
+\usepackage{caption}
+\usepackage{natbib}
+
+
+
+\usepackage[normalem]{ulem} % [normalem] prevents the package from changing the default behavior of `\emph` to underline.
+
+% Listing-Konfiguration
+\lstdefinestyle{defaultLSTStyle}{
+	basicstyle=\ttfamily\small,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	numbersep=10pt,
+	stepnumber=1,
+	showstringspaces=false,
+	breaklines=true,
+	frame=single,
+	tabsize=2,
+	captionpos=b,
+	keywordstyle=\color{blue},
+	commentstyle=\color{gray},
+	stringstyle=\color{orange}
+}
+
+% Python als Sprache definieren
+\lstdefinelanguage{Python}{
+	keywords={def, return, print, for, while, if, else, elif, import, from},
+	sensitive=true,
+	morecomment=[l]\#,
+	morestring=[b]",
+	morestring=[b]'
+}
+
+% LaTeX definieren
+\lstdefinelanguage{LaTeXcode}{
+	keywords={documentclass, usepackage, begin, end, section, item, label, ref},
+	morecomment=[l]{\%},
+	sensitive=true,
+	morestring=[b]",
+	morestring=[b]'
+}
+% Umbenennung und Verzeichnis
+\renewcommand{\lstlistingname}{Quelltextausschnitt}
+\renewcommand{\lstlistlistingname}{Verzeichnis der Quelltextausschnitte}
+
+% ---- Makro für Section, Subsectionm, SubSubSection mit Autor ---------------------
+\newcommand{\authorSection}[2]{
+	\section[#1 {\mdseries\footnotesize(#2)}]{
+		\hspace*{-1ex}\textbf{#1}\\[-0.75ex]
+		{\normalfont\small\texttt{#2}}
+	}
+}
+
+\newcommand{\authorSubSection}[2]{
+	\subsection[#1 {\mdseries\footnotesize(#2)}]{
+		\hspace*{-1ex}\textbf{#1}\\[-0.75ex]
+		{\normalfont\small\texttt{#2}}
+	}
+}
+
+\newcommand{\authorSubSubSection}[2]{
+	\subsubsection[#1 {\mdseries\footnotesize(#2)}]{
+		\hspace*{-1ex}\textbf{#1}\\[-0.75ex]
+		{\normalfont\small\texttt{#2}}
+	}
+}
+% -------
+
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+\title{
+		{\LARGE \textbf{E-Commerce Webshop Prototype
+	UX Design Portfolio Report}}\\[5ex]
+	{\large Frontend Systems – SS 25}\\[5ex]
+}
+
+\author{K. Popov; E. Ebert; O. Mazreku; G. Doci}
+
+\date{\today}
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyhead[L]{\hspace*{-0.68cm}\includegraphics[width=2cm]{pictures/logo/THWS}}
+	\fancyhead[R]{\small Mockup}
+	\fancyhead[C]{\small \theauthor}
+	\fancyfoot[C]{\thepage}
+	\setlength{\headheight}{24pt}
+}
+\pagestyle{plain} %% use the new page style for every page
+
+%% Title style
+\makeatletter
+\def\@maketitle{%
 	\newpage
-	
-	% -------------------------- Contents ----------------------
-	\setcounter{tocdepth}{2}
+	\null
+	\vskip 0em%
+	\begin{center}%
+		\let \footnote \thanks
+		{\LARGE \@title \par}%
+		\vskip 0em%
+			{\large \@date} %\@date
+		\vskip 32em
+	\end{center}%
+	\par
+	\vskip 1em}
+\makeatother
+
+\newenvironment{spmatrix}[1]
+{\def\mysubscript{#1}\mathop\bgroup\begin{pmatrix}}
+{\end{pmatrix}\egroup_{\textstyle\mathstrut\mysubscript}}
+
+\begin{document}
+
+%% ----- Titelseite -----
+	\pagenumbering{gobble} %% remove the pagenumber
+	\maketitle
+	\noindent\begin{tabular}{@{}lllr}
+				 \textbf{Studenten}:
+				 & Kristian Popov         &\href{mailto:kristian.popov@study.thws.de}{kristian.popov@study.thws.de}           & 5123029
+				 \\[2ex]& Enrico Ebert     &\href{mailto:enrico.ebert@study.thws.de}{enrico.ebert@study.thws.de} 			  & 5123098
+				 \\[2ex]& Orik Mazreku        &\href{mailto:orik.mazreku@study.thws.de}{orik.mazreku@study.thws.de}           & 5123144
+				 \\[2ex]& Glison Doci        &\href{mailto:glison.doci@study.thws.de}{glison.doci@study.thws.de}              & 5123136
+				 \\[4ex]\textbf{Dozent}:      & Prof. Dr. Peter Braun
+	\end{tabular}
+	\newpage
+
+%% ----- Inhalt -----
 	\tableofcontents
 	\newpage
-	
+
 	% ==========================================================
 	\section{Summary of Requirements}\label{sec:project-overview}
-	Our e-commerce webshop delivers a \emph{simple, modern, and fully responsive} shopping experience. Essential features—product search, category filtering, and a shopping cart—are complemented by smart extras such as a light/dark
-	-mode toggle.
+	Our e-commerce webshop delivers a \emph{simple, modern, and fully responsive} shopping experience. Essential features—product search, category filtering, and a shopping cart—are complemented by smart extras such as a light/dark -mode toggle.
 	
 	\subsection*{Target Users}
 	\begin{itemize}
@@ -51,109 +189,112 @@
 		\item Fully responsive.
 
 	\end{itemize}
-	
-	% ==========================================================
-\section{User Interface Design}\label{sec:user-interface-design}
 
-% =======================================================
-% 1) HOME SCREEN  ---------------------------------------
-% =======================================================
-\subsection{Home Screen}\label{subsec:home-screen}
+	\section{User Interface Design}\label{sec:user-interface-design}
+
+	% =======================================================
+	% 1) HOME SCREEN  ---------------------------------------
+	% =======================================================
+
+	\subsection{Home Screen}\label{subsec:home-screen}
+
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{pictures/main/Home_figma}%
+		\caption{Home screen in light mode.}
+		\label{fig:ui-home}
+	\end{figure}
+
+	\paragraph{Explanation}%
+	The home page follows a classic information funnel: brand section~$\rightarrow$ value
+	proposition~$\rightarrow$ featured category. A single call-to-action
+	(*“Shop Now”*) avoids decision fatigue on first contact.
+	All interactive controls (search, cart) are reachable within one
+	tap.
+
+	\begin{table}[H]
+		\centering
+		\caption{Home screen – elements and rationale}
+		\label{tab:home-elements}
+		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
+			\toprule
+			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
+			Persistent top-bar      & Immediate access to search \& cart.\\
+			Hero banner             & Communicates value proposition in one glance; accent colour draws the eye.\\
+			Category carousel       & Promotes bestselling category; horizontal swipe invites mobile interaction.\\
+
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	\subsection{Category Drawer (Hamburger / Desktop “Categories”)}\label{subsec:category-drawer-(hamburger-/-desktop-categories)}
 
 	\begin{figure}[H]
-	\centering
-	\includegraphics[width=\linewidth]{pictures/main/Home_figma}%
-	\caption{Home screen in light mode .}
-	\label{fig:ui-home}
-\end{figure}
+		\centering
+		\includegraphics[width=\linewidth]{pictures/main/categories_Figma}%
+		\caption{Off-canvas category drawer; mobile and desktop share the same component.}
+		\label{fig:ui-category-drawer}
+	\end{figure}
 
-\paragraph{Explanation}%
-The home page follows a classic information funnel: brand section~$\rightarrow$ value
-proposition~$\rightarrow$ featured category. A single call-to-action
-(*“Shop Now”*) avoids decision fatigue on first contact.  
-All interactive controls (search, cart) are reachable within one
-tap.
+	\paragraph{Explanation}
+	The drawer offers an identical filtering experience on both breakpoints:
+	a hamburger icon triggers it on mobile, while a “Categories” pill does so on
+	desktop.
+	The underlying product grid is dimmed but remains in place, giving
+	immediate visual feedback when a category is selected.
 
-\begin{table}[H]
-	\centering
-	\caption{Home screen – elements and rationale}
-	\label{tab:home-elements}
-	\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-		\toprule
-		\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-		Persistent top-bar      & Immediate access to search \& cart.\\
-		Hero banner             & Communicates value proposition in one glance; accent colour draws the eye.\\
-		Category carousel       & Promotes bestselling category; horizontal swipe invites mobile interaction.\\
-		
-		\bottomrule
-	\end{tabular}
-\end{table}
-\subsection{Category Drawer (Hamburger / Desktop “Categories”)}
+	\begin{table}[H]
+		\centering
+		\caption{Category drawer – elements and rationale}
+		\label{tab:category-elements}
+		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
+			\toprule
+			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\linewidth]{pictures/main/categories_Figma}%
-	\caption{Off-canvas category drawer; mobile and desktop share the same component.}
-	\label{fig:ui-category-drawer}
-\end{figure}
+			Hamburger icon (mobile) & Saves horizontal space; familiar pattern. \\
+			“Categories” pill (desktop) & reveals drawer on click. \\
+			Accordion list          & Supports deep hierarchies without scrolling fatigue. \\
 
-\paragraph{Explanation}%
-The drawer offers an identical filtering experience on both breakpoints:
-a hamburger icon triggers it on mobile, while a “Categories” pill does so on
-desktop. The underlying product grid is dimmed but remains in place, giving
-immediate visual feedback when a category is selected.
+			\bottomrule
+		\end{tabular}
+	\end{table}
 
-\begin{table}[H]
-	\centering
-	\caption{Category drawer – elements and rationale}
-	\label{tab:category-elements}
-	\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-		\toprule
-		\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
+	% =======================================================
+	% 2) PRODUCT LIST SCREEN  -------------------------------
+	% =======================================================
 
-		Hamburger icon (mobile) & Saves horizontal space; familiar pattern. \\
-		“Categories” pill (desktop) & reveals drawer on click. \\
-		Accordion list          & Supports deep hierarchies without scrolling fatigue. \\
+	\subsection{Product List Screen}\label{subsec:product-list-screen}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{pictures/main/Product_List_Figma}%
+		\caption{Product grid with search bar and category filter.}
+		\label{fig:ui-products}
+	\end{figure}
+
+	\paragraph{Explanation}%
+	Users can search \emph{and/or} filter without leaving the page.
+	The responsive grid keeps card proportions intact focusable
+	cards maximize tap targets on touch devices.
+
+	\begin{table}[H]
+		\centering
+		\caption{Product list – elements and rationale}
+		\label{tab:product-elements}
+		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
+			\toprule
+			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
+			Secondary navigation    & Lets users pivot between catalogue views .\\
+			Search field            & Supports goal-oriented discovery; full-width on desktop, icon on mobile.\\
+			Category dropdown       & Progressive narrowing while preserving context; default “Show all” reveals filter state.\\
+
 	
-		\bottomrule
-	\end{tabular}
-\end{table}
-% =======================================================
-% 2) PRODUCT LIST SCREEN  -------------------------------
-% =======================================================
-\subsection{Product List Screen}
+			\bottomrule
+		\end{tabular}
+	\end{table}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\linewidth]{pictures/main/Product_List_Figma}%
-	\caption{Product grid with search bar and category filter.}
-	\label{fig:ui-products}
-\end{figure}
-
-\paragraph{Explanation}%
-Users can search \emph{and/or} filter without leaving the page.  
-The responsive grid keeps card proportions intact  focusable
-cards maximise tap targets on touch devices.
-
-\begin{table}[H]
-	\centering
-	\caption{Product list – elements and rationale}
-	\label{tab:product-elements}
-	\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-		\toprule
-		\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-		Secondary navigation    & Lets users pivot between catalogue views .\\
-		Search field            & Supports goal-oriented discovery; full-width on desktop, icon on mobile.\\
-		Category dropdown       & Progressive narrowing while preserving context; default “Show all” reveals filter state.\\
-	
-	
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-% =======================================================
-% 2) SHOPPING CART SCREEN  -------------------------------
-% =======================================================
+	% =======================================================
+	% 2) SHOPPING CART SCREEN  -------------------------------
+	% =======================================================
 
 	\subsection{Shopping Cart}\label{subsec:shopping-cart}
 
@@ -166,8 +307,8 @@ cards maximise tap targets on touch devices.
 
 	\paragraph{Explanation}%
 	The shopping cart page is designed for quick decision-making with a clear hierarchy:
-	product list~$\rightarrow$ order summary~$\rightarrow$ checkout action. It minimizes distractions
-	by focusing on removal options and a prominent *"Proceed to Checkout"* button.
+	\textbf{product list~$\rightarrow$ order summary~$\rightarrow$ checkout action}. It minimizes distractions
+	by focusing on removal options and prominent \textbf{Proceed to Checkout} button.
 	The layout ensures users can review costs and adjust items without leaving the page.
 
 	\begin{table}[H]
@@ -178,26 +319,27 @@ cards maximise tap targets on touch devices.
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
         	\toprule
         	\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-				Product rows            & Displays item names, images, and prices for verification. "Quantity" and "Remove" options allow instant edits. \\
-        		Order summary           & Provides a clear breakdown of costs (e.g., subtotal, shipping) to reduce checkout abandonment. \\
-        		Proceed to Checkout  & High-contrast button positioned last in the visual flow to guide users toward conversion. \\
-        		Login/Register prompt   & Encourages account creation after cart engagement to avoid early friction. \\
+				\textbf{Product rows}            & Displays item names, images, and prices for verification.
+												 \textbf{``Add (Plus) Button''} and \textbf{``Remove (Minus) Button''} options allow instant edits. \\
+				\textbf{Order summary}           & Provides a clear breakdown of costs (e.g., subtotal, shipping) to reduce checkout abandonment. \\
+				\textbf{Proceed to Checkout}     & High-contrast button positioned last in the visual flow to guide users toward conversion. \\
+				\textbf{Login/Register prompt}   & Encourages account creation after cart engagement to avoid early friction. \\
         	\bottomrule
     	\end{tabular}
 
 	\end{table}
 
 
-% =======================================================
-% 2) REGISTER/LOGIN SCREEN  -------------------------------
-% =======================================================
+	% =======================================================
+	% 2) REGISTER/LOGIN SCREEN  -------------------------------
+	% =======================================================
 
 	\subsection{Login \& Registration}\label{subsec:login-register}
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=1.0\linewidth]{pictures/main/LoginPage_Figma.png}%
-		\caption{Login screen with email/password fields and registration prompt.}
+		\includegraphics[width=1.0\linewidth]{pictures/main/LoginPage_Figma}%
+		\caption{Login screen with email/password fields and option for registration.}
 		\label{fig:ui-login}
 	\end{figure}
 
@@ -211,10 +353,10 @@ cards maximise tap targets on touch devices.
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
 			\toprule
 			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-			Email/Password fields   & Standardized input format for familiarity and quick completion. \\
-			Login button       & Primary action styled for prominence; triggers authentication. \\
-			Register prompt        & Registration of new users. \\
-			Minimal layout         & Focuses attention on form completion. \\
+			\textbf{Email/Password fields}  & Standardized input format for familiarity and quick completion. \\
+			\textbf{Login button}       	& Primary action styled for prominence; triggers authentication. \\
+			\textbf{Register option}        & Registration of new users. \\
+			\textbf{Minimal layout}         & Focuses attention on form completion. \\
 			\bottomrule
 		\end{tabular}
 	\end{table}
@@ -223,13 +365,15 @@ cards maximise tap targets on touch devices.
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.6\linewidth]{pictures/main/RegisterAccount_Figma.png}%
+		\includegraphics[width=0.6\linewidth]{pictures/main/RegisterAccount_Figma}%
 		\caption{Account registration form with validation fields and terms agreement.}
 		\label{fig:ui-register}
 	\end{figure}
 
 	\paragraph{Explanation}%
-	The registration form balances thorough validation with user-friendly design. Required fields (username, email, password confirmation) ensure data quality, while the terms checkbox and clear CTA (*"Sign Up"*) streamline legal compliance and conversion. The secondary login prompt avoids duplicate account creation.
+	The registration form balances thorough validation with user-friendly design.
+	Required fields (username, email, password confirmation) ensure data quality, while the terms checkbox and clear CTA (*"Sign Up"*) streamline legal compliance and conversion.
+	The secondary login prompt avoids duplicate account creation.
 
 	\begin{table}[H]
 		\centering
@@ -238,11 +382,11 @@ cards maximise tap targets on touch devices.
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
 			\toprule
 			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-			Required input fields   & Ensures valid data collection (e.g., password confirmation for security). \\
-			Terms checkbox          & Explicit user consent for legal compliance; prevents unchecked submissions. \\
-			"Sign Up" CTA          & High-contrast button finalizes conversion with clear action. \\
-			Login prompt           & Redirects existing users to avoid frustration or duplicate accounts. \\
-			Minimalist layout      & Groups related fields (e.g., passwords) to reduce completion time. \\
+			\textbf{Required register fields}   & Ensures valid data collection (e.g., password confirmation for security). \\
+			\textbf{Terms checkbox}          	& Explicit user consent for legal compliance; prevents unchecked submissions. \\
+			\textbf{``Sign Up Button''}      	& High-contrast button finalizes conversion with clear action. \\
+			\textbf{Login option}            	& Redirects existing users to avoid frustration or duplicate accounts. \\
+			\textbf{Minimalist layout}       	& Groups related fields (e.g., passwords) to reduce completion time. \\
 			\bottomrule
 		\end{tabular}
 	\end{table}
@@ -261,14 +405,15 @@ cards maximise tap targets on touch devices.
 		\item \textbf{Account} - This page contains settings related to the administrator's account, including profile information, profile settings, password management, notification preferences, social account management, and the option to delete the account.
 		\item \textbf{Settings} - This page contains global settings for the platform, such as language and timezone preferences, date and time formats, accessibility options, and other general configurations.
 	\end{itemize}
+	\newpage
 	\subsection{Overview Page}\label{subsec:overview-page}
-	
-	
+
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=1\textwidth]{pictures/admin/Overview_Admin}
-		\caption{Overview page in dark mode}\label{fig:figure1}
+		\caption{Overview page in a dark mode.}\label{fig:figure1}
 	\end{figure}
+
 	\vspace{0.3cm}
 	The Overview Page serves as an analytics dashboard where administrators can track the platform’s performance in real time. \\ \\
 	At the top, four distinct cards display key performance indicators (KPIs):
@@ -284,14 +429,16 @@ cards maximise tap targets on touch devices.
 		\item \textbf{Category Distribution (Pie Chart)} - Shows the proportion of sales by product category, highlighting which categories perform best.
 		\item \textbf{Sales by Channel (Bar Chart)} - Breaks down sales by purchase channel—Website, Mobile App, Marketplace, and Social Media—revealing which channels drive the most revenue.
 	\end{itemize}
-	
-	
+
+	\newpage
 	\subsection{Product Page}\label{subsec:product-page}
+
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{pictures/admin/Products_Admin}
 		\caption{Products page}\label{fig:figure2}
 	\end{figure}
+
 	This page allows the administrator to manage products efficiently while monitoring key performance metrics. \\ \\
 	\textbf{KPI Cards} \\
 	At the top, four distinct cards display key performance indicators:
@@ -330,7 +477,7 @@ cards maximise tap targets on touch devices.
 	\subsection{Customers Page}\label{subsec:customers-page}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.9\textwidth]{pictures/admin/Customers_Admin}
+		\includegraphics[width=0.95\textwidth]{pictures/admin/Customers_Admin}
 		\caption{Customers page}\label{fig:figure3}
 	\end{figure}
 	This page allows the administrator to manage customers/users efficiently. \\ \\
@@ -385,7 +532,7 @@ cards maximise tap targets on touch devices.
 		\caption{Profile settings page}\label{fig:figure5}
 	\end{figure}
 	This page allows the administrator to view and update their personal information.
-	It is organized into two main sections: \\
+	It is organized into two main sections: \\ \\
 	\textbf{Personal Information} \\
 	The admin can update the following fields: Name, Email Address, Phone Number \\ \\
 	\textbf{Address Information} \\
@@ -395,9 +542,10 @@ cards maximise tap targets on touch devices.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.8\textwidth]{pictures/admin/Password_Admin}
-		\caption{Password and Security page}\label{fig:figure6}
+		\caption{Password and Security page.}\label{fig:figure6}
 	\end{figure}
-	This page allows the administrator to change their password and manage two-factor authentication (2FA). It is organized into two main sections: \\ \\
+	This page allows the administrator to change their \textbf{password} and manage \textbf{two-factor authentication (2FA)}.
+	It is organized into two main sections: \\ \\
 	\textbf{Change Password} \\
 	The admin can update their login password by entering:
 	\begin{itemize}
@@ -422,7 +570,7 @@ cards maximise tap targets on touch devices.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{pictures/admin/Connected_Accounts_Admin}
-		\caption{Social Account page}\label{fig:figure8}
+		\caption{Social Account page.}\label{fig:figure8}
 	\end{figure}
 	This page provides the administrator with the ability to manage connections to various external social accounts such as Google, GitHub, and others. It displays a list of all currently connected accounts, including:
 	\begin{itemize}
@@ -466,76 +614,81 @@ cards maximise tap targets on touch devices.
 		\item \textbf{Date/Time Format Section} - Offers radio buttons to switch between different date/time display formats (e.g., DD/MM/YYYY or MM/DD/YYYY).
 		\item \textbf{Accessibility Section} - A dropdown menu to change UI display size or enable accessibility features (e.g., larger text, high-contrast mode).
 		\item \textbf{Data Management Section} - Provides an option to clear cache to free up storage and refresh data.
-		\item \textbf{Balance Section} - A dropdown menu to set the auto-save frequency (e.g., every 5 minutes, 10 minutes).
+		\item \textbf{Balance Section} - A dropdown menu to set the auto-save option (e.g., every 5 minutes).
 		\item \textbf{Default Files Location Section:} Allows the admin to set the default folder for downloads or exported files.
 		\item \textbf{Report Data Section:} Includes an ``Export Data'' button for downloading a complete copy of account-related data.
 	\end{itemize}
-	\newpage
-	\section{FlowChart}\label{sec:few}
 
-	\begin{figure}[h]
+	\section{FlowCharts}\label{sec:few}
+
+	\subsection{Admin Layout}\label{subsec:admin-layout}
+
+	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.42\linewidth]{pictures/main/UserFlow.png}
-		\label{fig:figure17}
+		\includegraphics[width=\linewidth]{pictures/admin/Admin_Layout}
+		\caption{Overview of the Admin Layout}
+		\label{fig:admin_layout}
+	\end{figure}
+
+	\newpage
+	\subsection{Main Layout}\label{subsec:main-layout}
+
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.44\linewidth]{pictures/main/UserFlow}
+		\label{fig:figure18}
 	\end{figure}
 		\newpage
 
 	\section{Figma Links}\label{sec:figma_linkss}
-	
-	
-	
-	% =======================================================
-\section{Design Decisions \& Rationale}
 
-In this section, we walk through the main design choices we made, explaining how each one supports the needs of our two primary users: \textbf{Regular Shoppers} and \textbf{Store Administrators}. Our goal was always to make the experience intuitive and efficient for everyone.
-
-\subsection{Layout}
-\begin{itemize}
-	\item \textbf{Home Screen Flow}: We start with a clear welcome message, then introduce what we offer, and finally highlight a few featured categories in a carousel. This step‑by‑step approach helps new visitors discover and explore without feeling lost. (Regular Shoppers)
-	\item \textbf{Flexible Product Grid}: No matter the screen size, our product cards keep the same proportions so items are easy to compare. Shoppers appreciate the consistency, and admins get a reliable preview of the catalog. (Regular Shoppers \& Administrators)
-	\item \textbf{Two‑Column Detail Views}: For checkout and admin pages, we split the screen: one side shows details like your cart, and the other gives the summary. It’s easier on the eyes and speeds up decision‑making. (Regular Shoppers)
-\end{itemize}
-
-\subsection{Interaction Patterns}
-\begin{itemize}
-	\item \textbf{Always-Visible Top Bar}: Search, cart, and account buttons remain on screen at all times, allowing shoppers to switch effortlessly between browsing, their cart, and checkout with a single click. (Regular Shoppers)
-	
-	\item \textbf{Slide‑Out Filters}: On mobile, shoppers tap the hamburger icon; on desktop, a pill‑shaped button reveals filters. The page stays clean, and everyone can narrow down lists without losing context. (Regular Shoppers \& Administrators)
-	\item \textbf{Quick‑Edit Modals}: In admin pages, small pop‑ups let you edit products or users right where you are, without loading a new page. It cuts down on clicks and keeps your workflow smooth. (Administrators)
-\end{itemize}
-
-\subsection{Colors}
-\begin{itemize}
-	\item \textbf{Bold Accent for Actions}: We chose a bright color for key buttons like “Shop Now” and “Save Changes.” It instantly grabs attention and guides users to the next step. (Regular Shoppers \& Administrators)
-	\item \textbf{Calm, High‑Contrast Backgrounds}: Soft greys and clean whites let product images shine and ensure all text meets accessibility standards for contrast. (Accessibility)
-	\item \textbf{Light and Dark Modes}: Whether you prefer a bright interface by day or a darker one at night, we’ve got you covered. It’s easier on the eyes and adapts to any environment. (Regular Shoppers \& Administrators)
-\end{itemize}
-
-\subsection{Typography}
-\begin{itemize}
-	\item \textbf{Simple Sans‑Serif Font}: We picked a modern font that’s easy to read at any size. Headings and body text use different weights so you can scan titles and details at a glance. (Regular Shoppers \& Administrators)
-	\item \textbf{Readable Sizes and Spacing}: Body text is set to a comfy 16pt with generous line spacing. Larger headings help break up content and make busy pages feel more organized. (Accessibility)
-\end{itemize}
-
-\subsection{Accessibility}
-\begin{itemize}
-
-	\item \textbf{Screen‑Reader Support}: We added ARIA labels and roles to menus, dialogs, and forms so that assistive tech can read out exactly what’s happening. (Accessibility)
+	Link: \textbf{\href{https://www.figma.com/design/7LHBUb3AS0K3xtEwSQONxH/Mockup?node-id=66-3583&t=5vuDVSEo99qMNsce-1}{Figma Mockup}}
 
 
-\end{itemize}
+	\section{Design Decisions \& Rationale}\label{sec:design-decisions-&-rationale}
 
+	In this section, we walk through the main design choices we made, explaining how each one supports the needs of our two primary users: \textbf{Regular Shoppers} and \textbf{Store Administrators}. Our goal was always to make the experience intuitive and efficient for everyone.
 
+	\subsection{Layout}\label{subsec:layout}
 
-	% ==========================================================
+	\begin{itemize}
+	\item \textbf{Home Screen Flow}: We start with a clear welcome message, then introduce what we offer, and finally highlight a few featured categories in a carousel. This step‑by‑step approach helps new visitors discover and explore without feeling lost. \textbf{(Regular Shoppers)}
+	\item \textbf{Flexible Product Grid}: No matter the screen size, our product cards keep the same proportions, so items are easy to compare. Shoppers appreciate the consistency, and admins get a reliable preview of the catalog. \textbf{(Regular Shoppers \& Administrators)}
+	\item \textbf{Two‑Column Detail Views}: For checkout and admin pages, we split the screen: one side shows details like your cart, and the other gives the summary. It’s easier on the eyes and speeds up decision‑making. \textbf{(Regular Shoppers)}
+	\end{itemize}
+
+	\subsection{Interaction Patterns}\label{subsec:interaction-patterns}
+
+	\begin{itemize}
+	\item \textbf{Always-Visible Top Bar}: Search, cart, and account buttons remain on screen at all times, allowing shoppers to switch effortlessly between browsing, their cart, and checkout with a single click. \textbf{(Regular Shoppers)}
+	\item \textbf{Slide‑Out Filters}: On mobile, shoppers tap the hamburger icon; on desktop, a pill‑shaped button reveals filters. The page stays clean, and everyone can narrow down lists without losing context. \textbf{(Regular Shoppers \& Administrators)}
+	\item \textbf{Quick‑Edit Modals}: In admin pages, small pop‑ups let you edit products or users right where you are, without loading a new page. It cuts down on clicks and keeps your workflow smooth. \textbf{(Administrators)}
+	\end{itemize}
+
+	\subsection{Colors}\label{subsec:colors}
+
+	\begin{itemize}
+	\item \textbf{Bold Accent for Actions}: We chose a bright color for key buttons like \textbf{“Shop Now”} and \textbf{“Save Changes.”} It instantly grabs attention and guides users to the next step. \textbf{(Regular Shoppers \& Administrators)}
+	\item \textbf{Calm, High‑Contrast Backgrounds}: A palette of soft grays and crisp whites lets product images stand out, while maintaining high contrast for accessible, easy-to-read text. \textbf{(Accessibility)}
+	\item \textbf{Light and Dark Modes}: Whether you like a bright look during the day or a darker one at night, our interface adjusts to match. It’s easier on the eyes and fits any setting. \textbf{(Regular Shoppers \& Administrators)}
+	\end{itemize}
+
+	\subsection{Typography}\label{subsec:typography}
+
+	\begin{itemize}
+	\item \textbf{Simple Sans‑Serif Font}: We picked a modern font that’s straightforward to read at any size. Headings and body text use different weights so you can scan titles and details at a glance. \textbf{(Regular Shoppers \& Administrators)}
+	\item \textbf{Readable Sizes and Spacing}: Body text is set to a comfy 16pt with generous line spacing. Larger headings help break up content and make busy pages feel more organized. \textbf{(Accessibility)}
+	\end{itemize}
+
+	\subsection{Accessibility}\label{subsec:accessibility}
+
+	\begin{itemize}
+	\item \textbf{Screen‑Reader Support}: We added ARIA labels and roles to menus, dialogs, and forms so that assistive tech can read out exactly what’s happening. \textbf{(Accessibility)}
+	\end{itemize}
+
 	\section{Acknowledgment of AI Technologies}\label{sec:acknowledgment-of-ai-technologies}
-	Document drafted with GPT-4o and Figma Pilot UX AI; final content reviewed and refined by the authors.
+
+	This document was initially drafted with GPT-4o and Figma's Pilot UX AI. The final content was reviewed and refined by the authors.
 
 
-
-
-
-
-
-	
 \end{document}
