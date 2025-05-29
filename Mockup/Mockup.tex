@@ -187,7 +187,6 @@
 		\item Admin panel for catalogue and order management.
 		\item Light/dark-mode toggle.
 		\item Fully responsive.
-
 	\end{itemize}
 
 	\section{User Interface Design}\label{sec:user-interface-design}
@@ -207,8 +206,9 @@
 
 	\paragraph{Explanation}%
 	The home page follows a classic information funnel: brand section~$\rightarrow$ value
-	proposition~$\rightarrow$ featured category. A single call-to-action
-	(*“Shop Now”*) avoids decision fatigue on first contact.
+	proposition~$\rightarrow$ featured category.
+	A single call-to-action
+	\textbf{(“Shop Now”)} avoids decision fatigue on first contact.
 	All interactive controls (search, cart) are reachable within one
 	tap.
 
@@ -217,13 +217,12 @@
 		\caption{Home screen – elements and rationale}
 		\label{tab:home-elements}
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-			\toprule
-			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-			Persistent top-bar      & Immediate access to search \& cart.\\
-			Hero banner             & Communicates value proposition in one glance; accent colour draws the eye.\\
-			Category carousel       & Promotes bestselling category; horizontal swipe invites mobile interaction.\\
-
-			\bottomrule
+			\hline
+			\textbf{Design element} 		 & Purpose \& rationale \\ 	\hline
+			\textbf{Persistent top-bar}      & Immediate access to search \& cart.\\
+			\textbf{Hero banner}             & Communicates value proposition in one glance; accent colour draws the eye.\\
+			\textbf{Category carousel}       & Promotes bestselling category; horizontal swipe invites mobile interaction.\\
+			\hline
 		\end{tabular}
 	\end{table}
 	\subsection{Category Drawer (Hamburger / Desktop “Categories”)}\label{subsec:category-drawer-(hamburger-/-desktop-categories)}
@@ -246,14 +245,12 @@
 		\centering
 		\caption{Category drawer – elements and rationale}
 		\label{tab:category-elements}
-		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
+		\begin{tabular}{p{0.35\linewidth} p{0.60\linewidth}}
 			\toprule
-			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-
-			Hamburger icon (mobile) & Saves horizontal space; familiar pattern. \\
-			“Categories” pill (desktop) & reveals drawer on click. \\
-			Accordion list          & Supports deep hierarchies without scrolling fatigue. \\
-
+			\textbf{Design element} 				& Purpose \& rationale \\ \midrule
+			\textbf{Hamburger icon (mobile)} 		& Saves horizontal space; familiar pattern. \\
+			\textbf{Categories pill (desktop)} 		& reveals drawer on click. \\
+			\textbf{Accordion list}          		& Supports deep hierarchies without scrolling fatigue. \\
 			\bottomrule
 		\end{tabular}
 	\end{table}
@@ -281,14 +278,12 @@
 		\caption{Product list – elements and rationale}
 		\label{tab:product-elements}
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-			\toprule
-			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
-			Secondary navigation    & Lets users pivot between catalogue views .\\
-			Search field            & Supports goal-oriented discovery; full-width on desktop, icon on mobile.\\
-			Category dropdown       & Progressive narrowing while preserving context; default “Show all” reveals filter state.\\
-
-	
-			\bottomrule
+			\hline
+			\textbf{Design element} 		 & Purpose \& rationale \\ 	\hline
+			\textbf{Secondary navigation}    & Lets users pivot between catalogue views .\\
+			\textbf{Search field}            & Supports goal-oriented discovery; full-width on desktop, icon on mobile.\\
+			\textbf{Category dropdown}       & Progressive narrowing while preserving context; default “Show all” reveals filter state.\\
+			\hline
 		\end{tabular}
 	\end{table}
 
@@ -301,8 +296,24 @@
 		\label{fig:ui-products_description}
 	\end{figure}
 
-This page shows the product details and includes a button to add the item to your shopping cart.
+	\paragraph{Explanation}
+	The product detail page provides a focused and visually rich view of an individual item, allowing users to assess it before making a purchase.
+	A high-resolution product image is accompanied by supporting thumbnails.
+	There you can see the \textbf{``Add to Cart''} button if user likes it, he clicks it, and the product is added to the cart.
+	The cart icon in the top-right corner includes a numeric badge indicating the number of items, reinforcing feedback after adding a product.
 
+	\begin{table}[H]
+		\centering
+		\caption{Shopping cart – elements and rationale}
+		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
+			\hline
+			\textbf{Design element} & Purpose \& rationale \\
+			\hline
+			Product Description & Provides a clear breakdown of details (e.g., price, shipping)  \\
+			Proceed to Checkout & High-contrast button positioned last in the visual flow if the user want to buy the product. \\
+			\hline
+		\end{tabular}
+	\end{table}
 
 	% =======================================================
 	% 2) SHOPPING CART SCREEN  -------------------------------
@@ -329,14 +340,14 @@ This page shows the product details and includes a button to add the item to you
 		\label{tab:cart-elements}
 
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-        	\toprule
-        	\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
+			\hline
+        	\textbf{Design element} & \textbf{Purpose \& rationale} \\ 	\hline
 				\textbf{Product rows}            & Displays item names, images, and prices for verification.
-												 \textbf{``Add (Plus) Button''} and \textbf{``Remove (Minus) Button''} options allow instant edits. \\
+			                                     \textbf{``Add (Plus) Button''} and \textbf{``Remove (Minus) Button''} options allow instant edits. \\
 				\textbf{Order summary}           & Provides a clear breakdown of costs (e.g., subtotal, shipping) to reduce checkout abandonment. \\
 				\textbf{Proceed to Checkout}     & High-contrast button positioned last in the visual flow to guide users toward conversion. \\
 				\textbf{Login/Register prompt}   & Encourages account creation after cart engagement to avoid early friction. \\
-        	\bottomrule
+			\hline
     	\end{tabular}
 
 	\end{table}
@@ -363,13 +374,13 @@ This page shows the product details and includes a button to add the item to you
 		\caption{Login screen – elements and rationale}
 		\label{tab:login-elements}
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-			\toprule
-			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
+			\hline
+			\textbf{Design element} & \textbf{Purpose \& rationale} \\ 	\hline
 			\textbf{Email/Password fields}  & Standardized input format for familiarity and quick completion. \\
 			\textbf{Login button}       	& Primary action styled for prominence; triggers authentication. \\
 			\textbf{Register option}        & Registration of new users. \\
 			\textbf{Minimal layout}         & Focuses attention on form completion. \\
-			\bottomrule
+			\hline
 		\end{tabular}
 	\end{table}
 
@@ -384,7 +395,7 @@ This page shows the product details and includes a button to add the item to you
 
 	\paragraph{Explanation}%
 	The registration form balances thorough validation with user-friendly design.
-	Required fields (username, email, password confirmation) ensure data quality, while the terms checkbox and clear CTA (*"Sign Up"*) streamline legal compliance and conversion.
+	Required fields (username, email, password confirmation) ensure data quality, while the terms checkbox and clear CTA \textbf{("Sign Up")} streamline legal compliance and conversion.
 	The secondary login prompt avoids duplicate account creation.
 
 	\begin{table}[H]
@@ -392,14 +403,14 @@ This page shows the product details and includes a button to add the item to you
 		\caption{Registration form – elements and rationale}
 		\label{tab:register-elements}
 		\begin{tabular}{p{0.30\linewidth} p{0.60\linewidth}}
-			\toprule
-			\textbf{Design element} & \textbf{Purpose \& rationale} \\ \midrule
+			\hline
+			\textbf{Design element} & \textbf{Purpose \& rationale} \\ 	\hline
 			\textbf{Required register fields}   & Ensures valid data collection (e.g., password confirmation for security). \\
 			\textbf{Terms checkbox}          	& Explicit user consent for legal compliance; prevents unchecked submissions. \\
-			\textbf{``Sign Up Button''}      	& High-contrast button finalizes conversion with clear action. \\
+			\textbf{Sign Up Button}      	    & High-contrast button finalizes conversion with clear action. \\
 			\textbf{Login option}            	& Redirects existing users to avoid frustration or duplicate accounts. \\
 			\textbf{Minimalist layout}       	& Groups related fields (e.g., passwords) to reduce completion time. \\
-			\bottomrule
+			\hline
 		\end{tabular}
 	\end{table}
 
@@ -409,7 +420,8 @@ This page shows the product details and includes a button to add the item to you
 	
 	
 	\subsection{Admin Architecture}\label{subsec:admin-architecture}
-	The admin dashboard provides a comprehensive overview of key business metrics. It features six distinct pages, accessible via the left-hand navigation bar:
+	The admin dashboard provides a comprehensive overview of key business metrics.
+	It features six distinct pages, accessible via the left-hand navigation bar:
 	\begin{itemize}
 		\item \textbf{Overview} - This is the primary landing page, offering a high-level summary of performance.
 		\item \textbf{Products} - This page would likely allow administrators to view, add, edit, or delete products.
@@ -523,8 +535,7 @@ This page shows the product details and includes a button to add the item to you
 		\item \textbf{User Growth (Line Graph)} - Displays the growth in user registrations over time.
 		\item \textbf{User Activity Heatmap (Bar Chart)} - Shows the distribution of user activity across different age groups or time periods.
 	\end{itemize}
-	
-	
+
 	\subsection{Account Page}\label{subsec:account-page}
 	
 	\subsubsection{Profile}
@@ -556,7 +567,7 @@ This page shows the product details and includes a button to add the item to you
 		\includegraphics[width=0.8\textwidth]{pictures/admin/Password_Admin}
 		\caption{Password and Security page.}\label{fig:figure6}
 	\end{figure}
-	This page allows the administrator to change their \textbf{password} and manage \textbf{two-factor authentication (2FA)}.
+	This page allows the administrator to change their \textbf{password} and manage \\ \textbf{two-factor authentication (2FA)}.
 	It is organized into two main sections: \\ \\
 	\textbf{Change Password} \\
 	The admin can update their login password by entering:
@@ -568,22 +579,27 @@ This page shows the product details and includes a button to add the item to you
 	A \textbf{"Change Password"} button is provided at the bottom of this section to apply the update. \\ \\
 	\textbf{Two-Factor Authentication (2FA)} \\
 	This section enables the administrator to enhance account security with 2FA. It includes: A toggle or switch to enable or disable 2FA
-	
-	
+
 	\subsubsection{Notifications}
+	
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.8\textwidth]{pictures/admin/Notifications_Admin}
 		\caption{Notifications page}\label{fig:figure7}
 	\end{figure}
 	This page displays notification settings.
-	It includes sections for Push Notifications, Email Notifications, and SMS Notifications. Each section has toggles to enable or disable different types of notifications, such as new messages, activity on posts, promotional updates, summary emails, and marketing updates. It also shows the email address and phone number where notifications are sent, and a "Save Settings" button at the bottom to apply the changes.
+	It includes sections for \textbf{Push Notifications, Email Notifications, and SMS Notifications.} Each section has toggles to enable or disable different types of notifications, such as new messages, activity on posts, promotional updates, summary emails, and marketing updates.
+	It also shows the email address and phone number where notifications are sent, and a \textbf{"Save Settings"} button at the bottom to apply the changes.
+
+	\newpage
 	\subsubsection{Social Accounts}
+
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{pictures/admin/Connected_Accounts_Admin}
 		\caption{Social Account page.}\label{fig:figure8}
 	\end{figure}
+	
 	This page provides the administrator with the ability to manage connections to various external social accounts such as Google, GitHub, and others. It displays a list of all currently connected accounts, including:
 	\begin{itemize}
 		\item \textbf{Account Provider} (e.g., Google, GitHub)
@@ -593,11 +609,10 @@ This page shows the product details and includes a button to add the item to you
 	Key Features:
 	\begin{itemize}
 		\item \textbf{Connect New Account:} A button or option allows the admin to link a new social account by authenticating with the selected provider.
-		\textbf{Disconnect Account:} For each connected account, there is an option to disconnect or revoke access.
+		\item \textbf{Disconnect Account:} For each connected account, there is an option to disconnect or revoke access.
 		\item \textbf{Connection History:} Displays the date and time when each account was connected.
 	\end{itemize}
 	The main purpose of this page is to give administrators full control over their linked external accounts, ensuring a secure and customizable login experience.
-	
 	
 	\subsubsection{Delete Account}
 	\begin{figure}[H]
