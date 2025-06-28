@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 
 interface HeaderProps {
     title: string;
+    children?: React.ReactNode;
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
