@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Trash2, Loader2, XCircle, CheckCircle } from "lucide-react";
+import { Trash2, Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const DeleteAccountPage: React.FC = () => {
@@ -12,6 +12,15 @@ const DeleteAccountPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false);
   const [finalSuccess, setFinalSuccess] = useState<boolean>(false);
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const initialLoadTimer = setTimeout(() => {
+      setPageLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(initialLoadTimer);
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -20,13 +29,9 @@ const DeleteAccountPage: React.FC = () => {
       timer = setTimeout(() => {
         setDeleteSuccess(false);
         setFinalSuccess(true);
-        // In a real app, you'd likely redirect here:
-        // navigate('/'); // Example using React Router
         console.log("Account successfully processed, ready for redirect/final message.");
       }, 2000);
     }
-
-    // Cleanup function to clear the timer
     return () => {
       if (timer) {
         clearTimeout(timer);
@@ -46,7 +51,6 @@ const DeleteAccountPage: React.FC = () => {
         throw new Error("Incorrect password.");
       }
 
-      // Simulate the deletion process API call
       await new Promise((resolve, reject) => {
         const success = Math.random() > 0.2;
         setTimeout(() => {
@@ -58,18 +62,15 @@ const DeleteAccountPage: React.FC = () => {
         }, 1500);
       });
 
-      // If simulation successful:
       setLoading(false);
-      setDeleteSuccess(true); // Trigger the 'deleting...' message and the useEffect timer
+      setDeleteSuccess(true);
 
     } catch (err: any) {
-      // If simulation failed or password incorrect:
       setLoading(false);
       setError(err.message || "An unknown error occurred during deletion.");
       setDeleteSuccess(false);
       setFinalSuccess(false);
     }
-    // --- End Simulation ---
   };
 
   // Reset state when exiting confirmation
@@ -82,7 +83,10 @@ const DeleteAccountPage: React.FC = () => {
     setFinalSuccess(false);
   };
 
-  // Show the final success message block if deletion was ultimately successful
+  const handleGoToHomepage = () => {
+    window.location.href = '/';
+  };
+
   if (finalSuccess) {
     return (
         <div className="container mx-auto p-6 flex justify-center items-center min-h-screen">
@@ -91,12 +95,26 @@ const DeleteAccountPage: React.FC = () => {
             <CheckCircle className={`w-12 h-12 mb-4 ${isDarkTheme ? 'text-green-500' : 'text-green-700'}`} />
             <h2 className={`text-2xl font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-green-900'}`}>Account Deleted Successfully</h2>
             <p className={`mb-6 ${isDarkTheme ? 'text-white' : 'text-green-800'}`}>Your account and all associated data have been permanently removed.</p>
-            <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">Go to Homepage</button>
+            <button
+                onClick={handleGoToHomepage} // Added onClick handler
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+            >
+              Go to Homepage
+            </button>
           </div>
         </div>
     );
   }
 
+  if (pageLoading) {
+    return (
+        <div className={`fixed inset-0 flex flex-col items-center justify-center z-50
+                        ${isDarkTheme ? 'bg-gray-900 bg-opacity-90' : 'bg-gray-200 bg-opacity-90'}`}>
+          <RefreshCcw className={`w-12 h-12 animate-spin mb-4 ${isDarkTheme ? 'text-blue-400' : 'text-blue-600'}`} />
+          <p className={`text-xl font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>Loading delete account...</p>
+        </div>
+    );
+  }
 
   return (
       <div className="container mx-auto p-6">

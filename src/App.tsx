@@ -23,7 +23,7 @@ import ProfileSettingsPage from "./Pages/Admin/Account/ProfileSettingsPage.tsx";
 import PasswordPage from "./Pages/Admin/Account/PasswordPage.tsx";
 import NotificationsPage from "./Pages/Admin/Account/NotificationsPage.tsx";
 import SocialPage from "./Pages/Admin/Account/SocialPage.tsx";
-import DeletePage from "./Pages/Admin/Account/DeletePage.tsx";
+import DeletePage from "./Pages/Admin/Account/DeleteAccountPage.tsx";
 import AccountPage from "./Pages/Admin/Account/AccountPage.tsx";
 import ProductDetailPage from "./Pages/Main/ProductDetails.tsx";
 

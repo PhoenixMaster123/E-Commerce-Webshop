@@ -41,17 +41,6 @@ const AccountAside = () => {
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className={`p-2 rounded-full ${hoverClass} transition-colors max-w-fit`}
         >
-        <Link to="/your-route" className="flex items-center ps-2.0 mb-0 p-2">
-          <img 
-            src="https://flowbite.com/docs/images/logo.svg" 
-            className="me-3"  /* rounded-full -> round the picture */
-            alt="Flowbite Logo" 
-            style={{ height: "30px", width: "auto" }} 
-          />
-          <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-            Flowbite
-          </span>
-        </Link>
         </motion.button>
 
         <nav className="mt-2 flex-grow">

@@ -1,8 +1,7 @@
-// src/pages/NotificationSettings.jsx
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "next-themes"; // Assuming next-themes is installed
-import { Loader2, XCircle, CheckCircle } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react"; // Import RefreshCcw
 
 // --- NotificationToggle Component ---
 interface NotificationToggleProps {
@@ -19,7 +18,7 @@ const NotificationToggle: React.FC<NotificationToggleProps> = ({ label, descript
 
   const labelColor = useMemo(() => {
     if (disabled) return isDarkTheme ? "text-gray-600" : "text-gray-400";
-    return isDarkTheme ? "text-gray-300" : "text-gray-800"; // Always dark text in light mode, lighter in dark mode when enabled
+    return isDarkTheme ? "text-gray-300" : "text-gray-800";
   }, [isDarkTheme, disabled]);
 
   const descriptionColor = isDarkTheme ? "text-gray-400" : "text-gray-500";
@@ -30,7 +29,7 @@ const NotificationToggle: React.FC<NotificationToggleProps> = ({ label, descript
       ${disabled ? 'opacity-60' : ''}`
       }>
         <div className="flex-1 pr-4">
-          <span className={`text-base font-medium ${labelColor}`}>{label}</span> {/* Added font-medium */}
+          <span className={`text-base font-medium ${labelColor}`}>{label}</span>
           {description && (
               <p className={`text-sm mt-1 ${descriptionColor}`}>{description}</p>
           )}
@@ -80,7 +79,6 @@ interface NotificationSettingsState {
 }
 
 type NotificationType = 'push' | 'email' | 'sms';
-// Using template literal types to correctly infer keys for sub-objects
 type PushSettingKey = Exclude<keyof NotificationSettingsState['push'], 'enabled'>;
 type EmailSettingKey = Exclude<keyof NotificationSettingsState['email'], 'enabled'>;
 type SmsSettingKey = Exclude<keyof NotificationSettingsState['sms'], 'enabled'>;
@@ -100,13 +98,11 @@ const NotificationPage: React.FC = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [statusType, setStatusType] = useState<'success' | 'error' | null>(null);
 
-
   // Effect to fetch initial settings
   useEffect(() => {
     const fetchSettings = async () => {
-      setIsLoadingInitial(true);
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 800));
+      setIsLoadingInitial(true)
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const fetchedSettings: NotificationSettingsState = {
         push: {
           enabled: true,
@@ -132,7 +128,7 @@ const NotificationPage: React.FC = () => {
     };
 
     fetchSettings();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
 
   // Effect for clearing status message timeout
@@ -143,54 +139,45 @@ const NotificationPage: React.FC = () => {
       timer = setTimeout(() => {
         setStatusMessage(null);
         setStatusType(null);
-      }, 4000); // Message disappears after 4 seconds
+      }, 4000);
     }
     return () => {
-      if (timer) clearTimeout(timer); // Cleanup on unmount or if message changes
+      if (timer) clearTimeout(timer);
     };
   }, [statusMessage]);
 
-
-  // Memoized value to check for unsaved changes
   const hasUnsavedChanges = useMemo(() => {
     if (!settings || !initialSettings) return false;
     return JSON.stringify(settings) !== JSON.stringify(initialSettings);
   }, [settings, initialSettings]);
 
-
-  // Callback for toggling individual sub-settings (e.g., new messages for push)
   const handleToggle = useCallback((type: NotificationType, key: SpecificNotificationSettingKey) => {
-    if (!settings) return; // Should not happen given the loading state
+    if (!settings) return;
 
     setSettings(prevSettings => {
-      if (!prevSettings) return null; // Defensive check
+      if (!prevSettings) return null;
 
-      // Ensure type safety when accessing nested properties
       const currentTypeSettings = prevSettings[type] as { [k: string]: boolean };
 
       return {
         ...prevSettings,
         [type]: {
           ...currentTypeSettings,
-          [key]: !currentTypeSettings[key], // Toggle the specific sub-setting
+          [key]: !currentTypeSettings[key],
         },
       };
     });
-  }, [settings]); // Depend on settings to ensure latest state is used in callback
+  }, [settings]);
 
-
-  // Callback for toggling the main category (e.g., enable/disable all push notifications)
   const handleMainToggle = useCallback((type: NotificationType) => {
-    if (!settings) return; // Should not happen
+    if (!settings) return;
 
     setSettings(prevSettings => {
-      if (!prevSettings) return null; // Defensive check
+      if (!prevSettings) return null;
 
       const newEnabledState = !prevSettings[type].enabled;
-      // When main toggle is disabled, also disable all sub-toggles
       const updatedSubSettings = { ...prevSettings[type] };
       if (!newEnabledState) {
-        // Disable all sub-settings if the main category is being disabled
         for (const subKey in updatedSubSettings) {
           if (subKey !== 'enabled') {
             (updatedSubSettings as any)[subKey] = false;
@@ -201,37 +188,34 @@ const NotificationPage: React.FC = () => {
       return {
         ...prevSettings,
         [type]: {
-          ...updatedSubSettings, // Use updatedSubSettings to propagate disabled state
+          ...updatedSubSettings,
           enabled: newEnabledState,
         },
       };
     });
-  }, [settings]); // Depend on settings for latest state
+  }, [settings]);
 
-
-  // Callback for saving settings to a backend (simulated)
   const handleSave = useCallback(async () => {
-    if (!settings || isSaving || !hasUnsavedChanges) return; // Disable if no changes or already saving
+    if (!settings || isSaving || !hasUnsavedChanges) return;
 
     setIsSaving(true);
-    setStatusMessage(null); // Clear previous status messages before saving
+    setStatusMessage(null);
 
     try {
       console.log("Simulating saving notification settings:", settings);
-      // Simulate API call delay and success/failure
       await new Promise((resolve, reject) => {
-        const success = Math.random() > 0.1; // 90% chance of success
+        const success = Math.random() > 0.1;
         setTimeout(() => {
           if (success) {
             resolve(null);
           } else {
             reject(new Error("Failed to save settings. Please try again."));
           }
-        }, 1000); // 1 second delay
+        }, 1000);
       });
 
       setIsSaving(false);
-      setInitialSettings(settings); // Update initial settings to match saved settings
+      setInitialSettings(settings);
       setStatusMessage("Settings saved successfully!");
       setStatusType('success');
 
@@ -240,25 +224,31 @@ const NotificationPage: React.FC = () => {
       setStatusMessage(err.message || "An unknown error occurred during save.");
       setStatusType('error');
     }
-  }, [settings, hasUnsavedChanges, isSaving]); // Dependencies for useCallback
+  }, [settings, hasUnsavedChanges, isSaving]);
 
-
-  // --- Render Loading State ---
-  if (isLoadingInitial || settings === null) {
+  if (isLoadingInitial) {
     return (
-        <div className={`container mx-auto px-6 py-8 md:flex md:gap-8
-        ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`
-        }>
-          <div className={`flex-1 p-6 rounded-lg shadow-md text-center flex items-center justify-center min-h-64
-          ${isDarkTheme ? 'bg-gray-800' : 'bg-white'}`
-          }>
-            <Loader2 className="animate-spin mr-3" size={24} /> Loading settings...
+        <div className={`fixed inset-0 flex flex-col items-center justify-center z-50
+                        ${isDarkTheme ? 'bg-gray-900 bg-opacity-90' : 'bg-gray-200 bg-opacity-90'}`}>
+          <RefreshCcw className={`w-12 h-12 animate-spin mb-4 ${isDarkTheme ? 'text-blue-400' : 'text-blue-600'}`} />
+          <p className={`text-xl font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>Loading notification settings...</p>
+        </div>
+    );
+  }
+
+  if (settings === null) {
+    return (
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+          <div className={`p-6 rounded-lg shadow-md border-2 text-center flex flex-col items-center justify-center
+                          ${isDarkTheme ? 'bg-red-900 bg-opacity-30 text-red-400 border-red-700' : 'bg-red-100 text-red-700 border-red-300'}`}>
+            <XCircle size={32} className="mb-3" />
+            <span className="text-lg font-medium">Failed to load settings.</span>
           </div>
         </div>
     );
   }
 
-  // --- Main Component Render ---
+  // --- Main Component Render (only if not loading and settings are available) ---
   return (
       <div className={`container mx-auto px-6 py-8 md:flex md:gap-8`}>
         <div className={`flex-1 p-6 rounded-lg shadow-md
@@ -278,7 +268,7 @@ const NotificationPage: React.FC = () => {
                         (isDarkTheme ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800') :
                         statusType === 'error' ?
                             (isDarkTheme ? 'bg-red-900 text-red-200' : 'bg-red-100 text-red-800') :
-                            (isDarkTheme ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800') // Fallback neutral style
+                            (isDarkTheme ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800')
                     }`}
                 >
                   {statusType === 'success' && <CheckCircle size={18} />}

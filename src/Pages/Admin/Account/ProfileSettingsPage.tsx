@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, Loader2, RefreshCcw } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 const ProfileSettingsPage = () => {
@@ -17,24 +17,16 @@ const ProfileSettingsPage = () => {
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
   const [zipCode, setZipCode] = useState('');
-
-  // State for the success message visibility
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  // State to store the timeout ID for success message
   const [successTimeoutId, setSuccessTimeoutId] = useState<NodeJS.Timeout | null>(null);
-  // State for submission loading
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // NEW: State for initial page loading
-  const [isLoadingInitial, setIsLoadingInitial] = useState(true); // Set to true initially
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
 
-  // --- Effect for initial data fetch ---
   useEffect(() => {
     const fetchProfileData = async () => {
       setIsLoadingInitial(true);
-      // Simulate API call to fetch existing profile data
-      await new Promise(resolve => setTimeout(resolve, 800)); // Simulate 800ms fetch time
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Populate form fields with simulated fetched data
       setFirstName('Jane');
       setLastName('Doe');
       setEmail('jane.doe@example.com');
@@ -48,9 +40,8 @@ const ProfileSettingsPage = () => {
     };
 
     fetchProfileData();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
-  // --- Effect for clearing Success Message Timeout ---
   useEffect(() => {
     return () => {
       if (successTimeoutId) {
@@ -62,37 +53,23 @@ const ProfileSettingsPage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isSubmitting) return; // Prevent multiple submissions
+    if (isSubmitting || isLoadingInitial) return;
 
-    setIsSubmitting(true); // Set submitting state to true
-    setShowSuccessMessage(false); // Hide any previous success messages
+    setIsSubmitting(true);
+    setShowSuccessMessage(false);
 
-    // --- Handle form submission logic here ---
     const formData = { firstName, lastName, email, phone, country, city, address, zipCode };
     console.log('Form Submitted Data:', formData);
 
     try {
-      // Simulate API call and success/failure
       const isSuccess = await new Promise<boolean>((resolve) => {
         setTimeout(() => {
           const success = Math.random() > 0.1; // 90% success rate
           resolve(success);
-        }, 1000); // Simulate 1 second API delay
+        }, 1000);
       });
 
       if (isSuccess) {
-        // In a real application, you might not clear fields but rather re-fetch or confirm save
-        // For demonstration, we'll keep the fields as they were just saved.
-        // setFirstName('');
-        // setLastName('');
-        // setEmail('');
-        // setPhone('');
-        // setCountry('');
-        // setCity('');
-        // setAddress('');
-        // setZipCode('');
-        console.log('Form fields retained after save');
-
         setShowSuccessMessage(true);
 
         if (successTimeoutId) {
@@ -102,30 +79,26 @@ const ProfileSettingsPage = () => {
         const newTimeoutId = setTimeout(() => {
           setShowSuccessMessage(false);
           setSuccessTimeoutId(null);
-        }, 2000); // Message disappears after 2 seconds
+        }, 2000);
         setSuccessTimeoutId(newTimeoutId);
 
       } else {
         console.error("Form submission failed");
-        // You could add an error message state here similar to the PasswordPage
       }
     } catch (error) {
       console.error("An error occurred during form submission:", error);
     } finally {
-      setIsSubmitting(false); // Reset submitting state
+      setIsSubmitting(false);
     }
   };
 
-  // --- Render Loading State ---
   if (isLoadingInitial) {
     return (
-        <section className={`flex-1 border rounded-lg p-6 sm:p-8 shadow-md relative
-        ${isDarkTheme ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
-        flex items-center justify-center min-h-64`} // Added min-h-64 for better loader display
-        >
-          <Loader2 className="animate-spin mr-3" size={24} />
-          <span className={`${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>Loading profile data...</span>
-        </section>
+        <div className={`fixed inset-0 flex flex-col items-center justify-center z-50
+                        ${isDarkTheme ? 'bg-gray-900 bg-opacity-90' : 'bg-gray-200 bg-opacity-90'}`}>
+          <RefreshCcw className={`w-12 h-12 animate-spin mb-4 ${isDarkTheme ? 'text-blue-400' : 'text-blue-600'}`} />
+          <p className={`text-xl font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>Loading profile data...</p>
+        </div>
     );
   }
 
@@ -139,7 +112,7 @@ const ProfileSettingsPage = () => {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className={`mb-4 px-4 py-3 rounded-md flex items-center gap-2 text-sm absolute top-4 left-1/2 -translate-x-1/2 z-10
+                  className={`mb-4 px-4 py-3 rounded-md flex items-center gap-2 text-sm absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)] max-w-lg mx-auto
             ${isDarkTheme ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800'}`
                   }
                   role="alert"
@@ -165,7 +138,7 @@ const ProfileSettingsPage = () => {
               ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
               focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                   placeholder="e.g., Jane" required
-                  disabled={isSubmitting} // Disable while submitting
+                  disabled={isSubmitting}
               />
             </div>
             <div>
@@ -177,7 +150,7 @@ const ProfileSettingsPage = () => {
               ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
               focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                   placeholder="e.g., Doe" required
-                  disabled={isSubmitting} // Disable while submitting
+                  disabled={isSubmitting}
               />
             </div>
           </div>
@@ -191,7 +164,7 @@ const ProfileSettingsPage = () => {
             ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
             focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                 placeholder="e.g., jane.doe@example.com" required
-                disabled={isSubmitting} // Disable while submitting
+                disabled={isSubmitting}
             />
           </div>
           {/* Phone */}
@@ -204,7 +177,7 @@ const ProfileSettingsPage = () => {
             ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
             focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                 placeholder="e.g., +49 789 373 568"
-                disabled={isSubmitting} // Disable while submitting
+                disabled={isSubmitting}
             />
           </div>
           {/* Personal Address Section */}
@@ -221,7 +194,7 @@ const ProfileSettingsPage = () => {
                 ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
                 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     placeholder="e.g., Germany"
-                    disabled={isSubmitting} // Disable while submitting
+                    disabled={isSubmitting}
                 />
               </div>
               {/* City */}
@@ -234,7 +207,7 @@ const ProfileSettingsPage = () => {
                 ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
                 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     placeholder="e.g., Berlin"
-                    disabled={isSubmitting} // Disable while submitting
+                    disabled={isSubmitting}
                 />
               </div>
               {/* Address */}
@@ -247,7 +220,7 @@ const ProfileSettingsPage = () => {
                 ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
                 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     placeholder="e.g., Berliner Straße 5"
-                    disabled={isSubmitting} // Disable while submitting
+                    disabled={isSubmitting}
                 />
               </div>
               {/* Zip Code */}
@@ -260,7 +233,7 @@ const ProfileSettingsPage = () => {
                 ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
                 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     placeholder="e.g., 10115"
-                    disabled={isSubmitting} // Disable while submitting
+                    disabled={isSubmitting}
                 />
               </div>
             </div>
@@ -274,7 +247,7 @@ const ProfileSettingsPage = () => {
             ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}
             ${isDarkTheme ? 'bg-indigo-700 hover:bg-indigo-800 focus:ring-indigo-800' : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'}`
                 }
-                disabled={isSubmitting} // Disable the button when submitting
+                disabled={isSubmitting}
             >
               {isSubmitting && <Loader2 className="animate-spin mr-2" size={18} />}
               {isSubmitting ? 'Saving...' : 'Save Changes'}

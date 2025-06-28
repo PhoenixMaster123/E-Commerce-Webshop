@@ -1,8 +1,8 @@
 import React, { JSX, useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGoogle, FaGithub, FaSlack, FaFacebook, FaTwitter, FaXing } from "react-icons/fa";
-import { Loader2, XCircle, CheckCircle } from "lucide-react";
-import { useTheme } from "next-themes"; // Import useTheme
+import { Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react";
+import { useTheme } from "next-themes";
 
 // --- Interfaces ---
 interface AccountDefinition {
@@ -37,7 +37,7 @@ const AVAILABLE_ACCOUNTS: AccountDefinition[] = [
     name: "GitHub",
     icon: <FaGithub className="w-6 h-6" />,
     description: "Connect your GitHub account",
-    iconColor: "text-gray-800 dark:text-white", // Changed: 'text-black' to 'text-gray-800' for a softer black in light mode
+    iconColor: "text-gray-800 dark:text-white",
   },
   {
     name: "Slack",
@@ -70,21 +70,19 @@ const SocialPage: React.FC = () => {
   const { theme } = useTheme();
   const isDarkTheme = theme === 'dark';
 
-  const [initialConnectedAccounts, setInitialConnectedAccounts] = useState<ConnectedAccount[] | null>(null); // Initialize as null
-  const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[] | null>(null); // Initialize as null
+  const [initialConnectedAccounts, setInitialConnectedAccounts] = useState<ConnectedAccount[] | null>(null);
+  const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[] | null>(null);
   const [adding, setAdding] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [statusType, setStatusType] = useState<'success' | 'error' | null>(null);
   const [disconnectingAccount, setDisconnectingAccount] = useState<string | null>(null);
-  const [isLoadingInitial, setIsLoadingInitial] = useState<boolean>(true); // New state for initial loading
+  const [isLoadingInitial, setIsLoadingInitial] = useState<boolean>(true);
 
-  // Effect for fetching initial settings
   useEffect(() => {
     const fetchSettings = async () => {
       setIsLoadingInitial(true);
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const fetchedSettings: ConnectedAccount[] = [
         { ...AVAILABLE_ACCOUNTS[0], connectedAt: new Date(Date.now() - 86400000 * 5) },
         { ...AVAILABLE_ACCOUNTS[1], connectedAt: new Date(Date.now() - 86400000 * 2) },
@@ -95,10 +93,8 @@ const SocialPage: React.FC = () => {
     };
 
     fetchSettings();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
-
-  // Effect for clearing status message timeout
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
     if (statusMessage) {
@@ -112,23 +108,20 @@ const SocialPage: React.FC = () => {
     };
   }, [statusMessage]);
 
-  // Memoized value to check for unsaved changes
   const hasUnsavedChanges = useMemo(() => {
-    if (!connectedAccounts || !initialConnectedAccounts) return false; // Ensure data is loaded
+    if (!connectedAccounts || !initialConnectedAccounts) return false;
     const currentNames = connectedAccounts.map(acc => acc.name).sort().join(',');
     const initialNames = initialConnectedAccounts.map(acc => acc.name).sort().join(',');
     return currentNames !== initialNames;
   }, [connectedAccounts, initialConnectedAccounts]);
 
-  // Callback for connecting an account
   const handleConnect = useCallback(async (account: AccountDefinition) => {
-    if (!connectedAccounts || connectedAccounts.find((a) => a.name === account.name)) return;
+    if (!connectedAccounts || connectedAccounts.find((a) => a.name === account.name) || isLoadingInitial) return;
 
-    // Simulate connection process
-    setIsSaving(true); // Use isSaving to indicate action
+    setIsSaving(true);
     setStatusMessage(null);
     try {
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
       const newConnectedAccounts = [...connectedAccounts, { ...account, connectedAt: new Date() }];
       setConnectedAccounts(newConnectedAccounts);
       setAdding(false);
@@ -140,27 +133,24 @@ const SocialPage: React.FC = () => {
     } finally {
       setIsSaving(false);
     }
-  }, [connectedAccounts]);
+  }, [connectedAccounts, isLoadingInitial]);
 
-  // Callback to initiate the disconnect confirmation
   const handleDisconnect = useCallback((name: string) => {
-    if (!isSaving && !disconnectingAccount) {
+    if (!isSaving && !disconnectingAccount && !isLoadingInitial) {
       setDisconnectingAccount(name);
     }
-  }, [isSaving, disconnectingAccount]);
+  }, [isSaving, disconnectingAccount, isLoadingInitial]);
 
-  // Callback to confirm and perform the disconnect
   const confirmDisconnect = useCallback(async () => {
-    if (!disconnectingAccount || !connectedAccounts) return;
+    if (!disconnectingAccount || !connectedAccounts || isLoadingInitial) return;
 
     const accountName = disconnectingAccount;
-    // Simulate disconnect process
-    setIsSaving(true); // Use isSaving to block other actions
-    setDisconnectingAccount(null); // Close modal immediately
+    setIsSaving(true);
+    setDisconnectingAccount(null);
     setStatusMessage(null);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
       const accountToDisconnectDetails = connectedAccounts.find(acc => acc.name === accountName);
       const newConnectedAccounts = connectedAccounts.filter((acc) => acc.name !== accountName);
       setConnectedAccounts(newConnectedAccounts);
@@ -174,16 +164,14 @@ const SocialPage: React.FC = () => {
     } finally {
       setIsSaving(false);
     }
-  }, [connectedAccounts, disconnectingAccount]);
+  }, [connectedAccounts, disconnectingAccount, isLoadingInitial]);
 
-  // Callback to cancel the disconnect
   const cancelDisconnect = useCallback(() => {
     setDisconnectingAccount(null);
   }, []);
 
-  // Callback for saving changes
   const handleSave = useCallback(async () => {
-    if (!connectedAccounts || isSaving || !hasUnsavedChanges) return;
+    if (!connectedAccounts || isSaving || !hasUnsavedChanges || isLoadingInitial) return;
 
     setIsSaving(true);
     setStatusMessage(null);
@@ -199,7 +187,7 @@ const SocialPage: React.FC = () => {
           } else {
             reject(new Error("Failed to save changes. Please try again."));
           }
-        }, 1000); // Simulate API call delay
+        }, 1000);
       });
 
       setIsSaving(false);
@@ -211,34 +199,31 @@ const SocialPage: React.FC = () => {
       setStatusMessage(err.message || "An unknown error occurred during save.");
       setStatusType('error');
     }
-  }, [connectedAccounts, hasUnsavedChanges, isSaving]);
+  }, [connectedAccounts, hasUnsavedChanges, isSaving, isLoadingInitial]);
 
-  // Memoized list of accounts not yet connected
   const unconnectedAccounts = useMemo(() => {
-    if (!connectedAccounts) return []; // Ensure connectedAccounts is not null
+    if (!connectedAccounts) return []
     return AVAILABLE_ACCOUNTS.filter(
         (acc) => !connectedAccounts.some((c) => c.name === acc.name)
     );
   }, [connectedAccounts]);
 
-  // Derived states for button disabling
-  const isActionDisabled = isSaving || !!disconnectingAccount || isLoadingInitial; // Added isLoadingInitial
+  const isActionDisabled = isSaving || !!disconnectingAccount;
   const isAddButtonDisabled = unconnectedAccounts.length === 0 || adding || isActionDisabled;
   const isSaveButtonDisabled = !hasUnsavedChanges || isActionDisabled;
 
-  // --- Render Loading State ---
-  if (isLoadingInitial || connectedAccounts === null) {
+  if (isLoadingInitial) {
     return (
-        <div className={`container mx-auto px-4 py-8 md:flex md:gap-8
-        ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`
-        }>
-          <div className={`flex-1 p-6 rounded-lg shadow-md text-center flex items-center justify-center min-h-64
-          ${isDarkTheme ? 'bg-gray-800' : 'bg-white'}`
-          }>
-            <Loader2 className="animate-spin mr-3" size={24} /> Loading accounts...
-          </div>
+        <div className={`fixed inset-0 flex flex-col items-center justify-center z-50
+                        ${isDarkTheme ? 'bg-gray-900 bg-opacity-90' : 'bg-gray-200 bg-opacity-90'}`}>
+          <RefreshCcw className={`w-12 h-12 animate-spin mb-4 ${isDarkTheme ? 'text-blue-400' : 'text-blue-600'}`} />
+          <p className={`text-xl font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>Loading accounts...</p>
         </div>
     );
+  }
+
+  if (connectedAccounts === null) {
+    return <div className="text-center py-8">Error: Could not load account data.</div>;
   }
 
   return (
@@ -269,7 +254,7 @@ const SocialPage: React.FC = () => {
                     <button
                         onClick={confirmDisconnect}
                         className="px-4 py-2 rounded-md font-semibold bg-red-600 text-white hover:bg-red-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={isSaving} // Disable if saving (i.e., another action is in progress)
+                        disabled={isSaving}
                     >
                       Yes, Disconnect
                     </button>
@@ -278,7 +263,7 @@ const SocialPage: React.FC = () => {
                         className={`px-4 py-2 rounded-md font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed
                     ${isDarkTheme ? 'bg-gray-600 text-white hover:bg-gray-500' : 'bg-gray-300 text-gray-800 hover:bg-gray-400'}`
                         }
-                        disabled={isSaving} // Disable if saving
+                        disabled={isSaving}
                     >
                       Cancel
                     </button>
@@ -303,11 +288,12 @@ const SocialPage: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     className={`mb-4 px-4 py-3 rounded-md flex items-center gap-2 text-sm
+                    absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)] max-w-lg mx-auto
                 ${statusType === 'success' ?
                         (isDarkTheme ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800') :
                         statusType === 'error' ?
                             (isDarkTheme ? 'bg-red-900 text-red-200' : 'bg-red-100 text-red-800') :
-                            (isDarkTheme ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800') // Fallback neutral style
+                            (isDarkTheme ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800')
                     }`}
                 >
                   {statusType === 'success' && <CheckCircle size={18} />}
@@ -386,7 +372,7 @@ const SocialPage: React.FC = () => {
                               }
                               disabled={isActionDisabled}
                           >
-                            {isActionDisabled && isSaving && <Loader2 className="animate-spin mr-2" size={18} />} {/* Loader when connecting */}
+                            {isActionDisabled && isSaving && <Loader2 className="animate-spin mr-2" size={18} />}
                             <div className={`text-2xl ${account.iconColor}`}>{account.icon}</div>
                             <div className="flex flex-col">
                               <span className="font-medium">{account.name}</span>
