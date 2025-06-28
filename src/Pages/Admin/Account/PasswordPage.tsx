@@ -18,7 +18,6 @@ const PasswordPage = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-
   // --- Security Settings State ---
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false); // Default/fallback state
 
@@ -26,7 +25,6 @@ const PasswordPage = () => {
   const [isLoadingInitial, setIsLoadingInitial] = useState(true); // Added initial loading state
   const [isPasswordChanging, setIsPasswordChanging] = useState(false);
   const [isTwoFactorToggling, setIsTwoFactorToggling] = useState(false);
-
 
   // --- Status Messages ---
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -45,7 +43,6 @@ const PasswordPage = () => {
     const strengthColors = ['bg-red-600', 'bg-orange-600', 'bg-yellow-600', 'bg-green-600', 'bg-blue-600'];
     const strengthTextColors = ['text-red-600', 'text-orange-600', 'text-yellow-600', 'text-green-600', 'text-blue-600'];
 
-
     const percentage = Math.min((strength / 5) * 100, 100);
 
     return {
@@ -56,7 +53,6 @@ const PasswordPage = () => {
       percentage: percentage,
     };
   }, [newPassword]);
-
 
   // --- Effect for Initial Settings Fetch ---
   useEffect(() => {
@@ -83,7 +79,6 @@ const PasswordPage = () => {
 
     fetchSecuritySettings();
   }, []);
-
 
   // --- Effect for clearing Status Message Timeout ---
   useEffect(() => {
@@ -206,26 +201,26 @@ const PasswordPage = () => {
   // --- Render Loading State ---
   if (isLoadingInitial) {
     return (
-        <div className="space-y-6 max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-          <div className={`flex-1 p-6 rounded-lg shadow-md text-center flex items-center justify-center min-h-64
-                 ${isDarkTheme ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-600'}`}>
-            <Loader2 className="animate-spin mr-3" size={24} /> Loading security settings...
-          </div>
-        </div>
+        <section className={`flex-1 rounded-lg p-6 sm:p-8 shadow-md text-center flex items-center justify-center min-h-64
+        ${isDarkTheme ? 'bg-gray-800 text-gray-300 border border-gray-700' : 'bg-white text-gray-600 border border-gray-200'}`}>
+          <Loader2 className="animate-spin mr-3" size={24} /> Loading security settings...
+        </section>
     );
   }
 
   return (
-      <div className="space-y-6 max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-
+      // Removed the max-w-3xl and mx-auto from here
+      <div className={`flex-1 py-8 px-4 sm:px-6 lg:px-8`}>
         <AnimatePresence>
           {statusMessage && (
               <motion.div
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
+                  // Adjusted positioning for the alert
                   className={`mb-4 px-4 py-3 rounded-md flex items-center gap-2 text-sm
-                ${statusType === 'success' ?
+                    absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)] max-w-lg mx-auto
+              ${statusType === 'success' ?
                       (isDarkTheme ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800') :
                       statusType === 'error' ?
                           (isDarkTheme ? 'bg-red-900 text-red-200' : 'bg-red-100 text-red-800') :
@@ -240,8 +235,8 @@ const PasswordPage = () => {
         </AnimatePresence>
 
         {/* --- Change Password Section --- */}
-        <section className={`rounded-lg p-6 sm:p-8 shadow-md relative
-                         ${isDarkTheme ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
+        <section className={`rounded-lg p-6 sm:p-8 shadow-md relative mb-6
+                       ${isDarkTheme ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
           <h2 className={`text-xl font-semibold mb-6 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>Change Password</h2>
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             {/* Current Password Input */}
@@ -252,8 +247,8 @@ const PasswordPage = () => {
                     type={showCurrentPassword ? 'text' : 'password'} id="currentPassword" name="currentPassword"
                     value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)}
                     className={`block w-full rounded-md shadow-sm pr-10
-                           ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
-                           focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
+                         ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
+                         focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     autoComplete="current-password" required
                     disabled={isPasswordChanging || isTwoFactorToggling || isLoadingInitial} // Disable while loading
                 />
@@ -261,7 +256,7 @@ const PasswordPage = () => {
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                     className={`absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed
-                           ${isDarkTheme ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'}`}
+                         ${isDarkTheme ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'}`}
                     disabled={isPasswordChanging || isTwoFactorToggling || isLoadingInitial} // Disable while loading
                 >
                   {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -276,8 +271,8 @@ const PasswordPage = () => {
                     type={showNewPassword ? 'text' : 'password'} id="newPassword" name="newPassword"
                     value={newPassword} onChange={(e) => setNewPassword(e.target.value)}
                     className={`block w-full rounded-md shadow-sm pr-10
-                           ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
-                           focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
+                         ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
+                         focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     autoComplete="new-password" required
                     disabled={isPasswordChanging || isTwoFactorToggling || isLoadingInitial} // Disable while loading
                 />
@@ -285,7 +280,7 @@ const PasswordPage = () => {
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
                     className={`absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed
-                           ${isDarkTheme ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'}`}
+                         ${isDarkTheme ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'}`}
                     disabled={isPasswordChanging || isTwoFactorToggling || isLoadingInitial} // Disable while loading
                 >
                   {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -315,8 +310,8 @@ const PasswordPage = () => {
                     type={showConfirmPassword ? 'text' : 'password'} id="confirmPassword" name="confirmPassword"
                     value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
                     className={`block w-full rounded-md shadow-sm pr-10
-                           ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
-                           focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
+                         ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
+                         focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     autoComplete="new-password" required
                     disabled={isPasswordChanging || isTwoFactorToggling || isLoadingInitial} // Disable while loading
                 />
@@ -324,7 +319,7 @@ const PasswordPage = () => {
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className={`absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed
-                           ${isDarkTheme ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'}`}
+                         ${isDarkTheme ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'}`}
                     disabled={isPasswordChanging || isTwoFactorToggling || isLoadingInitial} // Disable while loading
                 >
                   {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -337,8 +332,8 @@ const PasswordPage = () => {
               <button
                   type="submit"
                   className={`inline-flex justify-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed
-                           ${isDarkTheme ? 'bg-indigo-700 hover:bg-indigo-800 focus:ring-indigo-800' : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'}
-                           ${isPasswordChanging ? 'pl-4 pr-6' : ''}`}
+                         ${isDarkTheme ? 'bg-indigo-700 hover:bg-indigo-800 focus:ring-indigo-800' : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'}
+                         ${isPasswordChanging ? 'pl-4 pr-6' : ''}`}
                   disabled={isPasswordChanging || isTwoFactorToggling || isLoadingInitial} // Disable while loading
               >
                 {isPasswordChanging && <Loader2 className="animate-spin mr-2" size={20} />}
@@ -350,7 +345,7 @@ const PasswordPage = () => {
 
         {/* --- Security Settings Section --- */}
         <section className={`rounded-lg p-6 sm:p-8 shadow-md relative
-                         ${isDarkTheme ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
+                       ${isDarkTheme ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
           <h2 className={`text-xl font-semibold mb-6 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>Security Settings</h2>
           <div className="space-y-4">
             {/* Two-Factor Authentication Toggle */}
@@ -379,7 +374,6 @@ const PasswordPage = () => {
             </div>
           </div>
         </section>
-
       </div>
   );
 };

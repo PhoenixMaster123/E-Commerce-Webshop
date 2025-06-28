@@ -2,7 +2,9 @@ import React, { JSX, useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGoogle, FaGithub, FaSlack, FaFacebook, FaTwitter, FaXing } from "react-icons/fa";
 import { Loader2, XCircle, CheckCircle } from "lucide-react";
+import { useTheme } from "next-themes"; // Import useTheme
 
+// --- Interfaces ---
 interface AccountDefinition {
   name: string;
   icon: JSX.Element;
@@ -14,6 +16,7 @@ interface ConnectedAccount extends AccountDefinition {
   connectedAt: Date;
 }
 
+// --- Utility Functions ---
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
@@ -22,6 +25,7 @@ const formatDate = (date: Date) => {
   }).format(date);
 };
 
+// --- Data ---
 const AVAILABLE_ACCOUNTS: AccountDefinition[] = [
   {
     name: "Google",
@@ -33,7 +37,7 @@ const AVAILABLE_ACCOUNTS: AccountDefinition[] = [
     name: "GitHub",
     icon: <FaGithub className="w-6 h-6" />,
     description: "Connect your GitHub account",
-    iconColor: "text-black dark:text-white",
+    iconColor: "text-gray-800 dark:text-white", // Changed: 'text-black' to 'text-gray-800' for a softer black in light mode
   },
   {
     name: "Slack",
@@ -61,19 +65,40 @@ const AVAILABLE_ACCOUNTS: AccountDefinition[] = [
   },
 ];
 
+// --- Component ---
 const SocialPage: React.FC = () => {
-  const [initialConnectedAccounts, setInitialConnectedAccounts] = useState<ConnectedAccount[]>(() => [
-    { ...AVAILABLE_ACCOUNTS[0], connectedAt: new Date(Date.now() - 86400000 * 5) },
-    { ...AVAILABLE_ACCOUNTS[1], connectedAt: new Date(Date.now() - 86400000 * 2) },
-  ]);
+  const { theme } = useTheme();
+  const isDarkTheme = theme === 'dark';
 
-  const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[]>(initialConnectedAccounts);
+  const [initialConnectedAccounts, setInitialConnectedAccounts] = useState<ConnectedAccount[] | null>(null); // Initialize as null
+  const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[] | null>(null); // Initialize as null
   const [adding, setAdding] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [statusType, setStatusType] = useState<'success' | 'error' | null>(null);
   const [disconnectingAccount, setDisconnectingAccount] = useState<string | null>(null);
+  const [isLoadingInitial, setIsLoadingInitial] = useState<boolean>(true); // New state for initial loading
 
+  // Effect for fetching initial settings
+  useEffect(() => {
+    const fetchSettings = async () => {
+      setIsLoadingInitial(true);
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      const fetchedSettings: ConnectedAccount[] = [
+        { ...AVAILABLE_ACCOUNTS[0], connectedAt: new Date(Date.now() - 86400000 * 5) },
+        { ...AVAILABLE_ACCOUNTS[1], connectedAt: new Date(Date.now() - 86400000 * 2) },
+      ];
+      setInitialConnectedAccounts(fetchedSettings);
+      setConnectedAccounts(fetchedSettings);
+      setIsLoadingInitial(false);
+    };
+
+    fetchSettings();
+  }, []); // Empty dependency array means this runs once on mount
+
+
+  // Effect for clearing status message timeout
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
     if (statusMessage) {
@@ -87,51 +112,86 @@ const SocialPage: React.FC = () => {
     };
   }, [statusMessage]);
 
+  // Memoized value to check for unsaved changes
   const hasUnsavedChanges = useMemo(() => {
+    if (!connectedAccounts || !initialConnectedAccounts) return false; // Ensure data is loaded
     const currentNames = connectedAccounts.map(acc => acc.name).sort().join(',');
     const initialNames = initialConnectedAccounts.map(acc => acc.name).sort().join(',');
     return currentNames !== initialNames;
   }, [connectedAccounts, initialConnectedAccounts]);
 
-  const handleConnect = useCallback((account: AccountDefinition) => {
-    if (connectedAccounts.find((a) => a.name === account.name)) return;
+  // Callback for connecting an account
+  const handleConnect = useCallback(async (account: AccountDefinition) => {
+    if (!connectedAccounts || connectedAccounts.find((a) => a.name === account.name)) return;
 
-    const newConnectedAccounts = [...connectedAccounts, { ...account, connectedAt: new Date() }];
-    setConnectedAccounts(newConnectedAccounts);
-    setAdding(false);
-    setStatusMessage(`Connected ${account.name}. Don't forget to save!`);
-    setStatusType('success');
+    // Simulate connection process
+    setIsSaving(true); // Use isSaving to indicate action
+    setStatusMessage(null);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
+      const newConnectedAccounts = [...connectedAccounts, { ...account, connectedAt: new Date() }];
+      setConnectedAccounts(newConnectedAccounts);
+      setAdding(false);
+      setStatusMessage(`Connected ${account.name}. Don't forget to save!`);
+      setStatusType('success');
+    } catch (error) {
+      setStatusMessage(`Failed to connect ${account.name}.`);
+      setStatusType('error');
+    } finally {
+      setIsSaving(false);
+    }
   }, [connectedAccounts]);
 
+  // Callback to initiate the disconnect confirmation
   const handleDisconnect = useCallback((name: string) => {
     if (!isSaving && !disconnectingAccount) {
       setDisconnectingAccount(name);
     }
   }, [isSaving, disconnectingAccount]);
 
-  const confirmDisconnect = useCallback((name: string) => {
-    const accountToDisconnect = connectedAccounts.find(acc => acc.name === name);
-    const newConnectedAccounts = connectedAccounts.filter((acc) => acc.name !== name);
-    setConnectedAccounts(newConnectedAccounts);
-    setDisconnectingAccount(null);
-    if (accountToDisconnect) {
-      setStatusMessage(`Disconnected ${accountToDisconnect.name}. Don't forget to save!`);
-      setStatusType('success');
-    }
-  }, [connectedAccounts]);
+  // Callback to confirm and perform the disconnect
+  const confirmDisconnect = useCallback(async () => {
+    if (!disconnectingAccount || !connectedAccounts) return;
 
+    const accountName = disconnectingAccount;
+    // Simulate disconnect process
+    setIsSaving(true); // Use isSaving to block other actions
+    setDisconnectingAccount(null); // Close modal immediately
+    setStatusMessage(null);
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
+      const accountToDisconnectDetails = connectedAccounts.find(acc => acc.name === accountName);
+      const newConnectedAccounts = connectedAccounts.filter((acc) => acc.name !== accountName);
+      setConnectedAccounts(newConnectedAccounts);
+      if (accountToDisconnectDetails) {
+        setStatusMessage(`Disconnected ${accountToDisconnectDetails.name}. Don't forget to save!`);
+        setStatusType('success');
+      }
+    } catch (error) {
+      setStatusMessage(`Failed to disconnect ${accountName}.`);
+      setStatusType('error');
+    } finally {
+      setIsSaving(false);
+    }
+  }, [connectedAccounts, disconnectingAccount]);
+
+  // Callback to cancel the disconnect
   const cancelDisconnect = useCallback(() => {
     setDisconnectingAccount(null);
   }, []);
 
+  // Callback for saving changes
   const handleSave = useCallback(async () => {
+    if (!connectedAccounts || isSaving || !hasUnsavedChanges) return;
+
     setIsSaving(true);
     setStatusMessage(null);
 
     try {
       console.log("Simulating saving changes:", connectedAccounts);
       await new Promise((resolve, reject) => {
-        const success = Math.random() > 0.1;
+        const success = Math.random() > 0.1; // 90% chance of success
         setTimeout(() => {
           if (success) {
             setInitialConnectedAccounts(connectedAccounts);
@@ -139,7 +199,7 @@ const SocialPage: React.FC = () => {
           } else {
             reject(new Error("Failed to save changes. Please try again."));
           }
-        }, 1000);
+        }, 1000); // Simulate API call delay
       });
 
       setIsSaving(false);
@@ -151,187 +211,229 @@ const SocialPage: React.FC = () => {
       setStatusMessage(err.message || "An unknown error occurred during save.");
       setStatusType('error');
     }
-  }, [connectedAccounts]);
+  }, [connectedAccounts, hasUnsavedChanges, isSaving]);
 
+  // Memoized list of accounts not yet connected
   const unconnectedAccounts = useMemo(() => {
+    if (!connectedAccounts) return []; // Ensure connectedAccounts is not null
     return AVAILABLE_ACCOUNTS.filter(
-      (acc) => !connectedAccounts.some((c) => c.name === acc.name)
+        (acc) => !connectedAccounts.some((c) => c.name === acc.name)
     );
   }, [connectedAccounts]);
 
-  const isAddButtonDisabled = unconnectedAccounts.length === 0 || adding || isSaving || !!disconnectingAccount;
-  const isSaveButtonDisabled = !hasUnsavedChanges || isSaving || !!disconnectingAccount;
-  const isDisconnectButtonDisabled = isSaving || !!disconnectingAccount;
+  // Derived states for button disabling
+  const isActionDisabled = isSaving || !!disconnectingAccount || isLoadingInitial; // Added isLoadingInitial
+  const isAddButtonDisabled = unconnectedAccounts.length === 0 || adding || isActionDisabled;
+  const isSaveButtonDisabled = !hasUnsavedChanges || isActionDisabled;
+
+  // --- Render Loading State ---
+  if (isLoadingInitial || connectedAccounts === null) {
+    return (
+        <div className={`container mx-auto px-4 py-8 md:flex md:gap-8
+        ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`
+        }>
+          <div className={`flex-1 p-6 rounded-lg shadow-md text-center flex items-center justify-center min-h-64
+          ${isDarkTheme ? 'bg-gray-800' : 'bg-white'}`
+          }>
+            <Loader2 className="animate-spin mr-3" size={24} /> Loading accounts...
+          </div>
+        </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:flex md:gap-8">
+      <div className={`container mx-auto px-4 py-8 md:flex md:gap-8 ${isDarkTheme ? 'text-gray-100' : 'text-gray-900'}`}>
 
-      <AnimatePresence>
-        {disconnectingAccount && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          >
-            <motion.div
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl text-center max-w-sm mx-auto"
-            >
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Confirm Disconnect</h3>
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
-                Are you sure you want to disconnect your **{disconnectingAccount}** account?
-              </p>
-              <div className="flex justify-center gap-4">
-                <button
-                  onClick={() => confirmDisconnect(disconnectingAccount)}
-                  className="px-4 py-2 rounded-md font-semibold bg-red-600 text-white hover:bg-red-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={isSaving}
-                >
-                  Yes, Disconnect
-                </button>
-                <button
-                  onClick={cancelDisconnect}
-                  className="px-4 py-2 rounded-md font-semibold bg-gray-300 text-gray-800 hover:bg-gray-400 text-sm dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={isSaving}
-                >
-                  Cancel
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
-          Connected Accounts
-        </h2>
-
+        {/* Disconnect Confirmation Modal */}
         <AnimatePresence>
-          {statusMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className={`mb-4 px-4 py-3 rounded-md flex items-center gap-2 ${
-                statusType === 'success' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                statusType === 'error' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-              }`}
-            >
-              {statusType === 'success' && <CheckCircle size={18} />}
-              {statusType === 'error' && <XCircle size={18} />}
-              {statusMessage}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence mode="wait">
-          {connectedAccounts.length > 0 ? (
-            <motion.div key="connected-list" layout className="space-y-4">
-              {connectedAccounts.map((account) => (
-                <motion.div
-                  key={account.name}
-                  layout
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-md shadow-sm"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`text-2xl ${account.iconColor}`}>{account.icon}</div>
-                    <div className="flex flex-col">
-                      <p className="text-lg font-medium text-gray-900 dark:text-white">{account.name}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Connected since {formatDate(account.connectedAt)}
-                      </p>
-                    </div>
-                  </div>
-                  <motion.button
-                    onClick={() => handleDisconnect(account.name)}
-                    className={`px-4 py-2 rounded-md font-semibold bg-red-600 text-white text-sm transition-colors
-                                      ${isDisconnectButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700'}`}
-                    whileTap={{ scale: isDisconnectButtonDisabled ? 1 : 0.95 }}
-                    disabled={isDisconnectButtonDisabled}
-                  >
-                    Disconnect
-                  </motion.button>
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="empty-state"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center py-8 text-gray-500 dark:text-gray-400"
-            >
-              <p>No accounts connected yet.</p>
-              <p>Click "Add Account" to get started!</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div className="mt-6">
-          {adding ? (
-            <div className="space-y-2">
-              {unconnectedAccounts.length === 0 ? (
-                <p className="text-sm text-gray-600 dark:text-gray-300">All available accounts are connected.</p>
-              ) : (
-                unconnectedAccounts.map((account) => (
-                  <button
-                    key={account.name}
-                    onClick={() => handleConnect(account)}
-                    className="flex items-center gap-3 px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-md hover:bg-blue-200 dark:hover:bg-blue-800 w-full text-left transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isSaving || !!disconnectingAccount}
-                  >
-                    <div className={`text-2xl ${account.iconColor}`}>{account.icon}</div>
-                    <div className="flex flex-col">
-                      <span className="font-medium">{account.name}</span>
-                      <span className="text-xs text-blue-700 dark:text-blue-300">{account.description}</span>
-                    </div>
-                  </button>
-                ))
-              )}
-              <button
-                onClick={() => setAdding(false)}
-                className="mt-2 text-sm text-gray-500 hover:underline dark:text-gray-400 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSaving || !!disconnectingAccount}
+          {disconnectingAccount && (
+              <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
               >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setAdding(true)}
-              className={`mt-4 px-6 py-3 bg-blue-600 text-white font-semibold rounded-md transition-colors flex items-center gap-2
-                                ${isAddButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
-              disabled={isAddButtonDisabled}
-            >
-              {(isSaving || !!disconnectingAccount) && <Loader2 className="animate-spin mr-2" size={20} />}
-              Add Account
-            </button>
+                <motion.div
+                    initial={{ y: -50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -50, opacity: 0 }}
+                    className={`p-6 rounded-lg shadow-xl text-center max-w-sm mx-auto
+                ${isDarkTheme ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}`
+                    }
+                >
+                  <h3 className="text-lg font-semibold mb-4">Confirm Disconnect</h3>
+                  <p className={`mb-6 ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Are you sure you want to disconnect your **{disconnectingAccount}** account?
+                  </p>
+                  <div className="flex justify-center gap-4">
+                    <button
+                        onClick={confirmDisconnect}
+                        className="px-4 py-2 rounded-md font-semibold bg-red-600 text-white hover:bg-red-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={isSaving} // Disable if saving (i.e., another action is in progress)
+                    >
+                      Yes, Disconnect
+                    </button>
+                    <button
+                        onClick={cancelDisconnect}
+                        className={`px-4 py-2 rounded-md font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed
+                    ${isDarkTheme ? 'bg-gray-600 text-white hover:bg-gray-500' : 'bg-gray-300 text-gray-800 hover:bg-gray-400'}`
+                        }
+                        disabled={isSaving} // Disable if saving
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
           )}
-        </div>
+        </AnimatePresence>
 
-        <div className="mt-8">
-          <button
-            onClick={handleSave}
-            className={`px-6 py-3 bg-green-600 text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2
-                              ${isSaveButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700'}`}
-            disabled={isSaveButtonDisabled}
-          >
-            {isSaving && <Loader2 className="animate-spin" size={20} />}
-            {isSaving ? 'Saving...' : 'Save Changes'}
-          </button>
+        <div className={`flex-1 p-6 rounded-lg shadow-md
+        ${isDarkTheme ? 'bg-gray-800' : 'bg-white'}`
+        }>
+          <h2 className={`text-2xl font-semibold mb-6 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>
+            Connected Accounts
+          </h2>
+
+          {/* Status Message Display */}
+          <AnimatePresence>
+            {statusMessage && (
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className={`mb-4 px-4 py-3 rounded-md flex items-center gap-2 text-sm
+                ${statusType === 'success' ?
+                        (isDarkTheme ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800') :
+                        statusType === 'error' ?
+                            (isDarkTheme ? 'bg-red-900 text-red-200' : 'bg-red-100 text-red-800') :
+                            (isDarkTheme ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800') // Fallback neutral style
+                    }`}
+                >
+                  {statusType === 'success' && <CheckCircle size={18} />}
+                  {statusType === 'error' && <XCircle size={18} />}
+                  {statusMessage}
+                </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Connected Accounts List */}
+          <AnimatePresence mode="wait">
+            {connectedAccounts.length > 0 ? (
+                <motion.div key="connected-list" layout className="space-y-4">
+                  {connectedAccounts.map((account) => (
+                      <motion.div
+                          key={account.name}
+                          layout
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className={`flex items-center justify-between p-4 rounded-md shadow-sm
+                    ${isDarkTheme ? 'bg-gray-700' : 'bg-gray-50'}`
+                          }
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`text-2xl ${account.iconColor}`}>{account.icon}</div>
+                          <div className="flex flex-col">
+                            <p className={`text-lg font-medium ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>{account.name}</p>
+                            <p className={`text-sm ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`}>
+                              Connected since {formatDate(account.connectedAt)}
+                            </p>
+                          </div>
+                        </div>
+                        <motion.button
+                            onClick={() => handleDisconnect(account.name)}
+                            className={`px-4 py-2 rounded-md font-semibold text-sm transition-colors flex items-center justify-center gap-2
+                      ${isActionDisabled ? 'opacity-50 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-700'}`
+                            }
+                            whileTap={{ scale: isActionDisabled ? 1 : 0.95 }}
+                            disabled={isActionDisabled}
+                        >
+                          {isActionDisabled && disconnectingAccount === account.name && <Loader2 className="animate-spin" size={18} />}
+                          Disconnect
+                        </motion.button>
+                      </motion.div>
+                  ))}
+                </motion.div>
+            ) : (
+                <motion.div
+                    key="empty-state"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className={`text-center py-8 ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`}
+                >
+                  <p>No accounts connected yet.</p>
+                  <p>Click "Add Account" to get started!</p>
+                </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Add Account Section */}
+          <div className="mt-6">
+            {adding ? (
+                <div className="space-y-2">
+                  {unconnectedAccounts.length === 0 ? (
+                      <p className={`text-sm ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>All available accounts are connected.</p>
+                  ) : (
+                      unconnectedAccounts.map((account) => (
+                          <button
+                              key={account.name}
+                              onClick={() => handleConnect(account)}
+                              className={`flex items-center gap-3 px-4 py-2 rounded-md w-full text-left transition-colors disabled:opacity-50 disabled:cursor-not-allowed
+                      ${isDarkTheme ? 'bg-blue-900 text-blue-200 hover:bg-blue-800' : 'bg-blue-100 text-blue-800 hover:bg-blue-200'}`
+                              }
+                              disabled={isActionDisabled}
+                          >
+                            {isActionDisabled && isSaving && <Loader2 className="animate-spin mr-2" size={18} />} {/* Loader when connecting */}
+                            <div className={`text-2xl ${account.iconColor}`}>{account.icon}</div>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{account.name}</span>
+                              <span className={`text-xs ${isDarkTheme ? 'text-blue-300' : 'text-blue-700'}`}>{account.description}</span>
+                            </div>
+                          </button>
+                      ))
+                  )}
+                  <button
+                      onClick={() => setAdding(false)}
+                      className={`mt-2 text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed
+                  ${isDarkTheme ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'}`
+                      }
+                      disabled={isActionDisabled}
+                  >
+                    Cancel
+                  </button>
+                </div>
+            ) : (
+                <button
+                    onClick={() => setAdding(true)}
+                    className={`mt-4 px-6 py-3 font-semibold rounded-md transition-colors flex items-center gap-2
+                ${isAddButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`
+                    }
+                    disabled={isAddButtonDisabled}
+                >
+                  {isActionDisabled && <Loader2 className="animate-spin mr-2" size={20} />}
+                  Add Account
+                </button>
+            )}
+          </div>
+
+          {/* Save Changes Button */}
+          <div className="mt-8">
+            <button
+                onClick={handleSave}
+                className={`px-6 py-3 bg-green-600 text-white font-semibold rounded-md transition-colors flex items-center justify-center gap-2
+              ${isSaveButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700'}`
+                }
+                disabled={isSaveButtonDisabled}
+            >
+              {isSaving && <Loader2 className="animate-spin" size={20} />}
+              {isSaving ? 'Saving...' : 'Save Changes'}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
