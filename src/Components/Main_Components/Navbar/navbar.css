@@ -550,6 +550,35 @@ body.aside-open {
   overflow: hidden;
 }
 
+.welcome-message {
+  margin-right: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+.dark .welcome-message {
+  color: #eee;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
+.user-actions li {
+  margin-left: 15px;
+}
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 991px) {

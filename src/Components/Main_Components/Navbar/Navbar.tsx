@@ -3,15 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faMoon, faSun, faSearch, faBars, faTimes, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import "./navbar.css";
-import { Product } from '../../../types/index'; // Stelle sicher, dass Product in deinen Types definiert ist
+import { Product } from '../../../types';
 import { searchProducts } from '../../../services/api';
 import { useCart } from '../../../contexts/CartContext';
+import { useAuth } from '../../../auth/useAuth';
 
 interface CategoryWithSubcategories {
   name: string;
   subcategories?: { name: string; query?: string }[];
-  query?: string; // Macht query optional auf der Hauptebene
+  query?: string;
 }
+
 const Navbar: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -92,6 +94,15 @@ const Navbar: React.FC = () => {
   const { cart } = useCart();
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  // --- Auth integration starts here ---
+  const { isAuthenticated, user, logout } = useAuth(); // Destructure what you need from useAuth
+
+  const handleLogout = () => {
+    logout(); // Call the logout function from your AuthContext
+    navigate('/login'); // Redirect to login page after logout
+  };
+  // --- Auth integration ends here ---
+
 
   const toggleTheme = (): void => {
     setIsDarkMode(prevMode => !prevMode);
@@ -142,8 +153,6 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     setIsAsideOpen(false);
   }, [navigate]);
-
-
 
   useEffect(() => {
     document.body.classList.toggle('aside-open', isAsideOpen);
@@ -231,7 +240,35 @@ const Navbar: React.FC = () => {
               </button>
             </li>
 
-            <li><Link to="/login">Account</Link></li>
+            {/* --- Authentication Links --- */}
+            {isAuthenticated ? (
+                <>
+                  <li className="welcome-message">
+                    {/* Display username if available */}
+                    Hello, {user?.name || 'User'}!
+                  </li>
+                  {/* Admin Dashboard link, only if user is an admin */}
+                  {user?.role === 'admin' && (
+                      <li><NavLink to="/admin">Admin Dashboard</NavLink></li>
+                  )}
+                  <li>
+                    {/* Account link (can be a profile page) */}
+                    <Link to="/admin/account">Account</Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout} className="logout-button">
+                      Sign Out
+                    </button>
+                  </li>
+                </>
+            ) : (
+                <>
+                  <li><Link to="/login">Login</Link></li>
+                  <li><Link to="/register">Register</Link></li>
+                </>
+            )}
+            {/* --- End Authentication Links --- */}
+
             <li><Link to="/wishlist">Wishlist</Link></li>
             <li className="cart">
               <Link to="/cart">
@@ -271,8 +308,6 @@ const Navbar: React.FC = () => {
                   )}
                 </li>
             ))}
-            {/* Zusätzliche Kategorien, die keine Subkategorien haben */}
-
           </ul>
         </aside>
         {isAsideOpen && <div className="aside-overlay" onClick={toggleAside}></div>}
