@@ -8,11 +8,10 @@
 - Lucide, FontAwesome (Icons)
 - Recharts (Data Visualization)
 - Axios (HTTP Client)
-- npm (Package Manager)
 
-**Backend (Prototyping):**
-- Dummy JSON API (e.g., Python script or mock service)
-
+**Backend:**
+- Python Backend
+- Dummy JSON API
 ---
 
 ## Project Structure
@@ -37,7 +36,6 @@ src/
 │   └── Main/
 ├── services/
 ├── types/
-
 ```
 
 ---
@@ -62,7 +60,7 @@ src/
 
 4. **Start the development server:**
 ```bash
-   `npm run dev`
+    `npm run dev`
 ```
 
 ---
@@ -78,6 +76,9 @@ src/
 - Admin dashboard (product & user management)
 - (Optional) Wishlist, product reviews, multi-language support
 
+---
+
+## Possible future features
 ---
 
 ## User Roles
@@ -97,10 +98,10 @@ src/
 
 ---
 
-## Acknowledgment
+## Screenshots
 
-This project was developed by: <br>
-Kristian Popov <br>
-Enrico Ebert <br>
-Glison Doci <br>
-Orik Mazreku <br>
+## Contributor
+[Kristian Popov](https://github.com/PhoenixMaster123) <br>
+[Enrico Ebert](https://github.com/CodeWizard2001) <br>
+[Glison Doci](https://github.com/gl150n1) <br>
+[Orik Mazreku](https://github.com/OrikMarin) <br>
