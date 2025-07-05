@@ -1,8 +1,8 @@
-import React, { JSX, useState, useEffect, useMemo, useCallback } from "react";
+import React, {JSX, useState, useEffect, useMemo, useCallback, useContext} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGoogle, FaGithub, FaSlack, FaFacebook, FaTwitter, FaXing } from "react-icons/fa";
 import { Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react";
-import { useTheme } from "next-themes";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 // --- Interfaces ---
 interface AccountDefinition {
@@ -67,8 +67,9 @@ const AVAILABLE_ACCOUNTS: AccountDefinition[] = [
 
 // --- Component ---
 const SocialPage: React.FC = () => {
-  const { theme } = useTheme();
-  const isDarkTheme = theme === 'dark';
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const isDarkTheme = isDarkMode;
 
   const [initialConnectedAccounts, setInitialConnectedAccounts] = useState<ConnectedAccount[] | null>(null);
   const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[] | null>(null);
@@ -127,8 +128,12 @@ const SocialPage: React.FC = () => {
       setAdding(false);
       setStatusMessage(`Connected ${account.name}. Don't forget to save!`);
       setStatusType('success');
-    } catch (error) {
-      setStatusMessage(`Failed to connect ${account.name}.`);
+    } catch (error: unknown) {
+      let message = `Failed to connect ${account.name}.`;
+      if (error instanceof Error) {
+          message += ` Reason: ${error.message}`;
+       }
+      setStatusMessage(message);
       setStatusType('error');
     } finally {
       setIsSaving(false);
@@ -158,8 +163,12 @@ const SocialPage: React.FC = () => {
         setStatusMessage(`Disconnected ${accountToDisconnectDetails.name}. Don't forget to save!`);
         setStatusType('success');
       }
-    } catch (error) {
-      setStatusMessage(`Failed to disconnect ${accountName}.`);
+    } catch (error: unknown) {
+      let message = `Failed to disconnect ${accountName}.`;
+      if (error instanceof Error) {
+        message += ` Reason: ${error.message}`;
+      }
+      setStatusMessage(message);
       setStatusType('error');
     } finally {
       setIsSaving(false);
@@ -194,9 +203,13 @@ const SocialPage: React.FC = () => {
       setStatusMessage("Changes saved successfully!");
       setStatusType('success');
 
-    } catch (err: any) {
+    } catch (error: unknown) {
       setIsSaving(false);
-      setStatusMessage(err.message || "An unknown error occurred during save.");
+      let errorMessage = "An unknown error occurred during save.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      setStatusMessage(errorMessage);
       setStatusType('error');
     }
   }, [connectedAccounts, hasUnsavedChanges, isSaving, isLoadingInitial]);

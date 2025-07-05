@@ -1,32 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { ThemeContext } from '../../contexts/ThemeContext.tsx';
 
 const ToggleTheme: React.FC = () => {
-    const { setTheme, theme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    if (!mounted) return null;
-
-    const toggleTheme = () => {
-        setTheme(theme === 'light' ? 'dark' : 'light');
-    };
+    // --- Theme Management ---
+    const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
     return (
         <button
             onClick={toggleTheme}
-            className="theme-button text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 transition-colors"
             aria-label="Toggle Theme"
+            className="text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 transition-colors"
         >
-            {theme === 'dark' ? (
-                <Sun className="h-5 w-5 text-white" />
-            ) : (
-                <Moon className="h-5 w-5 text-gray-900" />
-            )}
+            {isDarkMode ? <Sun className="h-5 w-5 text-white" /> : <Moon className="h-5 w-5 text-gray-900" />}
         </button>
     );
 };

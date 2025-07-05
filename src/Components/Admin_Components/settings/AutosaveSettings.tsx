@@ -1,16 +1,15 @@
 import { SaveIcon } from "lucide-react";
 import SettingSection from "./SettingSection";
-import { useTheme } from "next-themes";
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const AutosaveSettings = () => {
-  const { theme } = useTheme();
-  const themeToPass = theme === "dark" ? "dark" : "light";
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const themeToPass = isDarkMode ? "dark" : "light";
 
-  // Example state for autosave frequency (in minutes)
   const [autosaveFrequency, setAutosaveFrequency] = useState('5');
 
-  // Add logic here to save and implement the autosave preference
    const handleFrequencyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
        const newFrequency = event.target.value;
        setAutosaveFrequency(newFrequency);

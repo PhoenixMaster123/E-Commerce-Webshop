@@ -1,8 +1,8 @@
-import { BarChart2, Menu, Settings, ShoppingBag, Users, User, LogOut } from "lucide-react";
-import React, { useState } from "react";
+import {BarChart2, Menu, Settings, ShoppingBag, Users, User, LogOut} from "lucide-react";
+import React, { useState, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { useTheme } from "next-themes";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { useAuth } from "../../auth/useAuth";
 
 interface SidebarItem {
@@ -14,14 +14,16 @@ interface SidebarItem {
 }
 
 const Sidebar = () => {
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { theme } = useTheme();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { logout } = useAuth();
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const sidebarItems: SidebarItem[] = [
@@ -43,13 +45,12 @@ const Sidebar = () => {
     },
   ];
 
-  const bgClass =
-      theme === "dark"
-          ? "bg-gray-800 bg-opacity-50 border-gray-700"
-          : "bg-white bg-opacity-80 border-gray-300";
+  const bgClass = isDarkMode
+      ? "bg-gray-800 bg-opacity-50 border-gray-700"
+      : "bg-white bg-opacity-80 border-gray-300";
 
-  const hoverClass = theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100";
-  const textClass = theme === "dark" ? "text-gray-100" : "text-gray-800";
+  const hoverClass = isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100";
+  const textClass = isDarkMode ? "text-gray-100" : "text-gray-800";
 
   return (
       <motion.div
@@ -69,7 +70,7 @@ const Sidebar = () => {
           </motion.button>
 
           <nav className="mt-8 flex-grow">
-            {sidebarItems.map((item) => (
+            {sidebarItems.map((item) =>
                 item.href ? (
                     <Link key={item.name} to={item.href}>
                       <motion.div
@@ -94,7 +95,7 @@ const Sidebar = () => {
                 ) : (
                     <motion.button
                         key={item.name}
-                        onClick={item.onClick} // Use onClick for button items
+                        onClick={item.onClick}
                         className={`w-full text-left flex items-center p-4 text-sm font-medium rounded-lg ${hoverClass} ${textClass} transition-colors mb-2`}
                     >
                       <item.icon size={20} style={{ color: item.color, minWidth: "20px" }} />
@@ -113,7 +114,7 @@ const Sidebar = () => {
                       </AnimatePresence>
                     </motion.button>
                 )
-            ))}
+            )}
           </nav>
         </div>
       </motion.div>

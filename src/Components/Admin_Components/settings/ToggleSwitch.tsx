@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
+import {useContext} from "react";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 type ToggleProps = {
 	label: string;
@@ -8,10 +9,11 @@ type ToggleProps = {
 };
 
 const ToggleSwitch = ({ label, isOn, onToggle }: ToggleProps) => {
-	const { theme } = useTheme();
+	// --- Theme Management ---
+	const { isDarkMode } = useContext(ThemeContext);
 
 	const labelColor =
-		theme === "dark" ? "text-gray-300" : isOn ? "text-gray-800" : "text-gray-600";
+		isDarkMode ? "text-gray-300" : isOn ? "text-gray-800" : "text-gray-600";
 
 	return (
 		<div className="flex items-center justify-between py-3">

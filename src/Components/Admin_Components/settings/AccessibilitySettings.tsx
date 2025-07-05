@@ -1,20 +1,19 @@
 import { AccessibilityIcon } from "lucide-react";
 import SettingSection from "./SettingSection";
-import { useTheme } from "next-themes";
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const AccessibilitySettings = () => {
-  const { theme } = useTheme();
-  const themeToPass = theme === "dark" ? "dark" : "light";
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const themeToPass = isDarkMode  ? "dark" : "light";
 
-  // Example state for font size preference
   const [fontSize, setFontSize] = useState('medium');
 
    const handleFontSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
        const newSize = event.target.value;
        setFontSize(newSize);
        console.log("Font Size Changed to:", newSize);
-       // Apply font size change globally
    };
 
   return (
@@ -37,7 +36,6 @@ const AccessibilitySettings = () => {
                 <option value="large">Large</option>
             </select>
         </div>
-
       </div>
     </SettingSection>
   );

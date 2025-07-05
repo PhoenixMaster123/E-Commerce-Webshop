@@ -1,14 +1,15 @@
 import { DatabaseIcon } from "lucide-react";
 import SettingSection from "./SettingSection";
-import { useTheme } from "next-themes";
+import {useContext} from "react";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const DataManagementSettings = () => {
-  const { theme } = useTheme();
-  const themeToPass = theme === "dark" ? "dark" : "light";
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const themeToPass = isDarkMode  ? "dark" : "light";
 
   const handleClearCache = () => {
       console.log("Clearing application cache...");
-      // Implement cache clearing logic (e.g., removing items from localStorage, clearing IndexedDB)
       alert("Cache cleared (simulated).");
   };
 

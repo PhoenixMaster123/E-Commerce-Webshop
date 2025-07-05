@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
+import React, {useState, useEffect, useContext} from 'react';
 import { Loader2, SquarePen, Trash2, Package } from 'lucide-react';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 interface Product {
 	id: string;
@@ -20,8 +20,9 @@ interface ProductsTableProps {
 }
 
 const ProductsTable: React.FC<ProductsTableProps> = ({ products, isLoading, searchQuery, onUpdateProduct, onDeleteProduct }) => {
-	const { theme } = useTheme();
-	const isDarkTheme = theme === 'dark';
+	// --- Theme Management ---
+	const { isDarkMode } = useContext(ThemeContext);
+	const isDarkTheme = isDarkMode;
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 5;
@@ -115,8 +116,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, isLoading, sear
 							className={`${isDarkTheme ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
 						>
 							<td className="px-6 py-4 whitespace-nowrap">
-								<div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-600">
-									<Package size={24} className={`${isDarkTheme ? 'text-gray-400' : 'text-gray-600'}`} />
+								<div className="flex items-center justify-center h-10 w-10 rounded-full bg-white-200 dark:bg-white-600">
+									<Package size={24} className={`${isDarkTheme ? 'text-indigo-400' : 'text-indigo-600'}`} />
 								</div>
 							</td>
 							<td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>

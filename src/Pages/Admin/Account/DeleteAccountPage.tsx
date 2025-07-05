@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { Trash2, Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react";
-import { useTheme } from "next-themes";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const DeleteAccountPage: React.FC = () => {
-  const { theme } = useTheme();
-  const isDarkTheme = theme === 'dark';
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const isDarkTheme = isDarkMode;
 
   const [confirming, setConfirming] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
@@ -44,8 +45,7 @@ const DeleteAccountPage: React.FC = () => {
     setLoading(true)
     setDeleteSuccess(false);
     setFinalSuccess(false);
-
-    // --- Simulate Backend Operations ---
+    
     try {
       if (password !== "correctpassword") {
         throw new Error("Incorrect password.");
@@ -65,9 +65,13 @@ const DeleteAccountPage: React.FC = () => {
       setLoading(false);
       setDeleteSuccess(true);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
+      let errorMessage = "An unknown error occurred during deletion.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
       setLoading(false);
-      setError(err.message || "An unknown error occurred during deletion.");
+      setError(errorMessage);
       setDeleteSuccess(false);
       setFinalSuccess(false);
     }
@@ -96,7 +100,7 @@ const DeleteAccountPage: React.FC = () => {
             <h2 className={`text-2xl font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-green-900'}`}>Account Deleted Successfully</h2>
             <p className={`mb-6 ${isDarkTheme ? 'text-white' : 'text-green-800'}`}>Your account and all associated data have been permanently removed.</p>
             <button
-                onClick={handleGoToHomepage} // Added onClick handler
+                onClick={handleGoToHomepage}
                 className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
             >
               Go to Homepage

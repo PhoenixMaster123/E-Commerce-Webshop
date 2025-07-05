@@ -1,6 +1,6 @@
-import React from 'react';
-import { useTheme } from 'next-themes';
+import React, {useContext} from 'react';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const data = [
     { name: 'Mon', '0-4': 120, '4-8': 200, '8-12': 300, '12-16': 450, '16-20': 250, '20-24': 100 },
@@ -13,8 +13,9 @@ const data = [
 ];
 
 const UserActivityHeatmap: React.FC = () => {
-    const { theme } = useTheme();
-    const isDarkTheme = theme === 'dark';
+    // --- Theme Management ---
+    const { isDarkMode } = useContext(ThemeContext);
+    const isDarkTheme = isDarkMode;
 
     const axisColor = isDarkTheme ? '#6B7280' : '#E5E7EB'; // grid line color
     const textColor = isDarkTheme ? '#E5E7EB' : '#4B5563'; // axis label color

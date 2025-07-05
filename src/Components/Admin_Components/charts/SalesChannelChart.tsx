@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from "recharts";
-import { useTheme } from "next-themes";
+import { ThemeContext } from '../../../contexts/ThemeContext';
+import {useContext} from "react";
 
 const COLORS = ["#6366F1", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B"];
 
@@ -12,9 +13,9 @@ const SALES_CHANNEL_DATA = [
 ];
 
 const SalesChannelChart = () => {
-	const { theme } = useTheme();
-
-	const isDark = theme === 'dark';
+	// --- Theme Management ---
+	const { isDarkMode } = useContext(ThemeContext);
+	const isDark = isDarkMode;
 
 	return (
 		<motion.div

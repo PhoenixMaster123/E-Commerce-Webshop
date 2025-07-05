@@ -1,8 +1,6 @@
-import React from 'react';
-import { useTheme } from 'next-themes';
-import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
-} from 'recharts';
+import React, {useContext} from 'react';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const data = [
     { name: 'Jul', users: 4000 },
@@ -16,15 +14,16 @@ const data = [
     { name: 'Mar', users: 2900 },
     { name: 'Apr', users: 5500 },
     { name: 'May', users: 2000 },
-    { name: 'Jun', users: 3000 }, // Current month placeholder
+    { name: 'Jun', users: 3000 },
 ];
 
 const UserGrowthChart: React.FC = () => {
-    const { theme } = useTheme();
-    const isDarkTheme = theme === 'dark';
+    // --- Theme Management ---
+    const { isDarkMode } = useContext(ThemeContext);
+    const isDarkTheme = isDarkMode;
 
-    const axisColor = isDarkTheme ? '#6B7280' : '#E5E7EB'; // grid line color
-    const textColor = isDarkTheme ? '#E5E7EB' : '#4B5563'; // axis label color
+    const axisColor = isDarkTheme ? '#6B7280' : '#E5E7EB';
+    const textColor = isDarkTheme ? '#E5E7EB' : '#4B5563';
 
     return (
         <div className={`p-6 rounded-lg shadow-md ${isDarkTheme ? 'bg-gray-800' : 'bg-white'}`}>

@@ -1,11 +1,12 @@
 import { DownloadIcon } from "lucide-react";
 import SettingSection from "./SettingSection";
-import { useTheme } from "next-themes";
-import { useState } from 'react';
+import {useContext, useState} from 'react';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const ExportDataSettings = () => {
-  const { theme } = useTheme();
-  const themeToPass = theme === "dark" ? "dark" : "light";
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const themeToPass = isDarkMode ? "dark" : "light";
 
   const [isExporting, setIsExporting] = useState(false);
   const handleExportDataClick = async () => {

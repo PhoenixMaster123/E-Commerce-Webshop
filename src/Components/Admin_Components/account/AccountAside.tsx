@@ -1,9 +1,9 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useTheme } from "next-themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faKey, faMobile, faSliders, faTrash, faUser} from "@fortawesome/free-solid-svg-icons";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 // Sidebar items with correct icon assignment
 const Account_SIDEBAR_ITEMS = [
@@ -16,16 +16,17 @@ const Account_SIDEBAR_ITEMS = [
 ];
 
 const AccountAside = () => {
+  // --- Theme Management ---
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { theme } = useTheme();
+  const { isDarkMode } = useContext(ThemeContext);
 
   const bgClass =
-    theme === "dark"
+      isDarkMode
       ? "bg-gray-800 bg-opacity-50 border-gray-700"
       : "bg-white bg-opacity-80 border-gray-300";
 
-  const hoverClass = theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100";
-  const textClass = theme === "dark" ? "text-gray-100" : "text-gray-800";
+  const hoverClass = isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-100";
+  const textClass = isDarkMode ? "text-gray-100" : "text-gray-800";
 
   return (
     <motion.div

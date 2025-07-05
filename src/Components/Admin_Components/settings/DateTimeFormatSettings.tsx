@@ -1,10 +1,12 @@
+import {useContext} from "react";
 import { CalendarDaysIcon } from "lucide-react";
 import SettingSection from "./SettingSection";
-import { useTheme } from "next-themes";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const DateTimeFormatSettings = () => {
-  const { theme } = useTheme();
-  const themeToPass = theme === "dark" ? "dark" : "light";
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const themeToPass = isDarkMode ? "dark" : "light";
 
   return (
     <SettingSection icon={CalendarDaysIcon} title={"Date/Time Format"} theme={themeToPass}>

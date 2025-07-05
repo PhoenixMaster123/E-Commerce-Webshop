@@ -1,4 +1,3 @@
-import { useTheme } from "next-themes";
 import Header from "../../Components/Admin_Components/Header";
 import Profile from "../../Components/Admin_Components/settings/Profile";
 import LanguageSettings from "../../Components/Admin_Components/settings/LanguageSettings";
@@ -10,12 +9,15 @@ import DataManagementSettings from "../../Components/Admin_Components/settings/D
 import DefaultFileLocationSettings from "../../Components/Admin_Components/settings/DefaultFileLocationSettings";
 import ExportDataSettings from "../../Components/Admin_Components/settings/ExportDataSettings";
 
+import { ThemeContext } from '../../contexts/ThemeContext'
+import {useContext} from "react";
+
 const SettingsPage = () => {
-    const { theme } = useTheme();
+    const { isDarkMode } = useContext(ThemeContext);
 
     // Define classes based on the theme
-    const bgClass = theme === "dark" ? "bg-gray-900" : "bg-white";
-    const textClass = theme === "dark" ? "text-gray-100" : "text-gray-900";
+    const bgClass = isDarkMode ? "bg-gray-900" : "bg-white";
+    const textClass = isDarkMode  ? "text-gray-100" : "text-gray-900";
 
     return (
         <div className={`flex-1 overflow-auto relative z-10 ${bgClass}`}>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, {useState, useEffect, useMemo, useCallback, useContext} from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "next-themes";
-import { Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react"; // Import RefreshCcw
+import { Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 // --- NotificationToggle Component ---
 interface NotificationToggleProps {
@@ -13,8 +13,9 @@ interface NotificationToggleProps {
 }
 
 const NotificationToggle: React.FC<NotificationToggleProps> = ({ label, description, enabled, onToggle, disabled }) => {
-  const { theme } = useTheme();
-  const isDarkTheme = theme === 'dark';
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const isDarkTheme = isDarkMode;
 
   const labelColor = useMemo(() => {
     if (disabled) return isDarkTheme ? "text-gray-600" : "text-gray-400";
@@ -88,8 +89,9 @@ type SpecificNotificationSettingKey = PushSettingKey | EmailSettingKey | SmsSett
 
 // --- NotificationPage Component ---
 const NotificationPage: React.FC = () => {
-  const { theme } = useTheme();
-  const isDarkTheme = theme === 'dark';
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const isDarkTheme = isDarkMode;
 
   const [initialSettings, setInitialSettings] = useState<NotificationSettingsState | null>(null);
   const [settings, setSettings] = useState<NotificationSettingsState | null>(null);
@@ -130,8 +132,6 @@ const NotificationPage: React.FC = () => {
     fetchSettings();
   }, []);
 
-
-  // Effect for clearing status message timeout
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
 
@@ -180,7 +180,7 @@ const NotificationPage: React.FC = () => {
       if (!newEnabledState) {
         for (const subKey in updatedSubSettings) {
           if (subKey !== 'enabled') {
-            (updatedSubSettings as any)[subKey] = false;
+            (updatedSubSettings as Record<string, boolean>)[subKey] = false;
           }
         }
       }
@@ -219,9 +219,13 @@ const NotificationPage: React.FC = () => {
       setStatusMessage("Settings saved successfully!");
       setStatusType('success');
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       setIsSaving(false);
-      setStatusMessage(err.message || "An unknown error occurred during save.");
+      let errorMessage = "An unknown error occurred during save.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      setStatusMessage(errorMessage);
       setStatusType('error');
     }
   }, [settings, hasUnsavedChanges, isSaving]);
@@ -248,7 +252,7 @@ const NotificationPage: React.FC = () => {
     );
   }
 
-  // --- Main Component Render (only if not loading and settings are available) ---
+  // --- Main Component Render ---
   return (
       <div className={`container mx-auto px-6 py-8 md:flex md:gap-8`}>
         <div className={`flex-1 p-6 rounded-lg shadow-md

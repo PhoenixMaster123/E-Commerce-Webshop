@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {useState, useEffect, useMemo, useContext} from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, XCircle, CheckCircle, Eye, EyeOff, RefreshCcw } from "lucide-react"; // Import RefreshCcw
-import { useTheme } from "next-themes";
+import { Loader2, XCircle, CheckCircle, Eye, EyeOff, RefreshCcw } from "lucide-react";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const PasswordPage = () => {
   // --- Theme Management ---
-  const { theme } = useTheme();
-  const isDarkTheme = theme === 'dark';
+  const { isDarkMode } = useContext(ThemeContext);
+  const isDarkTheme = isDarkMode;
 
   // --- Password Change State ---
   const [currentPassword, setCurrentPassword] = useState('');
@@ -19,10 +19,10 @@ const PasswordPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // --- Security Settings State ---
-  const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false); // Default/fallback state
+  const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
 
   // --- Loading States ---
-  const [isLoadingInitial, setIsLoadingInitial] = useState(true); // Added initial loading state
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
   const [isPasswordChanging, setIsPasswordChanging] = useState(false);
   const [isTwoFactorToggling, setIsTwoFactorToggling] = useState(false);
 
@@ -70,9 +70,9 @@ const PasswordPage = () => {
 
       } catch (error) {
         console.error("Failed to fetch initial security settings:", error);
-        setStatusError("Failed to load security settings."); // Display an error if fetch fails
+        setStatusError("Failed to load security settings.");
       } finally {
-        setIsLoadingInitial(false); // Always set loading to false after fetch attempt
+        setIsLoadingInitial(false);
       }
     };
 
@@ -100,7 +100,7 @@ const PasswordPage = () => {
     event.preventDefault();
     if (isPasswordChanging || isTwoFactorToggling || isLoadingInitial) return;
 
-    setStatusError(null); // Clear any previous errors or success messages
+    setStatusError(null);
     setIsPasswordChanging(true);
 
     // Basic client-side validation
@@ -151,8 +151,12 @@ const PasswordPage = () => {
       setShowNewPassword(false);
       setShowConfirmPassword(false);
 
-    } catch (err: any) {
-      setStatusMessage(err.message || "An unknown error occurred during password change.");
+    } catch (err: unknown) {
+      let errorMessage = "An unknown error occurred during password change.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      setStatusMessage(errorMessage);
       setStatusType('error');
     } finally {
       setIsPasswordChanging(false);
@@ -183,8 +187,12 @@ const PasswordPage = () => {
       setStatusMessage(`Two-Factor Authentication ${isTwoFactorEnabled ? 'disabled' : 'enabled'} successfully.`);
       setStatusType('success');
 
-    } catch (err: any) {
-      setStatusMessage(err.message || "An unknown error occurred while toggling 2FA.");
+    } catch (err: unknown) {
+      let errorMessage = "An unknown error occurred while toggling 2FA.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      setStatusMessage(errorMessage);
       setStatusType('error');
     } finally {
       setIsTwoFactorToggling(false);
@@ -221,7 +229,7 @@ const PasswordPage = () => {
                       (isDarkTheme ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800') :
                       statusType === 'error' ?
                           (isDarkTheme ? 'bg-red-900 text-red-200' : 'bg-red-100 text-red-800') :
-                          (isDarkTheme ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800') // Fallback neutral style
+                          (isDarkTheme ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800')
                   }`}
               >
                 {statusType === 'success' && <CheckCircle size={18} />}
@@ -247,7 +255,7 @@ const PasswordPage = () => {
                          ${isDarkTheme ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'}
                          focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
                     autoComplete="current-password" required
-                    disabled={isPasswordChanging || isTwoFactorToggling} // Disabled based on operation status
+                    disabled={isPasswordChanging || isTwoFactorToggling}
                 />
                 <button
                     type="button"

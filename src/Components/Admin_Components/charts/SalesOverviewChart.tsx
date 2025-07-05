@@ -1,6 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
+import { ThemeContext } from '../../../contexts/ThemeContext';
+import {useContext} from "react";
 
 const salesData = [
 	{ name: "Jul", sales: 4200 },
@@ -18,8 +19,9 @@ const salesData = [
 ];
 
 const SalesOverviewChart = () => {
-	const { theme } = useTheme();
-	const isDark = theme === 'dark';
+	// --- Theme Management ---
+	const { isDarkMode } = useContext(ThemeContext);
+	const isDark = isDarkMode;
 
 	return (
 		<motion.div

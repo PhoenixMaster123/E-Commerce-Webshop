@@ -1,6 +1,7 @@
 import { LucideIcon } from 'lucide-react';
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
+import { useContext } from 'react';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 type StatProps = {
     name: string;
@@ -10,13 +11,14 @@ type StatProps = {
 };
 
 const StatCard = ({ name, icon: Icon, value, color }: StatProps) => {
-    const { theme } = useTheme();
+    // --- Theme Management ---
+    const { isDarkMode } = useContext(ThemeContext);
 
-    const bgClass = theme === 'dark'
+    const bgClass = isDarkMode
         ? 'bg-gray-800 bg-opacity-50 border-gray-700 text-gray-100'
         : 'bg-white bg-opacity-80 border-gray-300 text-gray-900';
 
-    const subTextClass = theme === 'dark' ? 'text-gray-400' : 'text-gray-600';
+    const subTextClass = isDarkMode ? 'text-gray-400' : 'text-gray-600';
 
     return (
         <motion.div

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
+import React, {useState, useEffect, useContext} from 'react';
 import { Loader2, SquarePen, Trash2} from 'lucide-react';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
-// Define Customer interface (must match CustomersPage.tsx)
+// Define Customer interface
 interface Customer {
     id: string;
-    initial: string; // For the avatar initial
+    initial: string;
     name: string;
     email: string;
     role: 'Customer' | 'Admin' | 'Moderator';
@@ -21,11 +21,12 @@ interface CustomersTableProps {
 }
 
 const CustomersTable: React.FC<CustomersTableProps> = ({ customers, isLoading, searchQuery, onUpdateCustomer, onDeleteCustomer }) => {
-    const { theme } = useTheme();
-    const isDarkTheme = theme === 'dark';
+    // --- Theme Management ---
+    const { isDarkMode } = useContext(ThemeContext);
+    const isDarkTheme = isDarkMode;
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5; // Default limit for the table
+    const itemsPerPage = 5;
 
     // Filter customers based on search query
     const filteredCustomers = customers.filter(customer =>
@@ -35,15 +36,12 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers, isLoading, s
         customer.status.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Calculate total pages based on filtered customers
     const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
-    // Get current customers for the displayed page
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentCustomers = filteredCustomers.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Reset to first page if search query changes
     useEffect(() => {
         setCurrentPage(1);
     }, [searchQuery]);
@@ -114,7 +112,6 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers, isLoading, s
                         >
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
-                                    {/* Avatar with initial */}
                                     <div className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center text-lg font-semibold
                       ${isDarkTheme ? 'bg-indigo-600 text-white' : 'bg-indigo-100 text-indigo-800'}`}>
                                         {customer.initial}

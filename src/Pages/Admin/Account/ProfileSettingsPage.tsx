@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, Loader2, RefreshCcw } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const ProfileSettingsPage = () => {
   // --- Theme Management ---
-  const { theme } = useTheme();
-  const isDarkTheme = theme === 'dark';
+  const { isDarkMode } = useContext(ThemeContext);
+  const isDarkTheme = isDarkMode;
 
   // --- State Management ---
   const [firstName, setFirstName] = useState('');

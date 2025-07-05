@@ -1,5 +1,5 @@
 import { AlertTriangle, DollarSign, Package, TrendingUp, Plus, Search } from "lucide-react";
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useContext} from 'react';
 import CategoryDistributionChart from "../../Components/Admin_Components/charts/CategoryDistributionChart";
 import SalesTrendChart from "../../Components/Admin_Components/charts/SalesTrendChart";
 import Header from "../../Components/Admin_Components/Header";
@@ -8,9 +8,8 @@ import ProductsTable from "../../Components/Admin_Components/tables/ProductsTabl
 import { motion, AnimatePresence } from "framer-motion";
 import AddProductForm from "../../Components/Admin_Components/form-functionalities/AddProductForm.tsx";
 import EditProductForm from "../../Components/Admin_Components/form-functionalities/EditProductForm.tsx";
-import { useTheme } from "next-themes";
+import {ThemeContext} from "../../contexts/ThemeContext.tsx";
 
-// Define Product interface - imageUrl is REMOVED
 interface Product {
     id: string;
     name: string;
@@ -21,8 +20,9 @@ interface Product {
 }
 
 const ProductsPage = () => {
-    const { theme } = useTheme();
-    const isDarkTheme = theme === 'dark';
+    const { isDarkMode } = useContext(ThemeContext);
+
+    const pageBgClass = isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900';
 
     const [showAddProductForm, setShowAddProductForm] = useState(false);
     const [showEditProductForm, setShowEditProductForm] = useState(false);
@@ -34,11 +34,9 @@ const ProductsPage = () => {
     const [isLoadingProducts, setIsLoadingProducts] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Simulate fetching initial product data
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoadingProducts(true);
-            // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000));
             setProducts([
                 { id: '1', name: 'Wireless Mouse', category: 'Electronics', price: 25.99, stock: 150, description: 'Ergonomic wireless mouse with long battery life.' },
@@ -67,10 +65,9 @@ const ProductsPage = () => {
 
     const handleAddProduct = async (newProductData: Omit<Product, 'id'>) => {
         setIsAddingProduct(true);
-        // Simulate API call to add product
         await new Promise(resolve => setTimeout(resolve, 1000));
         const newProduct: Product = {
-            id: Date.now().toString(), // Simple unique ID
+            id: Date.now().toString(),
             ...newProductData,
         };
         setProducts((prevProducts) => [...prevProducts, newProduct].sort((a, b) => a.name.localeCompare(b.name)));
@@ -80,7 +77,6 @@ const ProductsPage = () => {
 
     const handleUpdateProduct = async (id: string, updatedData: Partial<Product>) => {
         setIsUpdatingProduct(true);
-        // Simulate API call to update product
         console.log(`Sending update request for product ${id}:`, updatedData);
         await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -113,7 +109,7 @@ const ProductsPage = () => {
     const totalRevenue = products.reduce((sum, p) => sum + p.price * p.stock, 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
     return (
-        <div className='flex-1 overflow-auto relative z-10'>
+        <div className={`flex-1 overflow-auto relative z-10 ${pageBgClass}`}>
             <Header title='Products' />
 
             <main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
@@ -133,7 +129,7 @@ const ProductsPage = () => {
                 {/* Search Bar and Add Product Button are now HERE, aligned right */}
                 <div className="flex justify-end items-center mb-6"> {/* Changed to justify-end */}
                     <div className={`relative flex items-center mr-4
-                        ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>
+                        ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                         <Search className="absolute left-3" size={18} />
                         <input
                             type="text"
@@ -141,7 +137,7 @@ const ProductsPage = () => {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className={`pl-10 pr-4 py-2 rounded-md border
-                                ${isDarkTheme ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'}
+                                ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'}
                                 focus:outline-none focus:ring-2 focus:ring-indigo-500`}
                             disabled={isLoadingProducts || isAddingProduct || isUpdatingProduct}
                         />

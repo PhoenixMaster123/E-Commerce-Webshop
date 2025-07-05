@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import { useTheme } from "next-themes";
+import { ThemeContext } from '../../../contexts/ThemeContext';
+import {useContext} from "react";
 
 interface CustomLegendPayload {
     value: string;
@@ -59,8 +60,9 @@ const COLORS: string[] = [
 ];
 
 const CategoryDistributionChart = () => {
-    const { theme } = useTheme();
-    const isDark = theme === 'dark';
+    // --- Theme Management ---
+    const { isDarkMode } = useContext(ThemeContext);
+    const isDark = isDarkMode;
 
     return (
         <motion.div

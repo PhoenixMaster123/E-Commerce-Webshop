@@ -1,10 +1,12 @@
 import { ClockIcon } from "lucide-react";
 import SettingSection from "./SettingSection";
-import { useTheme } from "next-themes";
+import {useContext} from "react";
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const TimezoneSettings = () => {
-  const { theme } = useTheme();
-  const themeToPass = theme === "dark" ? "dark" : "light";
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const themeToPass = isDarkMode ? "dark" : "light";
 
   return (
     <SettingSection icon={ClockIcon} title={"Timezone"} theme={themeToPass}>

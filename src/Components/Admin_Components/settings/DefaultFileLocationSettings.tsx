@@ -1,15 +1,15 @@
 import { FolderIcon } from "lucide-react";
 import SettingSection from "./SettingSection";
-import { useTheme } from "next-themes";
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
+import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const DefaultFileLocationSettings = () => {
-  const { theme } = useTheme();
-  const themeToPass = theme === "dark" ? "dark" : "light";
+  // --- Theme Management ---
+  const { isDarkMode } = useContext(ThemeContext);
+  const themeToPass = isDarkMode ? "dark" : "light";
 
   const [defaultPath, setDefaultPath] = useState('/Downloads/MyAppFiles');
 
-  // Add logic here to handle changing the default path
    const handlePathChange = (event: React.ChangeEvent<HTMLInputElement>) => {
        const newPath = event.target.value;
        setDefaultPath(newPath);
@@ -18,11 +18,8 @@ const DefaultFileLocationSettings = () => {
 
   return (
     <SettingSection icon={FolderIcon} title={"Default File Location"} theme={themeToPass}>
-      {/* Content for Default File Location setting */}
       <div className={`flex flex-col space-y-4 ${themeToPass === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
         <p>Set the default folder for downloads or exported files.</p>
-
-        {/* Default Path Input */}
         <div>
             <label htmlFor="defaultPath" className="block mb-2 font-medium">Default Path:</label>
              <input
