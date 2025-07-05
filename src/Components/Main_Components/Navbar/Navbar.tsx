@@ -1,30 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faMoon, faSun, faSearch, faBars, faTimes, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import "./navbar.css";
-import { Product } from '../../../types/index'; // Stelle sicher, dass Product in deinen Types definiert ist
+import { Product } from '../../../types/index';
 import { searchProducts } from '../../../services/api';
 import { useCart } from '../../../contexts/CartContext';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface CategoryWithSubcategories {
   name: string;
   subcategories?: { name: string; query?: string }[];
-  query?: string; // Macht query optional auf der Hauptebene
+  query?: string;
 }
-const Navbar: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
 
-  useEffect(() => {
-    document.body.classList.toggle('dark', isDarkMode);
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
+const Navbar: React.FC = () => {
+  // Use global theme context
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -33,26 +25,20 @@ const Navbar: React.FC = () => {
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
   const [categoriesWithSubs] = useState<CategoryWithSubcategories[]>([
-    {
-      name: "Electronics",
-      subcategories: [
+    { name: "Electronics", subcategories: [
         { name: "Smartphones", query: "smartphones" },
         { name: "Laptops", query: "laptops" },
         { name: "Tablets", query: "tablets" },
         { name: "Mobile Accessories", query: "mobile-accessories" },
       ],
     },
-    {
-      name: "Men's Fashion",
-      subcategories: [
+    { name: "Men's Fashion", subcategories: [
         { name: "Shirts", query: "mens-shirts" },
         { name: "Shoes", query: "mens-shoes" },
         { name: "Watches", query: "mens-watches" },
       ],
     },
-    {
-      name: "Women's Fashion",
-      subcategories: [
+    { name: "Women's Fashion", subcategories: [
         { name: "Dresses", query: "womens-dresses" },
         { name: "Shoes", query: "womens-shoes" },
         { name: "Bags", query: "womens-bags" },
@@ -61,17 +47,13 @@ const Navbar: React.FC = () => {
         { name: "Tops", query: "tops" },
       ],
     },
-    {
-      name: "Beauty",
-      subcategories: [
+    { name: "Beauty", subcategories: [
         { name: "Beauty", query: "beauty" },
         { name: "Skin Care", query: "skincare" },
         { name: "Fragrances", query: "fragrances" },
       ],
     },
-    {
-      name: "Home & Living",
-      subcategories: [
+    { name: "Home & Living", subcategories: [
         { name: "Furniture", query: "furniture" },
         { name: "Home Decoration", query: "home-decoration" },
         { name: "Kitchen Accessories", query: "kitchen-accessories" },
@@ -79,9 +61,7 @@ const Navbar: React.FC = () => {
     },
     { name: "Sunglasses", query: "sunglasses" },
     { name: "Sports Accessories", query: "sports-accessories" },
-    {
-      name: "Automotive",
-      subcategories: [
+    { name: "Automotive", subcategories: [
         { name: "Vehicle", query: "automotive" },
         { name: "Motorcycle", query: "motorcycle" },
       ],
@@ -92,13 +72,8 @@ const Navbar: React.FC = () => {
   const { cart } = useCart();
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-
-  const toggleTheme = (): void => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
-
   const toggleSearch = (): void => {
-    setIsSearchActive(!isSearchActive);
+    setIsSearchActive(prev => !prev);
     if (!isSearchActive) {
       setTimeout(() => searchInputRef.current?.focus(), 0);
     } else {
@@ -121,7 +96,6 @@ const Navbar: React.FC = () => {
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    console.log('Searching for:', searchTerm);
     navigate(`/products?search=${encodeURIComponent(searchTerm)}&page=1`);
     setIsSearchActive(false);
     setSearchTerm('');
@@ -135,21 +109,15 @@ const Navbar: React.FC = () => {
     setSearchResults([]);
   };
 
-  const toggleAside = (): void => {
-    setIsAsideOpen(!isAsideOpen);
-  };
+  const toggleAside = (): void => setIsAsideOpen(prev => !prev);
 
   useEffect(() => {
     setIsAsideOpen(false);
   }, [navigate]);
 
-
-
   useEffect(() => {
     document.body.classList.toggle('aside-open', isAsideOpen);
-    return () => {
-      document.body.classList.remove('aside-open');
-    };
+    return () => { document.body.classList.remove('aside-open'); };
   }, [isAsideOpen]);
 
   const toggleSubcategory = (categoryName: string) => {
@@ -163,7 +131,7 @@ const Navbar: React.FC = () => {
       <>
         <nav className='navigation'>
           <button className="aside-toggle-button" onClick={toggleAside}>
-            <FontAwesomeIcon icon={faBars}/>
+            <FontAwesomeIcon icon={faBars} />
           </button>
 
           <div className="logo">
@@ -174,21 +142,18 @@ const Navbar: React.FC = () => {
             <li><Link to="/home">Home</Link></li>
             <li><NavLink to="/products" className={({ isActive }) => isActive ? 'active' : ''}>Products</NavLink></li>
             <li className="products-button-li">
-              <button className="products-button" onClick={toggleAside}>
-                Products
-              </button>
+              <button className="products-button" onClick={toggleAside}>Products</button>
             </li>
             <li className="categories-button-li">
-              <button className="categories-button" onClick={toggleAside}>
-                Categories
-              </button>
+              <button className="categories-button" onClick={toggleAside}>Categories</button>
             </li>
           </ul>
 
           <ul className="user-actions">
             <li className="search-toggle">
-              <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={toggleSearch}/>
+              <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={toggleSearch} />
             </li>
+
             {isSearchActive && (
                 <div className="search-modal">
                   <div className="search-modal-content">
@@ -202,7 +167,7 @@ const Navbar: React.FC = () => {
                           className="search-input"
                       />
                       <button type="button" onClick={toggleSearch} className="close-modal-button">
-                        <FontAwesomeIcon icon={faTimes}/>
+                        <FontAwesomeIcon icon={faTimes} />
                       </button>
                     </form>
 
@@ -227,7 +192,7 @@ const Navbar: React.FC = () => {
 
             <li className="theme-toggle">
               <button onClick={toggleTheme} className="theme-button">
-                <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon}/>
+                <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
               </button>
             </li>
 
@@ -235,7 +200,7 @@ const Navbar: React.FC = () => {
             <li><Link to="/wishlist">Wishlist</Link></li>
             <li className="cart">
               <Link to="/cart">
-                <FontAwesomeIcon icon={faCartShopping}/>
+                <FontAwesomeIcon icon={faCartShopping} />
                 <span className="cart-count">{cartCount}</span>
               </Link>
             </li>
@@ -244,7 +209,7 @@ const Navbar: React.FC = () => {
 
         <aside className={`categories-aside ${isAsideOpen ? 'open' : ''}`}>
           <button className="aside-close-button" onClick={toggleAside}>
-            <FontAwesomeIcon icon={faTimes}/> Close
+            <FontAwesomeIcon icon={faTimes} /> Close
           </button>
           <h2>Categories</h2>
           <ul>
@@ -271,8 +236,6 @@ const Navbar: React.FC = () => {
                   )}
                 </li>
             ))}
-            {/* Zusätzliche Kategorien, die keine Subkategorien haben */}
-
           </ul>
         </aside>
         {isAsideOpen && <div className="aside-overlay" onClick={toggleAside}></div>}

@@ -1,3 +1,15 @@
+/* index.css */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1f2937; /* gray-800 */
+}
+
+.dark {
+    --bg-color: #1f2937;  /* gray-800 */
+    --text-color: #f9fafb; /* gray-50 */
+}
+
+/* then your existing html,body reset: */
 html,
 body {
     margin: 0;
@@ -8,13 +20,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Dark Mode */
-body.dark {
-    --bg-color:      #121212;
-    --text-color:    #eeeeee;
-    /* … andere Variablen … */
-
-    /* überschreibe nochmals direkt */
-    background-color: var(--bg-color) !important;
-    color:            var(--text-color) !important;
-}
+/* finally your Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
