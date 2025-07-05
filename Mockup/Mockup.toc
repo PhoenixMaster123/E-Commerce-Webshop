@@ -1,0 +1,36 @@
+\contentsline {section}{\numberline {1}Summary of Requirements}{3}{section.1}%
+\contentsline {section}{\numberline {2}User Interface Design}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Home Screen}{3}{subsection.2.1}%
+\contentsline {paragraph}{Explanation}{4}{section*.5}%
+\contentsline {subsection}{\numberline {2.2}Category Drawer (Hamburger / Desktop “Categories”)}{4}{subsection.2.2}%
+\contentsline {paragraph}{Explanation}{4}{section*.8}%
+\contentsline {subsection}{\numberline {2.3}Product List Screen}{5}{subsection.2.3}%
+\contentsline {paragraph}{Explanation}{6}{section*.11}%
+\contentsline {subsection}{\numberline {2.4}Shopping Cart}{6}{subsection.2.4}%
+\contentsline {paragraph}{Explanation}{6}{section*.14}%
+\contentsline {subsection}{\numberline {2.5}Login \& Registration}{7}{subsection.2.5}%
+\contentsline {paragraph}{Explanation}{7}{section*.17}%
+\contentsline {subsection}{\numberline {2.6}Account Registration}{7}{subsection.2.6}%
+\contentsline {paragraph}{Explanation}{8}{section*.20}%
+\contentsline {section}{\numberline {3}Admin Design}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Admin Architecture}{8}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Overview Page}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Product Page}{9}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Customers Page}{11}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Account Page}{12}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Profile}{12}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}Profile Settings}{13}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.3}Password \& Security}{14}{subsubsection.3.5.3}%
+\contentsline {subsubsection}{\numberline {3.5.4}Notifications}{15}{subsubsection.3.5.4}%
+\contentsline {subsubsection}{\numberline {3.5.5}Social Accounts}{15}{subsubsection.3.5.5}%
+\contentsline {subsubsection}{\numberline {3.5.6}Delete Account}{16}{subsubsection.3.5.6}%
+\contentsline {subsection}{\numberline {3.6}Settings}{17}{subsection.3.6}%
+\contentsline {section}{\numberline {4}FlowChart}{19}{section.4}%
+\contentsline {section}{\numberline {5}Figma Links}{20}{section.5}%
+\contentsline {section}{\numberline {6}Design Decisions \& Rationale}{20}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Layout}{20}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Interaction Patterns}{20}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Colors}{20}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Typography}{21}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Accessibility}{21}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Acknowledgment of AI Technologies}{21}{section.7}%
