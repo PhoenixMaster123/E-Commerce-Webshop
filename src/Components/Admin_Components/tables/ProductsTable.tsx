@@ -1,105 +1,213 @@
-import { motion } from "framer-motion";
-import { Edit, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { useTheme } from "next-themes";
+import React, { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
+import { Loader2, SquarePen, Trash2, Package } from 'lucide-react';
 
-const PRODUCT_DATA = [
-	{ id: 1, name: "Wireless Earbuds", category: "Electronics", price: 59.99, stock: 143, sales: 1200 },
-	{ id: 2, name: "Leather Wallet", category: "Accessories", price: 39.99, stock: 89, sales: 800 },
-	{ id: 3, name: "Smart Watch", category: "Electronics", price: 199.99, stock: 56, sales: 650 },
-	{ id: 4, name: "Yoga Mat", category: "Fitness", price: 29.99, stock: 210, sales: 950 },
-	{ id: 5, name: "Coffee Maker", category: "Home", price: 79.99, stock: 78, sales: 720 },
-];
+interface Product {
+	id: string;
+	name: string;
+	category: string;
+	price: number;
+	stock: number;
+	description: string;
+}
 
-const ProductsTable = () => {
+interface ProductsTableProps {
+	products: Product[];
+	isLoading: boolean;
+	searchQuery: string;
+	onUpdateProduct: (product: Product) => void;
+	onDeleteProduct: (id: string) => void;
+}
+
+const ProductsTable: React.FC<ProductsTableProps> = ({ products, isLoading, searchQuery, onUpdateProduct, onDeleteProduct }) => {
 	const { theme } = useTheme();
-	const [searchTerm, setSearchTerm] = useState("");
-	const [filteredProducts, setFilteredProducts] = useState(PRODUCT_DATA);
+	const isDarkTheme = theme === 'dark';
 
-	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const term = e.target.value.toLowerCase();
-		setSearchTerm(term);
-		const filtered = PRODUCT_DATA.filter(
-			(product) => product.name.toLowerCase().includes(term) || product.category.toLowerCase().includes(term)
-		);
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 5;
 
-		setFilteredProducts(filtered);
+	const filteredProducts = products.filter(product =>
+		product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+		product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+		product.description.toLowerCase().includes(searchQuery.toLowerCase())
+	);
+
+	const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+	const indexOfLastItem = currentPage * itemsPerPage;
+	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+	const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchQuery]);
+
+	const goToNextPage = () => {
+		if (currentPage < totalPages) {
+			setCurrentPage(prev => prev + 1);
+		}
 	};
 
-	const tableBgClass = theme === "dark" ? "bg-gray-800 bg-opacity-50 border-gray-700 text-gray-100" : "bg-white bg-opacity-80 border-gray-300 text-gray-900";
-	const actionBtnClass = theme === "dark" ? "text-indigo-400 hover:text-indigo-300" : "text-indigo-600 hover:text-indigo-500";
-	const trashBtnClass = theme === "dark" ? "text-red-400 hover:text-red-300" : "text-red-600 hover:text-red-500";
-	const inputClass = theme === "dark"
-		? "bg-gray-700 text-white placeholder-gray-400"
-		: "bg-gray-200 text-gray-900 placeholder-gray-500";
+	const goToPreviousPage = () => {
+		if (currentPage > 1) {
+			setCurrentPage(prev => prev - 1);
+		}
+	};
+
+	if (isLoading) {
+		return (
+			<div className={`flex items-center justify-center min-h-[200px] rounded-lg shadow-md mb-8
+        ${isDarkTheme ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-600'}`}>
+				<Loader2 className="animate-spin mr-3" size={24} /> Loading products...
+			</div>
+		);
+	}
+
+	if (!products || products.length === 0) {
+		return (
+			<div className={`p-6 rounded-lg shadow-md mb-8 text-center
+        ${isDarkTheme ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'}`}>
+				<p>No products found. Click "Add Product" to create one!</p>
+			</div>
+		);
+	}
 
 	return (
-		<motion.div
-			className={`p-6 rounded-xl shadow-lg mb-8 backdrop-blur-md border ${tableBgClass}`}
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ delay: 0.2 }}
-		>
-			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold">Product List</h2>
-				<div className="flex items-center gap-4 relative">
-					<input
-						type="text"
-						placeholder="Search products..."
-						className={`rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${inputClass}`}
-						onChange={handleSearch}
-						value={searchTerm}
-					/>
-					<Search className="absolute left-3 top-2.5" size={18} />
-					<button className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-xl shadow-md hover:from-blue-600 hover:to-indigo-600 hover:shadow-lg transition duration-300">
-						Add Product
-					</button>
-				</div>
-			</div>
-
+		<div className={`rounded-lg shadow-md mb-8 ${isDarkTheme ? 'bg-gray-800' : 'bg-white'}`}>
 			<div className="overflow-x-auto">
-				<table className="min-w-full divide-y">
-					<thead>
+				<table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+					<thead className={`${isDarkTheme ? 'bg-gray-700' : 'bg-gray-50'}`}>
 					<tr>
-						<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
-						<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Category</th>
-						<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Price</th>
-						<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Stock</th>
-						<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Sales</th>
-						<th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
+						<th scope="col" className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider
+                ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+							Icon
+						</th>
+						<th scope="col" className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider
+                ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+							Product Name
+						</th>
+						<th scope="col" className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider
+                ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+							Category
+						</th>
+						<th scope="col" className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider
+                ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+							Price
+						</th>
+						<th scope="col" className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider
+                ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+							Stock
+						</th>
+						<th scope="col" className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider
+                ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+							Description
+						</th>
+						<th scope="col" className={`px-6 py-3 text-right text-xs font-medium uppercase tracking-wider
+                ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+							Actions
+						</th>
 					</tr>
 					</thead>
-
-					<tbody>
-					{filteredProducts.map((product) => (
-						<motion.tr
+					<tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+					{currentProducts.map((product) => (
+						<tr
 							key={product.id}
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ duration: 0.3 }}
+							className={`${isDarkTheme ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}
 						>
-							<td className="px-6 py-4 whitespace-nowrap text-sm flex gap-2 items-center">
-								<img alt="Product img" className="size-10 rounded-full" />
+							<td className="px-6 py-4 whitespace-nowrap">
+								<div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-600">
+									<Package size={24} className={`${isDarkTheme ? 'text-gray-400' : 'text-gray-600'}`} />
+								</div>
+							</td>
+							<td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>
 								{product.name}
 							</td>
-							<td className="px-6 py-4 whitespace-nowrap text-sm">{product.category}</td>
-							<td className="px-6 py-4 whitespace-nowrap text-sm">${product.price.toFixed(2)}</td>
-							<td className="px-6 py-4 whitespace-nowrap text-sm">{product.stock}</td>
-							<td className="px-6 py-4 whitespace-nowrap text-sm">{product.sales}</td>
-							<td className="px-6 py-4 whitespace-nowrap text-sm">
-								<button className={`${actionBtnClass} mr-2`}>
-									<Edit size={18} />
+							<td className={`px-6 py-4 whitespace-nowrap text-sm ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+								{product.category}
+							</td>
+							<td className={`px-6 py-4 whitespace-nowrap text-sm ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+								${product.price.toFixed(2)}
+							</td>
+							<td className={`px-6 py-4 whitespace-nowrap text-sm ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+								{product.stock}
+							</td>
+							<td className={`px-6 py-4 text-sm max-w-xs truncate ${isDarkTheme ? 'text-gray-300' : 'text-gray-500'}`}>
+								{product.description}
+							</td>
+							<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+								<button
+									onClick={() => onUpdateProduct(product)}
+									className={`inline-flex items-center text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4`}
+									title="Edit Product"
+								>
+									<SquarePen size={18} />
 								</button>
-								<button className={trashBtnClass}>
+								<button
+									onClick={() => onDeleteProduct(product.id)}
+									className={`inline-flex items-center text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300`}
+									title="Delete Product"
+								>
 									<Trash2 size={18} />
 								</button>
 							</td>
-						</motion.tr>
+						</tr>
 					))}
+					{currentProducts.length === 0 && filteredProducts.length > 0 && (
+						<tr>
+							<td colSpan={7} className={`px-6 py-4 text-center text-sm ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`}>
+								No products found on this page. Try navigating.
+							</td>
+						</tr>
+					)}
+					{filteredProducts.length === 0 && searchQuery !== '' && (
+						<tr>
+							<td colSpan={7} className={`px-6 py-4 text-center text-sm ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`}>
+								No products match your search.
+							</td>
+						</tr>
+					)}
 					</tbody>
 				</table>
 			</div>
-		</motion.div>
+
+			{/* Pagination Controls */}
+			{filteredProducts.length > itemsPerPage && (
+				<nav
+					className={`px-4 py-3 flex items-center justify-between border-t
+            ${isDarkTheme ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'}`}
+					aria-label="Pagination"
+				>
+					<div className="flex-1 flex justify-between sm:justify-end">
+						<button
+							onClick={goToPreviousPage}
+							disabled={currentPage === 1}
+							className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md
+                ${isDarkTheme ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 border-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50'}
+                disabled:opacity-50 disabled:cursor-not-allowed`}
+						>
+							Previous
+						</button>
+						<button
+							onClick={goToNextPage}
+							disabled={currentPage === totalPages}
+							className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md
+                ${isDarkTheme ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 border-gray-600' : 'bg-white text-gray-700 hover:bg-gray-50'}
+                disabled:opacity-50 disabled:cursor-not-allowed`}
+						>
+							Next
+						</button>
+					</div>
+					<div className={`hidden sm:flex-1 sm:flex sm:items-center sm:justify-between ml-4 ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
+						<div>
+							<p className="text-sm">
+								Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to <span className="font-medium">{Math.min(indexOfLastItem, filteredProducts.length)}</span> of{' '}
+								<span className="font-medium">{filteredProducts.length}</span> results
+							</p>
+						</div>
+					</div>
+				</nav>
+			)}
+		</div>
 	);
 };
 

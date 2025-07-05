@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Loader2, XCircle, Mail, Phone, MapPin, CalendarDays } from "lucide-react";
+import {XCircle, Mail, Phone, MapPin, CalendarDays, UserRound, UserCircle, RefreshCcw } from "lucide-react"; // Import RefreshCcw
 import React from 'react';
 import { useTheme } from "next-themes";
 
@@ -14,11 +14,9 @@ interface UserProfileData {
     country?: string | null;
     city?: string | null;
     bio?: string | null;
-    avatarUrl?: string | null;
     joinDate: Date;
 }
 
-// Helper function to format date
 const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
@@ -27,30 +25,41 @@ const formatDate = (date: Date) => {
     }).format(date);
 };
 
+interface InfoRowProps {
+    icon: React.ElementType<any>;
+    value: string | null | undefined;
+    isDarkTheme: boolean;
+}
+
+const InfoRow: React.FC<InfoRowProps> = ({ icon: Icon, value, isDarkTheme }) => {
+    if (!value) return null;
+
+    return (
+        <div className={`flex items-start text-base ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
+            <Icon size={20} className={`flex-shrink-0 mr-3 mt-1 ${isDarkTheme ? 'text-indigo-400' : 'text-indigo-600'}`} />
+            <span className="break-words">{value}</span>
+        </div>
+    );
+};
+
 
 const AccountPage = () => {
-    // --- Theme Management ---
     const { theme } = useTheme();
     const isDarkTheme = theme === 'dark';
 
-    // --- State Management ---
     const [profileData, setProfileData] = useState<UserProfileData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-
-    // --- Effect to Fetch Profile Data ---
     useEffect(() => {
         const fetchProfile = async () => {
             setIsLoading(true);
             setError(null);
 
-            // Simulate API call delay
             try {
                 const mockProfileData: UserProfileData = await new Promise((resolve, reject) => {
                     setTimeout(() => {
-
-                        const success = Math.random() > 0.1;
+                        const success = Math.random() > 0.05; // 95% chance of success
 
                         if (success) {
                             resolve({
@@ -62,21 +71,20 @@ const AccountPage = () => {
                                 phone: '+1 555 123 4567',
                                 country: 'USA',
                                 city: 'New York',
-                                bio: 'Just a regular user interested in cool stuff.\nAnother line here for the bio.', // Example bio with newline
-                                avatarUrl: 'https://via.placeholder.com/150/4F46E5/FFFFFF?text=JD', // Using Indigo background
+                                bio: 'Passionate about web development, open-source, and contributing to the tech community. Always learning and exploring new technologies. \n\nLet\'s connect!',
                                 joinDate: new Date(2023, 5, 15),
                             });
                         } else {
-                            reject(new Error("Failed to load profile data."));
+                            reject(new Error("Failed to load profile data. Please try again later."));
                         }
-                    }, 1000);
+                    }, 1500);
                 });
 
                 setProfileData(mockProfileData);
 
             } catch (err: any) {
                 console.error("Error fetching profile:", err);
-                setError(err.message || "An unknown error occurred.");
+                setError(err.message || "An unexpected error occurred while fetching profile data.");
             } finally {
                 setIsLoading(false);
             }
@@ -87,23 +95,24 @@ const AccountPage = () => {
 
 
     // --- Conditional Rendering: Loading, Error, or Data ---
+
     if (isLoading) {
         return (
-            <div className="container mx-auto px-4 py-8 md:flex md:gap-8">
-                <div className={`flex-1 p-6 rounded-lg shadow-md text-center flex items-center justify-center min-h-64
-                          ${isDarkTheme ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-600'}`}>
-                    <Loader2 className="animate-spin mr-3" size={24} /> Loading profile...
-                </div>
+            <div className={`fixed inset-0 flex flex-col items-center justify-center z-50
+                            ${isDarkTheme ? 'bg-gray-900 bg-opacity-90' : 'bg-gray-200 bg-opacity-90'}`}>
+                <RefreshCcw className={`w-12 h-12 animate-spin mb-4 ${isDarkTheme ? 'text-blue-400' : 'text-blue-600'}`} />
+                <p className={`text-xl font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>Loading user profile...</p>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="container mx-auto px-4 py-8 md:flex md:gap-8">
-                <div className={`flex-1 p-6 rounded-lg shadow-md text-center flex items-center justify-center min-h-64 gap-3
-                          ${isDarkTheme ? 'bg-red-900 bg-opacity-30 text-red-400' : 'bg-red-100 text-red-700'}`}>
-                    <XCircle size={24} /> {error}
+            <div className="container mx-auto px-4 py-8 max-w-4xl">
+                <div className={`p-6 rounded-lg shadow-md border-2 text-center flex flex-col items-center justify-center
+                          ${isDarkTheme ? 'bg-red-900 bg-opacity-30 text-red-400 border-red-700' : 'bg-red-100 text-red-700 border-red-300'}`}>
+                    <XCircle size={32} className="mb-3" />
+                    <span className="text-lg font-medium">{error}</span>
                 </div>
             </div>
         );
@@ -111,57 +120,56 @@ const AccountPage = () => {
 
     if (!profileData) {
         return (
-            <div className="container mx-auto px-4 py-8 md:flex md:gap-8">
-                <div className={`flex-1 p-6 rounded-lg shadow-md text-center flex items-center justify-center min-h-64
+            <div className="container mx-auto px-4 py-8 max-w-4xl">
+                <div className={`p-6 rounded-lg shadow-md text-center flex flex-col items-center justify-center
                            ${isDarkTheme ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-600'}`}>
-                    <XCircle className="mr-3" size={24} /> Profile data not available.
+                    <XCircle className="mb-3" size={32} />
+                    <span className="text-lg">Profile data not available.</span>
                 </div>
             </div>
         );
     }
 
+    const { firstName, lastName, username, email, phone, country, city, bio, joinDate } = profileData;
+    const displayName = `${firstName} ${lastName}`;
+    const displayLocation = [city, country].filter(Boolean).join(', ');
 
-    // --- Render Profile Data ---
+
+    // --- Render Profile Data (only when not loading and no error) ---
     return (
         <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <div className={`rounded-lg shadow-xl overflow-hidden
-                      ${isDarkTheme ? 'bg-gray-800' : 'bg-white'}`}>
-                {/* Header Section */}
-                <div className={`relative h-32 flex items-center justify-center
-                          ${isDarkTheme ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                    <h1 className={`text-3xl font-bold ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>User Profile</h1>
+            <div className={`rounded-2xl shadow-2xl overflow-hidden
+                      ${isDarkTheme ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-200'}`}>
+
+                <div className={`relative h-40 flex flex-col items-center justify-center
+                          ${isDarkTheme ? 'bg-gradient-to-r from-indigo-700 to-purple-800' : 'bg-gradient-to-r from-indigo-600 to-purple-700'}`}>
+                    <h1 className="text-4xl font-extrabold text-white z-10 drop-shadow-lg">User Profile</h1>
+                    <div className="absolute inset-0 bg-black opacity-10"></div>
                 </div>
+
                 <div className="p-6 sm:p-8 pt-0">
-                    {/* Avatar */}
-                    <div className="-mt-16 sm:-mt-20 flex justify-center">
-                        {profileData.avatarUrl ? (
-                            <img
-                                className={`size-24 sm:size-32 rounded-full border-4 object-cover
-                                          ${isDarkTheme ? 'border-gray-800 bg-gray-600' : 'border-white bg-gray-300'}`}
-                                src={profileData.avatarUrl}
-                                alt={`${profileData.firstName} ${profileData.lastName}'s avatar`}
+                    <div className="-mt-20 sm:-mt-24 flex justify-center z-20 relative">
+                        <div className={`size-32 sm:size-40 rounded-full border-4 flex items-center justify-center transition-all duration-300
+                                       ${isDarkTheme ? 'border-gray-900 bg-indigo-700 shadow-lg text-white' : 'border-white bg-indigo-600 shadow-xl text-white'}`}>
+                            <UserCircle
+                                size={120}
+                                className={`${isDarkTheme ? 'text-indigo-200' : 'text-indigo-100'} `}
                             />
-                        ) : (
-                            // Fallback Avatar (e.g., initials or default icon)
-                            <div className={`size-24 sm:size-32 rounded-full border-4 flex items-center justify-center text-white text-5xl font-semibold
-                                       ${isDarkTheme ? 'border-gray-800 bg-indigo-600' : 'border-white bg-indigo-500'}`}>
-                                {profileData.firstName.charAt(0)}{profileData.lastName.charAt(0)}
-                            </div>
-                        )}
+                        </div>
                     </div>
 
                     {/* Basic Info */}
-                    <div className="text-center mt-4">
-                        <h2 className={`text-2xl font-bold ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>{profileData.firstName} {profileData.lastName}</h2>
-                        <p className={`text-sm ${isDarkTheme ? 'text-gray-400' : 'text-gray-600'}`}>@{profileData.username}</p>
+                    <div className="text-center mt-6">
+                        <h2 className={`text-3xl font-extrabold ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>{displayName}</h2>
+                        <p className={`text-base font-medium ${isDarkTheme ? 'text-indigo-400' : 'text-indigo-600'}`}>@{username}</p>
                     </div>
 
                     {/* About Section */}
-                    <div className={`mt-6 pt-6 border-t ${isDarkTheme ? 'border-gray-700' : 'border-gray-200'}`}>
-                        <h3 className={`text-lg font-semibold mb-3 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>About</h3>
-                        {profileData.bio && profileData.bio.trim() !== '' ? (
-                            <p className={`text-base ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
-                                {profileData.bio.split('\n').map((line, index, array) => (
+                    <div className={`mt-8 pt-6 border-t ${isDarkTheme ? 'border-gray-700' : 'border-gray-200'}`}>
+                        <h3 className={`text-xl font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>About Me</h3>
+                        {bio && bio.trim() !== '' ? (
+                            <p className={`text-base leading-relaxed ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
+                                {bio.split('\n').map((line, index, array) => (
                                     <React.Fragment key={index}>
                                         {line}
                                         {index < array.length - 1 && <br />}
@@ -169,47 +177,28 @@ const AccountPage = () => {
                                 ))}
                             </p>
                         ) : (
-                            <p className={`text-base italic ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`}>
-                                This user hasn't added a bio yet.
-                            </p>
+                            <div className={`flex items-center text-base italic ${isDarkTheme ? 'text-gray-500' : 'text-gray-400'} p-3 rounded-md border
+                                      ${isDarkTheme ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
+                                <UserRound size={20} className="mr-3 flex-shrink-0" />
+                                <span>This user hasn't added a bio yet.</span>
+                            </div>
                         )}
                     </div>
 
 
                     {/* Contact and Location Info */}
-                    <div className={`mt-6 pt-6 border-t ${isDarkTheme ? 'border-gray-700' : 'border-gray-200'}`}>
-                        <h3 className={`text-lg font-semibold mb-3 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>Contact & Location</h3>
-                        <div className="space-y-3">
-                            {/* Email */}
-                            <div className={`flex items-center text-base ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
-                                <Mail size={20} className={`mr-3 ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`} />
-                                <span>{profileData.email}</span>
-                            </div>
-                            {/* Phone (Conditional) */}
-                            {profileData.phone && (
-                                <div className={`flex items-center text-base ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <Phone size={20} className={`mr-3 ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`} />
-                                    <span>{profileData.phone}</span>
-                                </div>
-                            )}
-                            {/* Location (Conditional) */}
-                            {(profileData.city || profileData.country) && (
-                                <div className={`flex items-center text-base ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
-                                    <MapPin size={20} className={`mr-3 ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`} />
-                                    <span>
-                                           {[profileData.city, profileData.country].filter(Boolean).join(', ')}
-                                       </span>
-                                </div>
-                            )}
-                            {/* Join Date */}
-                            <div className={`flex items-center text-base ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
-                                <CalendarDays size={20} className={`mr-3 ${isDarkTheme ? 'text-gray-400' : 'text-gray-500'}`} />
-                                <span>Joined on {formatDate(profileData.joinDate)}</span>
-                            </div>
+                    <div className={`mt-8 pt-6 border-t ${isDarkTheme ? 'border-gray-700' : 'border-gray-200'}`}>
+                        <h3 className={`text-xl font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>Contact & Details</h3>
+                        <div className="space-y-4">
+                            <InfoRow icon={Mail} value={email} isDarkTheme={isDarkTheme} />
+                            <InfoRow icon={Phone} value={phone} isDarkTheme={isDarkTheme} />
+                            <InfoRow icon={MapPin} value={displayLocation} isDarkTheme={isDarkTheme} />
+                            <InfoRow icon={CalendarDays} value={`Joined on ${formatDate(joinDate)}`} isDarkTheme={isDarkTheme} />
                         </div>
                     </div>
                 </div>
             </div>
+            <div className="py-4"></div>
         </div>
     );
 };
