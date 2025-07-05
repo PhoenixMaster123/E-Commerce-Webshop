@@ -1,8 +1,9 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "../Components/Main_Components/Navbar/Navbar";
+// src/Layout/MainLayout.tsx
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Navbar from '../Components/Main_Components/Navbar/Navbar';
 
-
-const MainLayout = () => (
+const MainLayout: React.FC = () => (
     <>
         <Navbar />
         <Outlet />

@@ -16,8 +16,8 @@ interface CategoryWithSubcategories {
 
 const Navbar: React.FC = () => {
   // Use global theme context
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
-
+  const { toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const searchInputRef = useRef<HTMLInputElement | null>(null);

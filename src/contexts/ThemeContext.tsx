@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
+// src/contexts/ThemeContext.tsx
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 
 interface ThemeContextType {
     isDarkMode: boolean;
@@ -10,19 +11,30 @@ export const ThemeContext = createContext<ThemeContextType>({
     toggleTheme: () => {},
 });
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface ThemeProviderProps {
+    children: ReactNode;
+}
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
         const saved = localStorage.getItem('theme');
-        if (saved) return saved === 'dark';
+        if (saved === 'dark' || saved === 'light') {
+            return saved === 'dark';
+        }
+        // Default to browser setting
         return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
     });
 
-    const toggleTheme = () => setIsDarkMode((m) => !m);
+    const toggleTheme = () => {
+        setIsDarkMode(prev => {
+            const next = !prev;
+            localStorage.setItem('theme', next ? 'dark' : 'light');
+            return next;
+        });
+    };
 
-    // side‐effect: update body class & localStorage
     useEffect(() => {
         document.body.classList.toggle('dark', isDarkMode);
-        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
 
     return (
