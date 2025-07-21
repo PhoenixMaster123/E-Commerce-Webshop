@@ -1,104 +1,70 @@
-import { useState, useEffect, FormEvent } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../../auth/useAuth.ts';
-import 'boxicons/css/boxicons.min.css';
-import './login.css';
+import React, { useState } from "react";
+import "./login.css";
+import { faCartShopping, faMoon, faSun, faSearch, faBars, faTimes, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+const LoginPage: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
-const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>(null);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // handle login...
+  };
 
-    const auth = useAuth();
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const from = location.state?.from?.pathname || '/home';
-
-    useEffect(() => {
-        document.body.className = 'login-body';
-        return () => {
-            document.body.className = '';
-        };
-    }, []);
-
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault(); // Prevent page refresh
-        setError(null); // Clear previous errors
-
-        try {
-            console.log('Attempting login for user:', username);
-
-            let userRole: 'admin' | 'user' = 'user';
-
-            if (username === 'admin' && password === 'admin123') {
-                userRole = 'admin';
-            } else if (username === 'user' && password === 'user123') {
-                userRole = 'user';
-            } else {
-                throw new Error('Invalid username or password');
-            }
-
-            const user = { id: '1', name: username, role: userRole };
-            const token = 'fake-jwt-token';
-
-            // Call the login function from our AuthContext
-            auth.login(user, token);
-
-            // Navigate the user to the page they were trying to access
-            navigate(from, { replace: true });
-
-        } catch (err) {
-            console.error('Login failed:', err);
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('An unexpected error occurred.');
-            }
-        }
-    };
-
-    return (
-        <div className="login-container">
-            <form onSubmit={handleSubmit}>
-                <h1>Login</h1>
-
-                {error && <div className="error-box">{error}</div>}
-
-                <div className="input-box">
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        required
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <i className="fa-solid fa-user"></i>
-                </div>
-                <div className="input-box">
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <i className="fa-solid fa-lock"></i>
-                </div>
-                <div className="remember-forgot">
-                    <label>
-                        <input type="checkbox" /> Remember me
-                    </label>
-                    <NavLink to="#">Forgot password?</NavLink>
-                </div>
-                <button type="submit" className="btn">Login</button>
-                <div className="register-link">
-                    <p>Don't have an account? <NavLink to="/register">Register</NavLink></p>
-                </div>
-            </form>
+  return (
+    <div className={`login-bg${darkMode ? " dark" : ""}`}>
+      <div className="login-card">
+        <button
+          type="button"
+          className="darkmode-toggle"
+          onClick={() => setDarkMode(d => !d)}
+        >
+          <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
+        </button>
+        <div className="login-icon">
+          <svg width="40" height="40" fill="none" viewBox="0 0 24 24"><path fill={darkMode ? "#eee" : "#444"} d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.314 0-10 1.657-10 5v3h20v-3c0-3.343-6.686-5-10-5z"/></svg>
         </div>
-    );
+        <h2 className="login-title">Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="login-field">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="login-field">
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="login-options">
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={e => setRememberMe(e.target.checked)}
+              />
+              Remember me
+            </label>
+            <a href="/forgot" className="forgot-link">Forgot password?</a>
+          </div>
+          <button type="submit" className="login-btn">Login</button>
+        </form>
+        <div className="login-register">
+          Don't have an account? <a href="/register">Register</a>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default Login;
+export default LoginPage;
