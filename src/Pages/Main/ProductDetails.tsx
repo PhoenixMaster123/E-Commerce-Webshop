@@ -54,7 +54,7 @@ const ProductDetailPage: React.FC = () => {
             )}
           </div>
           {/* Placeholder for shop logo */}
-          <span className="font-bold text-blue-600 text-xl">ShopEase</span>
+      
         </div>
         {/* IMAGE CAROUSEL SECTION */}
         <div className="flex flex-col items-center">
@@ -142,7 +142,7 @@ const ProductDetailPage: React.FC = () => {
         )}
         {/* Shipping Info */}
         <div className="flex items-center justify-center text-sm text-gray-500 mt-2">
-          <span>🚚 Free shipping for orders over $50</span>
+          <span>🚚 Free shipping for orders over €39.99</span>
         </div>
       </div>
     </div>

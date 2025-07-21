@@ -72,7 +72,7 @@ const CartPage = () => {
                         </div>
                     </div>
                     <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.95rem', color: '#888' }}>
-                        Cart has to be over 39.99 to qualify for free shipping
+                        Cart has to be over €39.99 to qualify for free shipping
                     </div>
                     <button className="checkout-button" disabled={!hasItems}>
                         Proceed to Checkout
