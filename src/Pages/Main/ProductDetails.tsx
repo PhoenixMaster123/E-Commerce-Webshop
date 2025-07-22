@@ -142,7 +142,7 @@ const ProductDetailPage: React.FC = () => {
         )}
         {/* Shipping Info */}
         <div className="flex items-center justify-center text-sm text-gray-500 mt-2">
-          <span>🚚 Free shipping for orders over €39.99</span>
+          <span>🚚 Free shipping for orders over $39.99</span>
         </div>
       </div>
     </div>

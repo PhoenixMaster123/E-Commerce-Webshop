@@ -1,4 +1,5 @@
 import { useCart } from '../../../contexts/CartContext';
+import { Product } from '../../../types';
 import './cart.css';
 
 const FREE_SHIPPING_THRESHOLD = 39.99;
@@ -14,7 +15,15 @@ const CartPage = () => {
 
     const hasItems = cart && cart.length > 0;
 
-    const subtotal = cart.reduce((sum, product) => sum + product.price * product.quantity, 0);
+const getDiscountedPrice = (product:Product) => {
+    return (product.price * (1 - (product.discountPercentage || 0) / 100));
+};
+const getDiscount = (product: Product):number => {
+    return product.discountPercentage ? (product.price * product.discountPercentage / 100) :
+        0;
+}; 
+    const subtotal = cart.reduce((sum, product) => sum + getDiscountedPrice(product) * product.quantity, 0);
+    const discountTotal = cart.reduce((sum, product) => sum + getDiscount(product) * product.quantity, 0);
     const qualifiesForFreeShipping = subtotal > FREE_SHIPPING_THRESHOLD;
     const shipping = hasItems ? (qualifiesForFreeShipping ? 0 : SHIPPING_COST) : 0;
     const estimatedTotal = (subtotal + shipping).toFixed(2);
@@ -31,13 +40,13 @@ const CartPage = () => {
                                 <img src={product.thumbnail} alt={product.title} className="cart-thumbnail" />
                                 <div className="cart-details">
                                     <h4>{product.title}</h4>
-                                    <p>Price: €{product.price.toFixed(2)}</p>
+                                    <p>Price: ${getDiscountedPrice(product).toFixed(2)}</p>
                                     <div className="quantity-controls">
                                         <button onClick={() => decreaseQuantity(product.id)}>-</button>
                                         <span>{product.quantity}</span>
                                         <button onClick={() => increaseQuantity(product.id)}>+</button>
                                     </div>
-                                    <p>Total: €{(product.price * product.quantity).toFixed(2)}</p>
+                                    <p>Total: ${(getDiscountedPrice(product)* product.quantity).toFixed(2)}</p>
                                     <button className="remove-btn" onClick={() => removeFromCart(product.id)}>Remove</button>
                                 </div>
                             </div>
@@ -52,27 +61,27 @@ const CartPage = () => {
                         <h3>Order Summary</h3>
                         <div className="summary-row">
                             <span>Subtotal:</span>
-                            <span>€{subtotal.toFixed(2)}</span>
+                            <span>${subtotal.toFixed(2)}</span>
                         </div>
                         <div className="summary-row">
                             <span>Shipping:</span>
-                            <span>{qualifiesForFreeShipping ? 'Free' : `€${SHIPPING_COST.toFixed(2)}`}</span>
+                            <span>{qualifiesForFreeShipping ? 'Free' : `$${SHIPPING_COST.toFixed(2)}`}</span>
                         </div>
                         <div className="summary-row">
                             <span>Discount:</span>
-                            <span>€0.00</span>
+                            <span>${discountTotal.toFixed(2)}</span>
                         </div>
                         <div className="summary-row">
                             <span>Tax:</span>
-                            <span>€0.00</span>
+                            <span>$0.00</span>
                         </div>
                         <div className="summary-total">
                             <strong>Estimated Total:</strong>
-                            <strong>€{estimatedTotal}</strong>
+                            <strong>${estimatedTotal}</strong>
                         </div>
                     </div>
                     <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.95rem', color: '#888' }}>
-                        Cart has to be over €39.99 to qualify for free shipping
+                        Cart has to be over $39.99 to qualify for free shipping
                     </div>
                     <button className="checkout-button" disabled={!hasItems}>
                         Proceed to Checkout
@@ -82,5 +91,6 @@ const CartPage = () => {
         </div>
     );
 };
+
 
 export default CartPage;
