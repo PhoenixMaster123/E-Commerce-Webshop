@@ -116,9 +116,7 @@ const Home: React.FC = () => {
                 </section>
             </div>
 
-            <footer className={`${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'} py-6`}>
-                <p className="text-center text-sm">© {new Date().getFullYear()} MyShop</p>
-            </footer>
+
         </div>
     );
 };

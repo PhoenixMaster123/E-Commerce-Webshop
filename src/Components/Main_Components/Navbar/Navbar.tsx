@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
           </button>
 
           <div className="logo">
-            <Link to="/">Your Shop Name/Logo</Link>
+            <Link to="/">MyShop</Link>
           </div>
 
           <ul className="main-nav">
@@ -196,8 +196,8 @@ const Navbar: React.FC = () => {
               </button>
             </li>
 
-            <li><Link to="/login">Account</Link></li>
-            <li><Link to="/wishlist">Wishlist</Link></li>
+            <li><Link to="/login">Login</Link></li>
+
             <li className="cart">
               <Link to="/cart">
                 <FontAwesomeIcon icon={faCartShopping} />
