@@ -1,18 +1,57 @@
 import React, { useState, useContext } from "react";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ThemeContext } from '../../../contexts/ThemeContext';
+import { useAuth } from '../../../auth/useAuth';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const dummyUsers = [
+    {
+      id: "1",
+      email: "user@example.com",
+      password: "password123",
+      role: "user",
+      name: "Standard User",
+    },
+    {
+      id: "2",
+      email: "admin@example.com",
+      password: "adminpassword",
+      role: "admin",
+      name: "Admin User",
+    },
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login submitted", { email, password, rememberMe, isDarkMode });
+
+    const foundUser = dummyUsers.find(
+        (user) => user.email === email && user.password === password
+    );
+
+    if (foundUser) {
+      const dummyToken = `dummy-token-${foundUser.id}-${Date.now()}`;
+
+      login(
+          { id: foundUser.id, name: foundUser.name, role: foundUser.role as "admin" | "user" },
+          dummyToken
+      );
+
+      const from = (location.state as { from?: string })?.from || (foundUser.role === 'admin' ? '/admin' : '/home');
+      navigate(from, { replace: true });
+
+    } else {
+      alert("Invalid email or password");
+    }
   };
 
   return (

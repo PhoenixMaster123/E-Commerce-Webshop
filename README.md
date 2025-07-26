@@ -51,7 +51,7 @@ src/
 
 Dieses Frontend erwartet ein laufendes Backend unter:
 
-➡️ http://localhost:5000
+➡️ `http://<BACKEND_HOST>:5000`
 
 → Starte das Backend z. B. so:
 
@@ -80,12 +80,32 @@ docker build -t webshop-frontend .
 ```bash
 docker run -p 3000:3000 webshop-frontend
 ```
-
 Die App ist dann erreichbar unter:
+➡️ `http://<FRONTEND_HOST>:3000`
 
-➡️ http://localhost:3000
+Ersetze `<FRONTEND_HOST>` z. B. mit:
+- `localhost` (am lokalen Rechner)
+- `192.168.x.x` (für Zugriff im LAN, z. B. per Handy)
+- `host.docker.internal` (für Docker-internen Zugriff)
 
 ---
+
+#### 🧩 Optional: mit Umgebungsvariable starten
+
+Falls das Backend unter einer bestimmten IP oder Domain erreichbar ist (z. B. im LAN oder auf einem Server), kann man die API-URL per Umgebungsvariable setzen:
+
+```bash
+docker run -p 3000:3000   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-frontend
+```
+
+➡️ Ersetze `<BACKEND_HOST>` z. B. mit `192.168.178.118`, `api.meine-seite.de` oder `host.docker.internal` (für Host-Zugriff auf Desktop).
+
+---
+➡️ Dann verwendet das Frontend diese API-Adresse beim Start (funktioniert mit `import.meta.env.VITE_API_URL` im Code).
+
+---
+
+
 
 ## Setup & Installation
 
