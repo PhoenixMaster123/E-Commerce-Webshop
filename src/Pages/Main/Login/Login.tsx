@@ -5,11 +5,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { login as apiLogin } from "../../../services/api";
+import {useAuth} from "../../../auth/useAuth.ts";
 
 const LoginPage: React.FC = () => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,9 +25,23 @@ const LoginPage: React.FC = () => {
     setError(null);
 
     try {
-      await apiLogin(username, password);
-      const from = (location.state as { from?: { pathname: string } } | null)?.from?.pathname || "/";
-      navigate(from, { replace: true });
+      const userFromApi = await apiLogin(username, password);
+
+      login(
+          {
+            id: userFromApi.id.toString(),
+            name: userFromApi.username,
+            role: userFromApi.role as 'user' | 'admin',
+          },
+          userFromApi.token!
+      );
+
+      if (userFromApi.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else {
+        const from = (location.state as { from?: { pathname: string } } | null)?.from?.pathname || '/';
+        navigate(from, { replace: true });
+      }
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(
