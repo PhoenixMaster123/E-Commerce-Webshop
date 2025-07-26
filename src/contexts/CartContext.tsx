@@ -1,3 +1,4 @@
+// contexts/CartContext.tsx
 import { createContext, useContext, useState, ReactNode } from "react";
 import { Product } from "../types";
 
@@ -9,6 +10,7 @@ type CartContextType = {
   increaseQuantity: (productId: number) => void;
   decreaseQuantity: (productId: number) => void;
   removeFromCart: (productId: number) => void;
+  clearCart: () => void; // <--- Add this line
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -29,7 +31,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       if (found) {
         // Update the quantity by the specified amount
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+            item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
       // Add new product with the selected quantity
@@ -39,19 +41,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const increaseQuantity = (productId: number) => {
     setCart((prev) =>
-      prev.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-      )
+        prev.map((item) =>
+            item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+        )
     );
   };
 
   const decreaseQuantity = (productId: number) => {
     setCart((prev) =>
-      prev
-        .map((item) =>
-          item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
-        )
-        .filter((item) => item.quantity > 0)
+        prev
+            .map((item) =>
+                item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
+            )
+            .filter((item) => item.quantity > 0)
     );
   };
 
@@ -59,11 +61,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart((prev) => prev.filter((item) => item.id !== productId));
   };
 
+  // <--- Add the clearCart function here
+  const clearCart = () => {
+    setCart([]); // Set the cart to an empty array
+  };
+
   return (
-    <CartContext.Provider
-      value={{ cart, addToCart, increaseQuantity, decreaseQuantity, removeFromCart }}
-    >
-      {children}
-    </CartContext.Provider>
+      <CartContext.Provider
+          value={{ cart, addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart }} // <--- Expose clearCart here
+      >
+        {children}
+      </CartContext.Provider>
   );
 };
