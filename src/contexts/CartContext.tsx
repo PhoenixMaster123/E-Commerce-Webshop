@@ -1,4 +1,3 @@
-// contexts/CartContext.tsx
 import { createContext, useContext, useState, ReactNode } from "react";
 import { Product } from "../types";
 
@@ -10,7 +9,7 @@ type CartContextType = {
   increaseQuantity: (productId: number) => void;
   decreaseQuantity: (productId: number) => void;
   removeFromCart: (productId: number) => void;
-  clearCart: () => void; // <--- Add this line
+  clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -24,17 +23,14 @@ export const useCart = () => {
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  // Add to cart with quantity support
   const addToCart = (product: Product, quantity: number = 1) => {
     setCart((prev) => {
       const found = prev.find((item) => item.id === product.id);
       if (found) {
-        // Update the quantity by the specified amount
         return prev.map((item) =>
             item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-      // Add new product with the selected quantity
       return [...prev, { ...product, quantity }];
     });
   };
@@ -61,9 +57,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart((prev) => prev.filter((item) => item.id !== productId));
   };
 
-  // <--- Add the clearCart function here
   const clearCart = () => {
-    setCart([]); // Set the cart to an empty array
+    setCart([]);
   };
 
   return (

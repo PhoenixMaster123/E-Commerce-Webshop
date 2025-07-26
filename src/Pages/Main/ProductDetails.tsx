@@ -20,8 +20,13 @@ const ProductDetailPage: React.FC = () => {
         setLoading(true);
         const data = await getProductById(id!);
         setProduct(data);
-      } catch (err) {
-        setError('Product not found or API error');
+      } catch (err: unknown) {
+        console.error("Error fetching profile:", err);
+        let errorMessage = "An unexpected error occurred while fetching profile data.";
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        }
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -33,7 +38,6 @@ const ProductDetailPage: React.FC = () => {
   if (error) return <div className="text-center py-10 text-red-600">{error}</div>;
   if (!product) return <div className="text-center py-10">No product found.</div>;
 
-  // Now we know product is not null!
   const discountedPrice = (product.price * (1 - (product.discountPercentage || 0) / 100)).toFixed(2);
   const images = product.images && product.images.length > 0 ? product.images : [product.thumbnail];
 
@@ -53,7 +57,6 @@ const ProductDetailPage: React.FC = () => {
               <span className="text-gray-400 text-md">by {product.brand}</span>
             )}
           </div>
-          {/* Placeholder for shop logo */}
       
         </div>
         {/* IMAGE CAROUSEL SECTION */}
@@ -87,7 +90,7 @@ const ProductDetailPage: React.FC = () => {
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">{product.title}</h1>
         <div className="flex items-center mb-2">
-          {/* Example: show rating and reviews */}
+          {/* Rating and reviews */}
           <span className="flex items-center text-yellow-500">
             {'★'.repeat(Math.round(product.rating || 0))}
             <span className="ml-2 text-gray-600 text-sm">({product.reviews?.length ?? 0} reviews)</span>
@@ -127,7 +130,6 @@ const ProductDetailPage: React.FC = () => {
           >+</button>
           <span className="ml-3 text-sm text-gray-500">({product.stock} in stock)</span>
         </div>
-        {/* Add to Cart Button */}
         <button
           className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition mb-3"
           onClick={handleAddToCart}
