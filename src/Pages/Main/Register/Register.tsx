@@ -1,104 +1,118 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 const Register: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   return (
-      <div className={`${darkMode ? "bg-[#181a20] text-white" : "bg-[#f6f7fb] text-gray-900"} min-h-screen w-full flex items-center justify-center transition-colors duration-300`}>
-        <div className={`${darkMode ? "bg-[#23262f]" : "bg-white"} rounded-2xl shadow-2xl p-10 w-full max-w-md flex flex-col items-center transition-colors duration-300`}>
+      <div className={`${isDarkMode ? "bg-gray-900" : "bg-gray-100"} min-h-screen flex items-center justify-center transition-colors duration-300`}>
+        <div className={`${isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"} rounded-3xl shadow-2xl p-16 w-full max-w-xl flex flex-col items-center transition-colors duration-300`}>
           <button
               type="button"
-              onClick={() => setDarkMode((prev) => !prev)}
-              className={`${darkMode ? "text-white" : "text-gray-800"} self-end mb-4 text-2xl hover:text-blue-500 transition`}
+              className={`self-end mb-4 text-4xl ${isDarkMode ? "text-gray-100" : "text-gray-600"} hover:text-blue-500 transition-colors`}
+              onClick={toggleTheme}
           >
-            <FontAwesomeIcon icon={darkMode ? faSun : faMoon} size="2x" />
+            <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="2x" />
           </button>
 
-          <h1 className="text-3xl font-semibold mb-6 transition-colors duration-300">Create Account</h1>
+          <div className="mb-8">
+            <svg width="72" height="72" fill="none" viewBox="0 0 24 24">
+              <path
+                  fill={isDarkMode ? "#eee" : "#444"}
+                  d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.314 0-10 1.657-10 5v3h20v-3c0-3.343-6.686-5-10-5z"
+              />
+            </svg>
+          </div>
+
+          <h1 className="text-4xl font-extrabold mb-10">Create Account</h1>
 
           <form className="w-full">
-            <div className="mb-4">
+            <div className="mb-8">
               <input
                   type="text"
                   placeholder="Username"
                   required
-                  className={`w-full px-4 py-3 rounded-md border text-base ${
-                      darkMode
-                          ? "bg-[#2b2e3c] text-white border-[#444857]"
-                          : "bg-[#f6f7fb] text-gray-900 border-gray-300"
+                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
+                      isDarkMode
+                          ? "bg-gray-700 border-gray-600 text-gray-100" 
+                          : "bg-gray-100 border-gray-300 text-gray-900" 
                   } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-8">
               <input
                   type="email"
                   placeholder="Email"
                   required
-                  className={`w-full px-4 py-3 rounded-md border text-base ${
-                      darkMode
-                          ? "bg-[#2b2e3c] text-white border-[#444857]"
-                          : "bg-[#f6f7fb] text-gray-900 border-gray-300"
+                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
+                      isDarkMode
+                          ? "bg-gray-700 border-gray-600 text-gray-100"
+                          : "bg-gray-100 border-gray-300 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-8">
               <input
                   type="password"
                   placeholder="Password"
                   required
-                  className={`w-full px-4 py-3 rounded-md border text-base ${
-                      darkMode
-                          ? "bg-[#2b2e3c] text-white border-[#444857]"
-                          : "bg-[#f6f7fb] text-gray-900 border-gray-300"
+                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
+                      isDarkMode
+                          ? "bg-gray-700 border-gray-600 text-gray-100"
+                          : "bg-gray-100 border-gray-300 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-8">
               <input
                   type="password"
                   placeholder="Repeat your password"
                   required
-                  className={`w-full px-4 py-3 rounded-md border text-base ${
-                      darkMode
-                          ? "bg-[#2b2e3c] text-white border-[#444857]"
-                          : "bg-[#f6f7fb] text-gray-900 border-gray-300"
+                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
+                      isDarkMode
+                          ? "bg-gray-700 border-gray-600 text-gray-100"
+                          : "bg-gray-100 border-gray-300 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
               />
             </div>
 
-            <div className={`mb-4 text-sm ${darkMode ? "text-gray-200" : "text-gray-800"}`}>
+            <div className={`flex items-center justify-between mb-6 text-xl`}>
               <label className="flex items-center">
                 <input type="checkbox" required className="mr-2 accent-blue-500" />
                 I agree all statements in&nbsp;
-                <a
-                    href="https://policies.google.com/terms?hl=en-US"
+                <Link
+                    to="https://policies.google.com/terms?hl=en-US"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline"
                 >
                   Terms of Service
-                </a>
+                </Link>
               </label>
             </div>
 
             <button
                 type="submit"
-                className="w-full py-3 rounded-md bg-blue-600 text-white font-semibold text-base hover:bg-blue-700 transition-colors mb-4"
+                style={{ fontSize: '1.4em' }}
+                className={`w-full py-5 rounded-xl font-bold transition-all duration-300
+                            bg-gradient-to-r from-purple-700 to-purple-800
+                            ${isDarkMode ? "text-white" : "text-white"} // Text white in both modes often works well with purple
+                            hover:from-purple-700 hover:to-purple-800 hover:shadow-lg`}
             >
-              Sign up
+              Sign Up
             </button>
 
-            <div className={`text-sm text-center ${darkMode ? "text-gray-300" : "text-gray-800"}`}>
+            <div className="mt-6 text-2xl">
               Already have an account?{" "}
-              <NavLink to="/login" className="text-blue-600 font-semibold hover:underline">
+              <Link to="/login" className="text-blue-500 hover:underline font-bold">
                 Login here
-              </NavLink>
+              </Link>
             </div>
           </form>
         </div>

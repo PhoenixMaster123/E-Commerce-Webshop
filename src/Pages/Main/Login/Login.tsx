@@ -109,15 +109,19 @@ const LoginPage: React.FC = () => {
               </Link>
             </div>
             <button
-                type="submit"
-                className="w-full py-5 rounded-xl bg-blue-600 text-2xl font-bold hover:bg-blue-700 transition"
-            >
+              type="submit"
+              style={{ fontSize: '1.4em' }}
+              className={`w-full py-5 rounded-xl font-bold transition-all duration-300
+                            bg-gradient-to-r from-purple-700 to-purple-800
+                            ${isDarkMode ? "text-white" : "text-white"} // Text white in both modes often works well with purple
+                            hover:from-purple-700 hover:to-purple-800 hover:shadow-lg`}
+              >
               Login
-            </button>
+          </button>
           </form>
           <div className="mt-10 text-2xl">
             Don't have an account?{" "}
-            <Link to="/register" className="text-blue-600 hover:underline font-bold">
+            <Link to="/register" className="text-blue-500 hover:underline font-bold">
               Register
             </Link>
           </div>
