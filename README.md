@@ -11,7 +11,7 @@
 
 **Backend:**
 - Python Backend
-- Dummy JSON API
+- [dummyBackendWebShop](https://github.com/CodeWizard2001/dummyBackendWebShop)
 ---
 
 ## Project Structure
@@ -66,16 +66,16 @@ docker run -p 5000:5000 webshop-backend
 
 ## 🚀 Frontend starten
 
-### 1. Stelle sicher, dass in `package.json` folgendes Script existiert:
 
 
-### 2. Docker-Image bauen
+
+### 1. Docker-Image bauen
 
 ```bash
 docker build -t webshop-frontend .
 ```
 
-### 3. Container starten
+### 2. Container starten
 
 ```bash
 docker run -p 3000:3000 webshop-frontend
