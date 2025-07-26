@@ -39,6 +39,53 @@ src/
 ```
 
 ---
+# 🐳 Start mit Docker
+
+### Voraussetzungen
+
+- [Docker installiert](https://docs.docker.com/get-docker/)
+
+---
+
+## ⚙️ Abhängigkeit vom Backend
+
+Dieses Frontend erwartet ein laufendes Backend unter:
+
+➡️ http://localhost:5000
+
+→ Starte das Backend z. B. so:
+
+```bash
+git clone https://github.com/CodeWizard2001/dummyBackendWebShop.git
+cd dummyBackendWebShop
+docker build -t webshop-backend .
+docker run -p 5000:5000 webshop-backend
+```
+
+---
+
+## 🚀 Frontend starten
+
+### 1. Stelle sicher, dass in `package.json` folgendes Script existiert:
+
+
+### 2. Docker-Image bauen
+
+```bash
+docker build -t webshop-frontend .
+```
+
+### 3. Container starten
+
+```bash
+docker run -p 3000:3000 webshop-frontend
+```
+
+Die App ist dann erreichbar unter:
+
+➡️ http://localhost:3000
+
+---
 
 ## Setup & Installation
 
