@@ -74,6 +74,7 @@ const ProductDetailPage: React.FC = () => {
                     src={images[currentIdx]}
                     alt={product.title}
                     className="w-full h-full object-contain"
+                    onError={(e) => (e.currentTarget.src = 'https://via.placeholder.com/300?text=No+Image')}
                 />
               </div>
               <button
@@ -122,12 +123,13 @@ const ProductDetailPage: React.FC = () => {
                 type="button"
             >-</button>
             <input
-                className={`w-12 text-center border-t border-b ${isDarkMode ? 'border-gray-700 bg-gray-800 text-white' : 'border-gray-200'}`}
                 type="number"
                 min={1}
                 max={product.stock}
                 value={quantity}
                 onChange={e => setQuantity(Math.max(1, Math.min(product.stock, Number(e.target.value))))}
+                className={`w-12 text-center border-t border-b appearance-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none 
+              ${isDarkMode ? 'border-gray-700 bg-gray-800 text-white' : 'border-gray-200 bg-white text-gray-900'}`}
             />
             <button
                 className={`px-3 py-1 rounded-r transition ${isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
@@ -151,7 +153,6 @@ const ProductDetailPage: React.FC = () => {
               </div>
           )}
 
-          {/* Shipping Info */}
           <div className="flex items-center justify-center text-sm text-gray-500 mt-2">
             🚚 Free shipping for orders over $39.99
           </div>
