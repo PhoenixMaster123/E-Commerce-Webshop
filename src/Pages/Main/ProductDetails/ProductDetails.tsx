@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductById } from '../../services/api';
-import { Product } from '../../types';
-import { useCart } from '../../contexts/CartContext';
-import { ThemeContext } from '../../contexts/ThemeContext';
+import { getProductById } from '../../../services/api.ts';
+import { Product } from '../../../types';
+import { useCart } from '../../../contexts/CartContext.tsx';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
