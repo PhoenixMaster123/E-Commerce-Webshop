@@ -1,69 +1,81 @@
 import React, { useState, useContext } from "react";
-import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ThemeContext } from '../../../contexts/ThemeContext';
-import { useAuth } from '../../../auth/useAuth';
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { ThemeContext } from "../../../contexts/ThemeContext";
+import { login as apiLogin } from "../../../services/api"; // <-- API function (username, password)
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
-  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const dummyUsers = [
-    {
-      id: "1",
-      email: "user@example.com",
-      password: "password123",
-      role: "user",
-      name: "Standard User",
-    },
-    {
-      id: "2",
-      email: "admin@example.com",
-      password: "adminpassword",
-      role: "admin",
-      name: "Admin User",
-    },
-  ];
+  // ---------------- State ----------------
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // ---------------- Submit Handler ----------------
+  const handleSubmit = async (
+      e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
 
-    const foundUser = dummyUsers.find(
-        (user) => user.email === email && user.password === password
-    );
+    setLoading(true);
+    setError(null);
 
-    if (foundUser) {
-      const dummyToken = `dummy-token-${foundUser.id}-${Date.now()}`;
+    try {
+      // Use API login with username + password
+      await apiLogin(username, password);
 
-      login(
-          { id: foundUser.id, name: foundUser.name, role: foundUser.role as "admin" | "user" },
-          dummyToken
-      );
+      // TODO: if you want token persistence only when rememberMe is checked,
+      // you could conditionally map token to sessionStorage vs localStorage here.
+      // Current apiLogin stores token in localStorage by default.
 
-      const from = (location.state as { from?: string })?.from || (foundUser.role === 'admin' ? '/admin' : '/home');
+      // Redirect to the page user attempted to access or to home
+      const from =
+          (location.state as { from?: { pathname: string } } | null)?.from
+              ?.pathname || "/";
       navigate(from, { replace: true });
-
-    } else {
-      alert("Invalid email or password");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(
+            (err.response?.data as { message?: string } | undefined)?.message ??
+            "Invalid credentials. Please try again."
+        );
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Login failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
+  // ---------------- Render ----------------
   return (
-      <div className={`${isDarkMode ? "bg-gray-900" : "bg-gray-100"} min-h-screen flex items-center justify-center transition-colors duration-300`}>
-        <div className={`${isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"} rounded-3xl shadow-2xl p-16 w-full max-w-xl flex flex-col items-center transition-colors duration-300`}>
+      <div
+          className={`${isDarkMode ? "bg-gray-900" : "bg-gray-100"} min-h-screen flex items-center justify-center transition-colors duration-300`}
+      >
+        <div
+            className={`${isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"} rounded-3xl shadow-2xl p-16 w-full max-w-xl flex flex-col items-center transition-colors duration-300`}
+        >
+          {/* Theme Toggle */}
           <button
               type="button"
-              className={`self-end mb-4 text-4xl ${isDarkMode ? "text-gray-100" : "text-gray-600"} hover:text-blue-500 transition-colors`}
+              className={`self-end mb-4 text-4xl ${
+                  isDarkMode ? "text-gray-100" : "text-gray-600"
+              } hover:text-blue-500 transition-colors`}
               onClick={toggleTheme}
           >
             <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="2x" />
           </button>
+
+          {/* Avatar Icon */}
           <div className="mb-8">
             <svg width="72" height="72" fill="none" viewBox="0 0 24 24">
               <path
@@ -72,18 +84,28 @@ const LoginPage: React.FC = () => {
               />
             </svg>
           </div>
+
           <h2 className="text-4xl font-extrabold mb-10">Login</h2>
+
+          {/* ---------------- FORM ---------------- */}
           <form onSubmit={handleSubmit} className="w-full">
+            {/* Username */}
             <div className="mb-8">
               <input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${isDarkMode ? "bg-gray-700 border-gray-600 text-gray-100" : "bg-gray-100 border-gray-300 text-gray-900"} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
+                      isDarkMode
+                          ? "bg-gray-700 border-gray-600 text-gray-100"
+                          : "bg-gray-100 border-gray-300 text-gray-900"
+                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
               />
             </div>
+
+            {/* Password */}
             <div className="mb-8">
               <input
                   type="password"
@@ -91,9 +113,15 @@ const LoginPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${isDarkMode ? "bg-gray-700 border-gray-600 text-gray-100" : "bg-gray-100 border-gray-300 text-gray-900"} focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
+                      isDarkMode
+                          ? "bg-gray-700 border-gray-600 text-gray-100"
+                          : "bg-gray-100 border-gray-300 text-gray-900"
+                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
               />
             </div>
+
+            {/* Remember me & Forgot */}
             <div className="flex items-center justify-between mb-8 text-2xl">
               <label className="flex items-center">
                 <input
@@ -108,19 +136,26 @@ const LoginPage: React.FC = () => {
                 Forgot password?
               </Link>
             </div>
+
+            {/* Error Message */}
+            {error && (
+                <div className="mb-8 text-red-500 text-xl text-center">{error}</div>
+            )}
+
+            {/* Submit Button */}
             <button
-              type="submit"
-              style={{ fontSize: '1.4em' }}
-              className={`w-full py-5 rounded-xl font-bold transition-all duration-300
-                            bg-gradient-to-r from-purple-700 to-purple-800
-                            ${isDarkMode ? "text-white" : "text-white"} // Text white in both modes often works well with purple
-                            hover:from-purple-700 hover:to-purple-800 hover:shadow-lg`}
-              >
-              Login
-          </button>
+                type="submit"
+                disabled={loading}
+                style={{ fontSize: "1.4em" }}
+                className={`w-full py-5 rounded-xl font-bold transition-all duration-300 bg-gradient-to-r from-purple-700 to-purple-800 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {loading ? "Logging in…" : "Login"}
+            </button>
           </form>
+
+          {/* Register Link */}
           <div className="mt-10 text-2xl">
-            Don't have an account?{" "}
+            Don't have an account? {" "}
             <Link to="/register" className="text-blue-500 hover:underline font-bold">
               Register
             </Link>
