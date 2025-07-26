@@ -6,9 +6,10 @@ import React from "react";
 import Home from "./Pages/Main/Home/Home";
 import Login from "./Pages/Main/Login/Login";
 import Register from "./Pages/Main/Register/Register";
-import { ProductListPage } from "./Pages/Main/productList/ProductListPage.tsx";
+import ProductListPage from "./Pages/Main/productList/ProductListPage.tsx";
 import ProductsPage from "./Pages/Admin/ProductsPage.tsx";
 import CartPage from "./Pages/Main/Cart/cart";
+import ForgotPasswordPage from "./Pages/Main/ForgotPasswordPage/ForgotPasswordPage.tsx";
 
 // Layouts
 import MainLayout from "./Layout/MainLayout.tsx";
@@ -43,6 +44,7 @@ const App: React.FC = () => {
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/reset" element={<ForgotPasswordPage />} />
 
             {/* Main Layout routes - these are generally public or accessible to any logged-in user */}
             <Route element={<MainLayout />}>
