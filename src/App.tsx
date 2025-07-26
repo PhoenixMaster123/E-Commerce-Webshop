@@ -6,10 +6,10 @@ import React from "react";
 import Home from "./Pages/Main/Home/Home";
 import Login from "./Pages/Main/Login/Login";
 import Register from "./Pages/Main/Register/Register";
-import ProductListPage from "./Pages/Main/productList/ProductListPage.tsx";
+import ProductListPage from "./Pages/Main/ProductList/ProductListPage.tsx";
 import ProductsPage from "./Pages/Admin/ProductsPage.tsx";
 import CartPage from "./Pages/Main/Cart/cart";
-import ForgotPasswordPage from "./Pages/Main/ForgotPasswordPage/ForgotPasswordPage.tsx";
+import ForgotPasswordPage from "./Pages/Main/ForgotPassword/ForgotPasswordPage.tsx";
 
 // Layouts
 import MainLayout from "./Layout/MainLayout.tsx";
@@ -26,7 +26,7 @@ import NotificationsPage from "./Pages/Admin/Account/NotificationsPage.tsx";
 import SocialPage from "./Pages/Admin/Account/SocialPage.tsx";
 import DeletePage from "./Pages/Admin/Account/DeleteAccountPage.tsx";
 import AccountPage from "./Pages/Admin/Account/AccountPage.tsx";
-import ProductDetailPage from "./Pages/Main/ProductDetails.tsx";
+import ProductDetailPage from "./Pages/Main/ProductDetails/ProductDetails.tsx";
 
 // Page Not Found
 import NoPage from "./Components/NoPage.tsx";
