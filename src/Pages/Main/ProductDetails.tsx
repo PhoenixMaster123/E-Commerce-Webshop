@@ -69,11 +69,11 @@ const ProductDetailPage: React.FC = () => {
               >
                 &#8592;
               </button>
-              <div className="w-72 h-72 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+              <div className={`w-72 h-72 flex items-center justify-center rounded-xl shadow-md overflow-hidden ${isDarkMode ? 'bg-gray-700' : 'bg-white'}`}>
                 <img
                     src={images[currentIdx]}
                     alt={product.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                 />
               </div>
               <button
