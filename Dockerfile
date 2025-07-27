@@ -1,23 +1,23 @@
-# ── Stage 1: Build mit Node und Vite ─────────────────────────
+# ─────────────────── Stage 1: Build with Node and Vite ───────────────────
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-# Abhängigkeiten kopieren und installieren
+# Copy dependencies and install
 COPY package*.json tsconfig*.json ./
 RUN npm ci
 
-# Quellcode kopieren und bauen
+# Copy source code and build
 COPY . .
 RUN npm run build
 
-# ── Stage 2: Statisches Hosting mit Nginx ────────────────────
+# ─────────────────── Stage 2: Static Hosting with Nginx ──────────────────
 FROM nginx:alpine
-# Lösche default‑Website (optional, für Cleanliness)
+# Delete default website (optional, for cleanliness)
 RUN rm -rf /usr/share/nginx/html/*
 
-# Kopiere den gebauten Output (Vite legt standardmäßig in /dist)
+# Copy the built output (Vite defaults to /dist)
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Expose Port 80 und starte Nginx im Vordergrund
+# Expose Port 80 and start Nginx in the foreground
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
