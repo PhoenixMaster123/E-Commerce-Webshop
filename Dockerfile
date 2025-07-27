@@ -1,20 +1,22 @@
-# 1. Basis-Image
-FROM node:18-alpine
+# Stage 1: build (wenn du noch selbst bauen willst; andernfalls entfällt)
+# FROM node:18-alpine AS builder
+# WORKDIR /app
+# COPY package*.json ./
+# RUN npm ci
+# COPY . .
+# RUN npm run build       # erzeugt ./dist
 
-# 2. Arbeitsverzeichnis im Container
-WORKDIR /app
+# Stage 2: Serve mit Nginx
+FROM nginx:stable-alpine
 
-# 3. Abhängigkeiten installieren
-COPY package*.json ./
-COPY tsconfig*.json ./
-RUN npm install
+# default‑HTML entfernen
+RUN rm -rf /usr/share/nginx/html/*
 
-# 4. Quellcode kopieren
-COPY . .
+# kopiere gebaute Dateien (hier schon in web/dist/)
+COPY dist/ /usr/share/nginx/html/
 
-# 5. App bauen
-RUN npm run build
+# Nginx hört auf 8080 statt 80
+RUN sed -i 's/listen       80;/listen       8080;/' /etc/nginx/conf.d/default.conf
 
-# 6. Port und Startbefehl
-EXPOSE 3000
-CMD ["npm", "start"]
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
