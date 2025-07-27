@@ -4,46 +4,48 @@ import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { ThemeContext } from "../../../contexts/ThemeContext";
-import { login as apiLogin } from "../../../services/api"; // <-- API function (username, password)
+import { login as apiLogin } from "../../../services/api";
+import {useAuth} from "../../../auth/useAuth.ts";
 
 const LoginPage: React.FC = () => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth();
 
-  // ---------------- State ----------------
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ---------------- Submit Handler ----------------
-  const handleSubmit = async (
-      e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setLoading(true);
     setError(null);
 
     try {
-      // Use API login with username + password
-      await apiLogin(username, password);
+      const userFromApi = await apiLogin(username, password);
 
-      // TODO: if you want token persistence only when rememberMe is checked,
-      // you could conditionally map token to sessionStorage vs localStorage here.
-      // Current apiLogin stores token in localStorage by default.
+      login(
+          {
+            id: userFromApi.id.toString(),
+            name: userFromApi.username,
+            role: userFromApi.role as 'user' | 'admin',
+          },
+          userFromApi.token!
+      );
 
-      // Redirect to the page user attempted to access or to home
-      const from =
-          (location.state as { from?: { pathname: string } } | null)?.from
-              ?.pathname || "/";
-      navigate(from, { replace: true });
+      if (userFromApi.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else {
+        const from = (location.state as { from?: { pathname: string } } | null)?.from?.pathname || '/';
+        navigate(from, { replace: true });
+      }
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(
-            (err.response?.data as { message?: string } | undefined)?.message ??
+            (err.response?.data as { message?: string })?.message ??
             "Invalid credentials. Please try again."
         );
       } else if (err instanceof Error) {
@@ -56,26 +58,32 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const backgroundClass = isDarkMode ? "bg-gray-900" : "bg-gray-100";
+  const cardClass = isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900";
+  const inputClass = isDarkMode
+      ? "bg-gray-700 border-gray-600 text-gray-100"
+      : "bg-gray-100 border-gray-300 text-gray-900";
+  const iconColor = isDarkMode ? "text-gray-100" : "text-gray-600";
+
   // ---------------- Render ----------------
   return (
-      <div
-          className={`${isDarkMode ? "bg-gray-900" : "bg-gray-100"} min-h-screen flex items-center justify-center transition-colors duration-300`}
-      >
-        <div
-            className={`${isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"} rounded-3xl shadow-2xl p-16 w-full max-w-xl flex flex-col items-center transition-colors duration-300`}
-        >
-          {/* Theme Toggle */}
+      <div className={`${backgroundClass} min-h-screen flex items-center justify-center transition-colors duration-300 px-4`}>
+        {/* Background glow */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 opacity-20 blur-3xl rounded-full pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 opacity-20 blur-3xl rounded-full pointer-events-none"></div>
+
+        <div className={`relative ${cardClass} rounded-3xl shadow-2xl p-12 sm:p-16 w-full max-w-xl flex flex-col items-center transition-all backdrop-blur-xl border border-white/10`}>
+          {/* Theme toggle */}
           <button
               type="button"
-              className={`self-end mb-4 text-4xl ${
-                  isDarkMode ? "text-gray-100" : "text-gray-600"
-              } hover:text-blue-500 transition-colors`}
+              className={`self-end mb-6 text-3xl ${iconColor} hover:text-yellow-400 transition-colors`}
               onClick={toggleTheme}
+              title="Toggle theme"
           >
-            <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="2x" />
+            <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="2xl" />
           </button>
 
-          {/* Avatar Icon */}
+          {/* Avatar icon */}
           <div className="mb-8">
             <svg width="72" height="72" fill="none" viewBox="0 0 24 24">
               <path
@@ -85,77 +93,61 @@ const LoginPage: React.FC = () => {
             </svg>
           </div>
 
-          <h2 className="text-4xl font-extrabold mb-10">Login</h2>
+          <h2 className="text-4xl font-extrabold mb-8 tracking-wide">Login</h2>
 
-          {/* ---------------- FORM ---------------- */}
           <form onSubmit={handleSubmit} className="w-full">
-            {/* Username */}
-            <div className="mb-8">
+            <div className="mb-6">
               <input
                   type="text"
                   placeholder="Username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
-                      isDarkMode
-                          ? "bg-gray-700 border-gray-600 text-gray-100"
-                          : "bg-gray-100 border-gray-300 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-6 py-4 rounded-xl border text-lg sm:text-2xl ${inputClass} focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
               />
             </div>
 
-            {/* Password */}
-            <div className="mb-8">
+            <div className="mb-6">
               <input
                   type="password"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
-                      isDarkMode
-                          ? "bg-gray-700 border-gray-600 text-gray-100"
-                          : "bg-gray-100 border-gray-300 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-6 py-4 rounded-xl border text-lg sm:text-2xl ${inputClass} focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
               />
             </div>
 
-            {/* Remember me & Forgot */}
-            <div className="flex items-center justify-between mb-8 text-2xl">
+            <div className="flex items-center justify-between mb-6 text-base sm:text-xl">
               <label className="flex items-center">
                 <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="mr-4 accent-blue-500 scale-150"
+                    className="mr-3 accent-blue-500 scale-125"
                 />
                 Remember me
               </label>
-              <Link to="/reset" className="text-blue-500 hover:underline">
+              <Link to="/reset" className="text-blue-500 hover:underline font-semibold">
                 Forgot password?
               </Link>
             </div>
 
-            {/* Error Message */}
             {error && (
-                <div className="mb-8 text-red-500 text-xl text-center">{error}</div>
+                <div className="mb-6 text-red-500 text-lg text-center">{error}</div>
             )}
 
-            {/* Submit Button */}
             <button
                 type="submit"
                 disabled={loading}
-                style={{ fontSize: "1.4em" }}
-                className={`w-full py-5 rounded-xl font-bold transition-all duration-300 bg-gradient-to-r from-purple-700 to-purple-800 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`w-full py-4 rounded-xl font-bold text-lg sm:text-xl text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {loading ? "Logging in…" : "Login"}
             </button>
           </form>
 
-          {/* Register Link */}
-          <div className="mt-10 text-2xl">
-            Don't have an account? {" "}
+          <div className="mt-10 text-base sm:text-xl">
+            Don't have an account?{" "}
             <Link to="/register" className="text-blue-500 hover:underline font-bold">
               Register
             </Link>

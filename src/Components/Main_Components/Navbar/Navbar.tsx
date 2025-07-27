@@ -15,7 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import "./navbar.css";
-import { Product } from '../../../types/index';
+import { Product } from '../../../types';
 import { searchProducts, getMe, logoutUser } from '../../../services/api';
 import { useCart } from '../../../contexts/CartContext';
 import { ThemeContext } from '../../../contexts/ThemeContext';

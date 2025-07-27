@@ -17,7 +17,6 @@ const Register: React.FC = () => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
-  // ---------------- Form State ----------------
   const [form, setForm] = useState<RegisterForm>({
     username: "",
     email: "",
@@ -29,19 +28,13 @@ const Register: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  // ---------------- Handlers ----------------
-  const handleChange = (
-      e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (
-      e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -57,13 +50,11 @@ const Register: React.FC = () => {
         password: form.password,
       });
       setSuccess(true);
-      // Redirect to login after a short delay so the user sees the message
       setTimeout(() => navigate("/login"), 1500);
     } catch (err: unknown) {
-      // Narrow error type with axios helper
       if (axios.isAxiosError(err)) {
         setError(
-            (err.response?.data as { message?: string } | undefined)?.message ??
+            (err.response?.data as { message?: string })?.message ??
             "Registration failed. Please try again."
         );
       } else {
@@ -74,24 +65,32 @@ const Register: React.FC = () => {
     }
   };
 
-  // ---------------- Render ----------------
+  const bg = isDarkMode ? "bg-gray-900" : "bg-gray-100";
+  const card = isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900";
+  const inputStyle = isDarkMode
+      ? "bg-gray-700 border-gray-600 text-gray-100"
+      : "bg-gray-100 border-gray-300 text-gray-900";
+
   return (
-      <div
-          className={`${isDarkMode ? "bg-gray-900" : "bg-gray-100"} min-h-screen flex items-center justify-center transition-colors duration-300`}
-      >
+      <div className={`${bg} min-h-screen flex items-center justify-center relative px-4`}>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 opacity-20 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500 opacity-20 blur-3xl rounded-full pointer-events-none" />
+
         <div
-            className={`${isDarkMode ? "bg-gray-800 text-gray-100" : "bg-white text-gray-900"} rounded-3xl shadow-2xl p-16 w-full max-w-xl flex flex-col items-center transition-colors duration-300`}
+            className={`relative ${card} backdrop-blur-xl rounded-3xl shadow-2xl p-12 sm:p-16 w-full max-w-xl transition-all border border-white/10 flex flex-col items-center`}
         >
+          {/* Theme toggle */}
           <button
               type="button"
-              className={`self-end mb-4 text-4xl ${
+              className={`self-end mb-6 text-3xl ${
                   isDarkMode ? "text-gray-100" : "text-gray-600"
-              } hover:text-blue-500 transition-colors`}
+              } hover:text-yellow-400 transition-colors`}
               onClick={toggleTheme}
           >
-            <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="2x" />
+            <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="2xl"/>
           </button>
 
+          {/* Avatar icon */}
           <div className="mb-8">
             <svg width="72" height="72" fill="none" viewBox="0 0 24 24">
               <path
@@ -101,12 +100,11 @@ const Register: React.FC = () => {
             </svg>
           </div>
 
-          <h1 className="text-4xl font-extrabold mb-10">Create Account</h1>
+          <h1 className="text-4xl font-extrabold mb-10 tracking-wide">Create Account</h1>
 
-          {/* -------------- FORM -------------- */}
           <form className="w-full" onSubmit={handleSubmit}>
             {/* Username */}
-            <div className="mb-8">
+            <div className="mb-6">
               <input
                   type="text"
                   name="username"
@@ -114,16 +112,12 @@ const Register: React.FC = () => {
                   value={form.username}
                   onChange={handleChange}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
-                      isDarkMode
-                          ? "bg-gray-700 border-gray-600 text-gray-100"
-                          : "bg-gray-100 border-gray-300 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-6 py-4 rounded-xl border text-lg sm:text-2xl ${inputStyle} focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
               />
             </div>
 
             {/* Email */}
-            <div className="mb-8">
+            <div className="mb-6">
               <input
                   type="email"
                   name="email"
@@ -131,16 +125,12 @@ const Register: React.FC = () => {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
-                      isDarkMode
-                          ? "bg-gray-700 border-gray-600 text-gray-100"
-                          : "bg-gray-100 border-gray-300 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-6 py-4 rounded-xl border text-lg sm:text-2xl ${inputStyle} focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
               />
             </div>
 
             {/* Password */}
-            <div className="mb-8">
+            <div className="mb-6">
               <input
                   type="password"
                   name="password"
@@ -148,16 +138,12 @@ const Register: React.FC = () => {
                   value={form.password}
                   onChange={handleChange}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
-                      isDarkMode
-                          ? "bg-gray-700 border-gray-600 text-gray-100"
-                          : "bg-gray-100 border-gray-300 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-6 py-4 rounded-xl border text-lg sm:text-2xl ${inputStyle} focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
               />
             </div>
 
             {/* Confirm Password */}
-            <div className="mb-8">
+            <div className="mb-6">
               <input
                   type="password"
                   name="confirmPassword"
@@ -165,62 +151,51 @@ const Register: React.FC = () => {
                   value={form.confirmPassword}
                   onChange={handleChange}
                   required
-                  className={`w-full px-8 py-5 rounded-xl border text-2xl ${
-                      isDarkMode
-                          ? "bg-gray-700 border-gray-600 text-gray-100"
-                          : "bg-gray-100 border-gray-300 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors`}
+                  className={`w-full px-6 py-4 rounded-xl border text-lg sm:text-2xl ${inputStyle} focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
               />
             </div>
 
             {/* Terms of Service */}
-            <div className="flex items-center justify-between mb-6 text-xl">
-              <label className="flex items-center">
-                <input
-                    type="checkbox"
-                    required
-                    className="mr-2 accent-blue-500"
-                    name="tos"
-                />
-                I agree all statements in&nbsp;
+            <div className="flex items-center mb-6 text-base sm:text-lg">
+              <input
+                  type="checkbox"
+                  required
+                  className="mr-2 accent-blue-500 scale-125"
+                  name="tos"
+              />
+              <span>
+              I agree to&nbsp;
                 <Link
                     to="https://policies.google.com/terms?hl=en-US"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline"
                 >
-                  Terms of Service
-                </Link>
-              </label>
+                Terms of Service
+              </Link>
+            </span>
             </div>
 
             {/* Error / Success messages */}
-            {error && (
-                <div className="mb-6 text-red-500 text-xl text-center">{error}</div>
-            )}
+            {error && <div className="mb-4 text-red-500 text-lg text-center">{error}</div>}
             {success && (
-                <div className="mb-6 text-green-500 text-xl text-center">
+                <div className="mb-4 text-green-500 text-lg text-center">
                   Registration successful! Redirecting…
                 </div>
             )}
 
-            {/* Submit Button */}
+            {/* Submit button */}
             <button
                 type="submit"
                 disabled={loading}
-                style={{ fontSize: "1.4em" }}
-                className={`w-full py-5 rounded-xl font-bold transition-all duration-300 bg-gradient-to-r from-purple-700 to-purple-800 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 text-lg sm:text-xl hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing Up…" : "Sign Up"}
             </button>
 
-            {/* Link to Login */}
-            <div className="mt-6 text-2xl">
-              Already have an account? {" "}
-              <Link
-                  to="/login"
-                  className="text-blue-500 hover:underline font-bold"
-              >
+            <div className="mt-8 text-base sm:text-xl text-center">
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-500 hover:underline font-bold">
                 Login here
               </Link>
             </div>

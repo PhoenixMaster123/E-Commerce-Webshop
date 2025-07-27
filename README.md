@@ -16,96 +16,106 @@
 
 ## Project Structure
 ```plaintext
-src/
-│
-├── App.tsx
-├── main.tsx
-├── index.css
-├── assets/
-│   └── css/
-├── auth/
-├── Components/
-│   ├── Admin_Components/
-│   ├── Auth/
-│   └── Main_Components/
-├── contexts/
-├── Layout/
-├── Pages/
-│   ├── Admin/
-│   ├── HomePage/
-│   └── Main/
-├── services/
-├── types/
+frontend_development/
+├── src/
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   ├── assets/
+│   │   ├── my-logo.svg
+│   │   └── css/
+│   │       ├── _layout.css
+│   │       ├── _reset.css
+│   │       ├── _typography.css
+│   │       └── main.css
+│   ├── auth/
+│   │   ├── AuthContext.tsx
+│   │   └── useAuth.ts
+│   ├── Components/
+│   │   ├── NoPage.tsx
+│   │   ├── Admin_Components/
+│   │   │   ├── Header.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── StatCard.tsx
+│   │   │   ├── ToggleTheme.tsx
+│   │   │   ├── account/
+│   │   │   │   └── AccountAside.tsx
+│   │   │   ├── charts/
+│   │   │   │   ├── CategoryDistributionChart.tsx
+│   │   │   │   ├── SalesChannelChart.tsx
+│   │   │   │   ├── SalesOverviewChart.tsx
+│   │   │   │   ├── SalesTrendChart.tsx
+│   │   │   │   ├── UserActivityHeatmap.tsx
+│   │   │   │   └── UserGrowthChart.tsx
+│   │   │   ├── form-functionalities/
+│   │   │   │   ├── AddCustomerForm.tsx
+│   │   │   │   ├── AddProductForm.tsx
+│   │   │   │   ├── EditCustomerForm.tsx
+│   │   │   │   └── EditProductForm.tsx
+│   │   │   ├── settings/
+│   │   │   │   ├── AccessibilitySettings.tsx
+│   │   │   │   ├── AutosaveSettings.tsx
+│   │   │   │   ├── DataManagementSettings.tsx
+│   │   │   │   ├── DateTimeFormatSettings.tsx
+│   │   │   │   ├── DefaultFileLocationSettings.tsx
+│   │   │   │   ├── ExportDataSettings.tsx
+│   │   │   │   ├── LanguageSettings.tsx
+│   │   │   │   ├── Profile.tsx
+│   │   │   │   ├── SettingSection.tsx
+│   │   │   │   ├── TimezoneSettings.tsx
+│   │   │   │   └── ToggleSwitch.tsx
+│   │   │   └── tables/
+│   │   │       ├── CustomersTable.tsx
+│   │   │       └── ProductsTable.tsx
+│   │   ├── Auth/
+│   │   │   └── ProtectedRoute.tsx
+│   │   ├── Main_Components/
+│   │   │   ├── Navbar/
+│   │   │   │   ├── navbar.css
+│   │   │   │   └── Navbar.tsx
+│   │   │   └── productCard/
+│   │   │       └── ProductCard.tsx
+│   ├── contexts/
+│   │   ├── CartContext.tsx
+│   │   └── ThemeContext.tsx
+│   ├── Layout/
+│   │   ├── AdminAccountLayout.tsx
+│   │   ├── AdminLayout.tsx
+│   │   └── MainLayout.tsx
+│   ├── Pages/
+│   │   ├── Admin/
+│   │   │   ├── CustomersPage.tsx
+│   │   │   ├── OverviewPage.tsx
+│   │   │   ├── ProductsPage.tsx
+│   │   │   ├── SettingsPage.tsx
+│   │   │   └── Account/
+│   │   │       ├── AccountPage.tsx
+│   │   │       ├── DeleteAccountPage.tsx
+│   │   │       ├── NotificationsPage.tsx
+│   │   │       ├── PasswordPage.tsx
+│   │   │       ├── ProfileSettingsPage.tsx
+│   │   │       └── SocialPage.tsx
+│   │   ├── Main/
+│   │   │   ├── Cart/
+│   │   │   │   └── cart.tsx
+│   │   │   ├── ForgotPassword/
+│   │   │   │   └── ForgotPasswordPage.tsx
+│   │   │   ├── Home/
+│   │   │   │   ├── home.css
+│   │   │   │   └── Home.tsx
+│   │   │   ├── Login/
+│   │   │   │   └── Login.tsx
+│   │   │   ├── ProductDetails/
+│   │   │   │   └── ProductDetails.tsx
+│   │   │   ├── ProductList/
+│   │   │   │   └── ProductListPage.tsx
+│   │   │   └── Register/
+│   │   │       └── Register.tsx
+│   ├── services/
+│   │   └── api.ts
+│   └── types/
+│       └── index.ts
 ```
-
----
-# 🐳 Start mit Docker
-
-### Voraussetzungen
-
-- [Docker installiert](https://docs.docker.com/get-docker/)
-
----
-
-## ⚙️ Abhängigkeit vom Backend
-
-Dieses Frontend erwartet ein laufendes Backend unter:
-
-➡️ `http://<BACKEND_HOST>:5000`
-
-→ Starte das Backend z. B. so:
-
-```bash
-git clone https://github.com/CodeWizard2001/dummyBackendWebShop.git
-cd dummyBackendWebShop
-docker build -t webshop-backend .
-docker run -p 5000:5000 webshop-backend
-```
-
----
-
-## 🚀 Frontend starten
-
-
-
-
-### 1. Docker-Image bauen
-
-```bash
-docker build -t webshop-frontend .
-```
-
-### 2. Container starten
-
-```bash
-docker run -p 3000:3000 webshop-frontend
-```
-Die App ist dann erreichbar unter:
-➡️ `http://<FRONTEND_HOST>:3000`
-
-Ersetze `<FRONTEND_HOST>` z. B. mit:
-- `localhost` (am lokalen Rechner)
-- `192.168.x.x` (für Zugriff im LAN, z. B. per Handy)
-- `host.docker.internal` (für Docker-internen Zugriff)
-
----
-
-#### 🧩 Optional: mit Umgebungsvariable starten
-
-Falls das Backend unter einer bestimmten IP oder Domain erreichbar ist (z. B. im LAN oder auf einem Server), kann man die API-URL per Umgebungsvariable setzen:
-
-```bash
-docker run -p 3000:3000   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-frontend
-```
-
-➡️ Ersetze `<BACKEND_HOST>` z. B. mit `192.168.178.118`, `api.meine-seite.de` oder `host.docker.internal` (für Host-Zugriff auf Desktop).
-
----
-➡️ Dann verwendet das Frontend diese API-Adresse beim Start (funktioniert mit `import.meta.env.VITE_API_URL` im Code).
-
----
-
-
 
 ## Setup & Installation
 
@@ -130,42 +140,178 @@ docker run -p 3000:3000   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-f
     `npm run dev`
 ```
 
+
+
+---
+# 🐳 Get Started with Docker
+
+### Prerequisites
+
+- [Docker installed](https://docs.docker.com/get-docker/)
+
+---
+
+## Backend Dependency
+
+This frontend expects a running backend at:
+
+➡️ `http://<BACKEND_HOST>:5000`
+
+→ For example, start the backend like this:
+
+```bash
+git clone https://github.com/CodeWizard2001/dummyBackendWebShop.git
+cd dummyBackendWebShop
+docker build -t webshop-backend .
+docker run -p 5000:5000 webshop-backend
+```
+
+---
+
+## Start the Frontend
+
+### 1. Build Docker Image
+
+```bash
+docker build -t webshop-frontend .
+```
+
+### 2. Start Container
+
+```bash
+docker run -p 8080:8080 webshop-frontend
+
+```
+The app will then be accessible at:
+➡️ `http://<FRONTEND_HOST>:3000`
+
+Replace `<FRONTEND_HOST>` with, for example:
+- `localhost` (on your local machine)
+- `192.168.x.x` (for LAN access, e.g., via mobile phone)
+- `host.docker.internal` (for Docker-internal access)
+
+---
+
+#### 🧩 Optional: Start with Environment Variable
+
+If the backend is accessible at a specific IP or domain (e.g., in a LAN or on a server), you can set the API URL via an environment variable:
+
+```bash
+docker run -p 8080:8080   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-frontend
+```
+
+➡️ Replace `<BACKEND_HOST>` with, for example, `192.168.178.118`, `api.meine-seite.de` or `host.docker.internal` (for host access on Desktop).
+
+➡️ The frontend will then use this API address on startup (works with `import.meta.env.VITE_API_URL` in the code).
+
 ---
 
 ## Features
 
-- Product search and category filters
-- Shopping cart (add, remove, update quantity)
-- Checkout process with order confirmation
-- Responsive design (mobile & desktop)
-- Light/Dark mode toggle
-- User authentication (register, login)
-- Admin dashboard (product & user management)
-- (Optional) Wishlist, product reviews, multi-language support
+The following features define the core and extended functionality of our webshop.
+
+### Must-Have Features (Essential for MVP)
+
+* **Product Search and Filters**: Users can search for products using keywords and filter by categories, price range, or other attributes.
+* **Shopping Cart**: Allows users to add products, update quantities, and remove items. A live total cost is shown and updated dynamically.
+* **Checkout Process**: A guided, multi-step form to collect shipping and payment information. Ends with an order confirmation page.
+* **Responsive Design**: Full support for both mobile and desktop views, ensuring a smooth and consistent experience across devices.
+* **Light/Dark Mode Toggle**: Users can switch between light and dark themes for improved visual comfort.
+* **User Authentication**: Includes user sign-up, login, and personalized account management.
+* **Admin Dashboard**: Admins can manage products (CRUD operations).
+
+### Nice-to-Have Features (Optional Improvements)
+
+* **Wishlist / Favorites**: Allows users to save products for later or mark as favorites.
+* **Product Reviews and Ratings**: Enables users to leave product reviews and ratings for community feedback.
+* **Multi-language Support**: Adds support for multiple languages using localization files.
 
 ---
 
-## Possible future features
+## Possible Future Features
+
+These features are currently not planned for the initial release but represent potential areas for future development and enhancement.
+
+* **Payment Gateway Integration**: Integration with popular payment gateways (e.g., Stripe, PayPal) for more robust payment processing.
+* **Order History and Tracking**: Users can view their past orders and track the status of current shipments.
+* **User Profiles and Personalization**: More extensive user profiles with personalized recommendations based on Browse history and past purchases.
+* **Newsletter Subscription**: Allows users to subscribe to email newsletters for updates and promotions.
+* **Discount Codes and Promotions**: Functionality for applying discount codes and managing promotional offers.
+* **Inventory Management**: Advanced features for tracking product stock and managing inventory levels for administrators.
+* **Customer Support Chatbot**: Integration of an AI-powered chatbot for instant customer support.
+* **Social Media Sharing**: Users can easily share products on their social media platforms.
+* **Seller Accounts**: Ability for multiple sellers to list and manage their products (if applicable to the business model).
+* **Advanced Analytics Dashboard**: More comprehensive analytics for administrators, including sales trends, popular products, and user engagement.
+
 ---
 
-## User Roles
+## User Roles and Interactions
 
-- **Administrator:**
-    - Manage products (CRUD)
-    - Manage user accounts
+This section explains the different types of users who interact with our e-commerce webshop, their permissions, and the actions they can typically perform.
 
-- **Customer (registered):**
-    - Browse, filter, and purchase products
-    - Manage personal data & orders
+### Administrator/Admin
 
-- **Guest:**
-    - View products
-    - Use cart (session only)
-    - Option to register/login
+The Administrator oversees the overall management of the webshop. This role has the highest level of access and can modify nearly every aspect of the site.
+
+**Typical Actions and Expected Outcomes:**
+
+* The admin can add, update, and remove products from the catalog; any changes are instantly visible to customers. For example, the admin might add a new product, such as *wireless headphones*, with a price of *129.99 €*.
+* The admin can also manage user accounts – such as viewing user information or deleting accounts if it's needed.
+
+### Customer (Registered User)
+
+Customers are users who have registered an account on the webshop. They can explore products, place orders, and manage their personal details and order history.
+
+**Typical Actions and Expected Outcomes:**
+
+* Customers can browse all available products, read detailed descriptions, and check their prices.
+* They can also use the search bar or apply filters, such as by category, to narrow down the results.
+* Add products to the shopping cart for quick purchase.
+* Can proceed to checkout, choose a payment method, and complete their order easily.
+* Update personal information, including name, email, and password.
+
+### Guest User (Unregistered User)
+
+A guest user can browse the webshop without creating an account, though their access is limited.
+
+**Typical Actions and Expected Outcomes:**
+
+* Can browse the products without logging in.
+* Can register or Sign In.
+* Can add products to the cart, but the cart will remain active only while they are on the website. Once they leave, everything will be removed. The users must have an account to purchase the products otherwise it will be not possible.
 
 ---
 
 ## Screenshots
+
+Here are some screenshots showcasing different aspects of the webshop application.
+
+### Login and Sign-up
+
+This section illustrates the user authentication process, including the login and registration interfaces.
+
+<div style="width: 100%; overflow-x: auto;">
+  <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: nowrap;">
+        <div style="text-align: center;">
+          <img src="assets/screenshots/login_page.png" alt="Login Page" style="width: 300px;" />
+          <p style="font-style: italic; margin-top: 8px;">A user logging into their existing account.</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="assets/screenshots/signup_page.png" alt="Sign-up Page" style="width: 300px;" />
+          <p style="font-style: italic; margin-top: 8px;">The form for new users to create an account.</p>
+        </div>
+        <div style="text-align: center;">
+          <img src="assets/screenshots/forgotpassword_page.png" alt="Login Page" style="width: 300px;" />
+          <p style="font-style: italic; margin-top: 8px;">A user forget their password and needs to change it.</p>
+        </div>
+    </div>
+</div>
+
+**For more screenshots and visual representations of the project's look and feel, please check the [`assets/screenshots`](./assets/screenshots) and [`Mockup/pictures`](./Mockup/pictures) directories.**
+
+---
+
+# Video
 
 ## Contributor
 [Kristian Popov](https://github.com/PhoenixMaster123) <br>
