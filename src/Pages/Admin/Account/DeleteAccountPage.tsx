@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import { Trash2, Loader2, XCircle, CheckCircle, RefreshCcw } from "lucide-react";
+import { Trash2, Loader2, XCircle, RefreshCcw } from "lucide-react";
 import {ThemeContext} from "../../../contexts/ThemeContext.tsx";
 
 const DeleteAccountPage: React.FC = () => {
@@ -12,7 +12,6 @@ const DeleteAccountPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false);
-  const [finalSuccess, setFinalSuccess] = useState<boolean>(false);
   const [pageLoading, setPageLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -28,9 +27,8 @@ const DeleteAccountPage: React.FC = () => {
 
     if (deleteSuccess) {
       timer = setTimeout(() => {
-        setDeleteSuccess(false);
-        setFinalSuccess(true);
-        console.log("Account successfully processed, ready for redirect/final message.");
+        window.location.href = '/';
+        console.log("Account successfully processed, redirecting to homepage.");
       }, 2000);
     }
     return () => {
@@ -42,17 +40,17 @@ const DeleteAccountPage: React.FC = () => {
 
   const handleDeleteAccount = async () => {
     setError(null);
-    setLoading(true)
+    setLoading(true);
     setDeleteSuccess(false);
-    setFinalSuccess(false);
-    
+
     try {
       if (password !== "correctpassword") {
         throw new Error("Incorrect password.");
       }
 
+      // Simulate backend deletion
       await new Promise((resolve, reject) => {
-        const success = Math.random() > 0.2;
+        const success = Math.random() > 0.2; // 80% chance of success
         setTimeout(() => {
           if (success) {
             resolve(null);
@@ -73,42 +71,16 @@ const DeleteAccountPage: React.FC = () => {
       setLoading(false);
       setError(errorMessage);
       setDeleteSuccess(false);
-      setFinalSuccess(false);
     }
   };
 
-  // Reset state when exiting confirmation
   const handleCancelConfirmation = () => {
     setConfirming(false);
     setPassword("");
     setLoading(false);
     setError(null);
     setDeleteSuccess(false);
-    setFinalSuccess(false);
   };
-
-  const handleGoToHomepage = () => {
-    window.location.href = '/';
-  };
-
-  if (finalSuccess) {
-    return (
-        <div className="container mx-auto p-6 flex justify-center items-center min-h-screen">
-          <div className={`flex flex-col items-center shadow-lg rounded-xl p-8 border text-center
-                          ${isDarkTheme ? 'bg-green-900 bg-opacity-50 backdrop-filter backdrop-blur-lg border-green-700' : 'bg-green-100 border-green-200 shadow-md'}`}>
-            <CheckCircle className={`w-12 h-12 mb-4 ${isDarkTheme ? 'text-green-500' : 'text-green-700'}`} />
-            <h2 className={`text-2xl font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-green-900'}`}>Account Deleted Successfully</h2>
-            <p className={`mb-6 ${isDarkTheme ? 'text-white' : 'text-green-800'}`}>Your account and all associated data have been permanently removed.</p>
-            <button
-                onClick={handleGoToHomepage}
-                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
-            >
-              Go to Homepage
-            </button>
-          </div>
-        </div>
-    );
-  }
 
   if (pageLoading) {
     return (
@@ -161,7 +133,6 @@ const DeleteAccountPage: React.FC = () => {
                     </div>
                 )}
 
-
                 <div className="flex gap-4 justify-center">
                   <button
                       onClick={handleDeleteAccount}
@@ -196,7 +167,7 @@ const DeleteAccountPage: React.FC = () => {
 
           {deleteSuccess && (
               <div className={`mt-6 text-center ${isDarkTheme ? 'text-green-400' : 'text-green-600'}`}>
-                <p>Your account is being deleted...</p>
+                <p>Your account is being deleted. You will be redirected shortly...</p>
               </div>
           )}
         </div>

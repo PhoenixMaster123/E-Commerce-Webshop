@@ -286,26 +286,18 @@ A guest user can browse the webshop without creating an account, though their ac
 
 Here are some screenshots showcasing different aspects of the webshop application.
 
-### Login and Sign-up
+### Login and Sign-up and Forgot Password
 
-This section illustrates the user authentication process, including the login and registration interfaces.
+<p>
+  <img src="assets/screenshots/login_page.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/signup_page.png" width="250" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/forgotpassword_page.png" width="300" />
+</p>
 
-<div style="width: 100%; overflow-x: auto;">
-  <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: nowrap;">
-        <div style="text-align: center;">
-          <img src="assets/screenshots/login_page.png" alt="Login Page" style="width: 300px;" />
-          <p style="font-style: italic; margin-top: 8px;">A user logging into their existing account.</p>
-        </div>
-        <div style="text-align: center;">
-          <img src="assets/screenshots/signup_page.png" alt="Sign-up Page" style="width: 300px;" />
-          <p style="font-style: italic; margin-top: 8px;">The form for new users to create an account.</p>
-        </div>
-        <div style="text-align: center;">
-          <img src="assets/screenshots/forgotpassword_page.png" alt="Login Page" style="width: 300px;" />
-          <p style="font-style: italic; margin-top: 8px;">A user forget their password and needs to change it.</p>
-        </div>
-    </div>
-</div>
+### 404 (Not Found) page
+<p>
+    <img src="assets/screenshots/3D_404_page.png" width="300" />
+</p>
 
 **For more screenshots and visual representations of the project's look and feel, please check the [`assets/screenshots`](./assets/screenshots) and [`Mockup/pictures`](./Mockup/pictures) directories.**
 
