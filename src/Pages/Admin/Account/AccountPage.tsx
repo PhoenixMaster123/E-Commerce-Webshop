@@ -45,8 +45,6 @@ const AccountPage = () => {
     // --- Theme Management ---
     const { isDarkMode } = useContext(ThemeContext);
     const isDarkTheme = isDarkMode;
-    const pageBgClass = isDarkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900";
-
     const [profileData, setProfileData] = useState<UserProfileData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -59,7 +57,7 @@ const AccountPage = () => {
             try {
                 const mockProfileData: UserProfileData = await new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        const success = Math.random() > 0.05;
+                        const success = Math.random() > 0.05; // 95% success rate for initial load
                         if (success) {
                             resolve({
                                 id: 'user-123',
@@ -99,17 +97,16 @@ const AccountPage = () => {
     // --- LOADING ---
     if (isLoading) {
         return (
-            <div className={`min-h-screen w-full flex flex-col items-center justify-center z-50 transition-colors duration-300 ${pageBgClass}`}>
-                <RefreshCcw className="w-12 h-12 animate-spin mb-4 text-blue-400" />
-                <p className="text-xl font-semibold">Loading user profile...</p>
+            <div className={`fixed inset-0 flex flex-col items-center justify-center z-50
+                            ${isDarkTheme ? 'bg-gray-900 bg-opacity-90' : 'bg-gray-200 bg-opacity-90'}`}>
+                <RefreshCcw className={`w-12 h-12 animate-spin mb-4 ${isDarkTheme ? 'text-blue-400' : 'text-blue-600'}`} />
+                <p className={`text-xl font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-800'}`}>Loading user profile...</p>
             </div>
         );
     }
-
-    // --- ERROR ---
     if (error) {
         return (
-            <div className={`min-h-screen w-full transition-colors duration-300 ${pageBgClass}`}>
+            <div className={`min-h-screen w-full transition-colors duration-300 ${isDarkTheme ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
                 <div className="container mx-auto px-4 py-8 max-w-4xl">
                     <div className={`p-6 rounded-lg shadow-md border-2 text-center flex flex-col items-center justify-center
                         ${isDarkTheme ? 'bg-red-900 bg-opacity-30 text-red-400 border-red-700' : 'bg-red-100 text-red-700 border-red-300'}`}>
@@ -120,11 +117,10 @@ const AccountPage = () => {
             </div>
         );
     }
-
     // --- EMPTY PROFILE DATA ---
     if (!profileData) {
         return (
-            <div className={`min-h-screen w-full transition-colors duration-300 ${pageBgClass}`}>
+            <div className={`min-h-screen w-full transition-colors duration-300 ${isDarkTheme ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
                 <div className="container mx-auto px-4 py-8 max-w-4xl">
                     <div className={`p-6 rounded-lg shadow-md text-center flex flex-col items-center justify-center
                         ${isDarkTheme ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-600'}`}>
@@ -142,7 +138,7 @@ const AccountPage = () => {
     const displayLocation = [city, country].filter(Boolean).join(', ');
 
     return (
-        <div className={`flex-1 overflow-auto relative z-10 ${pageBgClass}`}>
+        <div className={`flex-1 overflow-auto relative z-10 ${isDarkTheme ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
             <div className="container mx-auto px-4 py-8 max-w-4xl">
                 <div className={`rounded-2xl shadow-2xl overflow-hidden
                     ${isDarkTheme ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-200'}`}>
