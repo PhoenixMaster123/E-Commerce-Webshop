@@ -303,7 +303,14 @@ Here are some screenshots showcasing different aspects of the webshop applicatio
 
 ---
 
-# Video
+# Quick Guide: E-Commerce Webshop
+[https://github.com/user-attachments/assets/a1c67f63-c21c-4727-a8f5-aa32ec804d40](https://github.com/user-attachments/assets/f3b2ef7c-036c-4c04-bb27-feceed8c14c5)
+
+Link for the video: [Webshop](https://github.com/user-attachments/assets/f3b2ef7c-036c-4c04-bb27-feceed8c14c5)
+
+## License ⚖️
+
+This project is licensed under the MIT License. For more details, please refer to the file: [LICENSE](LICENSE).
 
 ## Contributor
 [Kristian Popov](https://github.com/PhoenixMaster123) <br>
