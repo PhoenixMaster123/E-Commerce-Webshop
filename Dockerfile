@@ -1,22 +1,23 @@
-# Stage 1: build (wenn du noch selbst bauen willst; andernfalls entfällt)
-# FROM node:18-alpine AS builder
-# WORKDIR /app
-# COPY package*.json ./
-# RUN npm ci
-# COPY . .
-# RUN npm run build       # erzeugt ./dist
+# ── Stage 1: Build mit Node und Vite ─────────────────────────
+FROM node:18-alpine AS builder
+WORKDIR /app
 
-# Stage 2: Serve mit Nginx
-FROM nginx:stable-alpine
+# Abhängigkeiten kopieren und installieren
+COPY package*.json tsconfig*.json ./
+RUN npm ci
 
-# default‑HTML entfernen
+# Quellcode kopieren und bauen
+COPY . .
+RUN npm run build
+
+# ── Stage 2: Statisches Hosting mit Nginx ────────────────────
+FROM nginx:alpine
+# Lösche default‑Website (optional, für Cleanliness)
 RUN rm -rf /usr/share/nginx/html/*
 
-# kopiere gebaute Dateien (hier schon in web/dist/)
-COPY dist/ /usr/share/nginx/html/
+# Kopiere den gebauten Output (Vite legt standardmäßig in /dist)
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Nginx hört auf 8080 statt 80
-RUN sed -i 's/listen       80;/listen       8080;/' /etc/nginx/conf.d/default.conf
-
-EXPOSE 8080
+# Expose Port 80 und starte Nginx im Vordergrund
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

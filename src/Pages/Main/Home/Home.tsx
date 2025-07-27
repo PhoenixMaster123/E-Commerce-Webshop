@@ -7,7 +7,7 @@ import { ThemeContext } from '../../../contexts/ThemeContext';
 import './home.css';
 
 const FEATURED_COUNT = 8;
-const PREVIEW_COUNT = 8;
+const PREVIEW_COUNT = 15;
 const CATEGORIES = [
     'smartphones',
     'laptops',
