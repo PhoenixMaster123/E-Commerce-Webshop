@@ -1,0 +1,502 @@
+\documentclass[12pt]{article}
+\usepackage{etoolbox}
+
+% --- Schrift und Sprache ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage[none]{hyphenat}
+
+% --- Mathematik ---
+\usepackage{amsmath, amssymb, amsfonts}
+
+% --- Layout und Seitenränder ---
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+% --- Grafiken und Zeichnungen ---
+\usepackage{graphicx}
+\usepackage{stackengine}
+\usepackage{scalerel}
+\usepackage{tikz}
+\usetikzlibrary{matrix, positioning}
+
+% --- Listings (z.B. Python-Code) ---
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{courier}
+
+
+% --- Tabellen, Bildunterschriften, Zitate ---
+\usepackage{caption}
+\usepackage{natbib}
+
+
+
+\usepackage[normalem]{ulem} % [normalem] prevents the package from changing the default behavior of `\emph` to underline.
+
+% Listing-Konfiguration
+\lstdefinestyle{defaultLSTStyle}{
+	basicstyle=\ttfamily\small,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	numbersep=10pt,
+	stepnumber=1,
+	showstringspaces=false,
+	breaklines=true,
+	frame=single,
+	tabsize=2,
+	captionpos=b,
+	keywordstyle=\color{blue},
+	commentstyle=\color{gray},
+	stringstyle=\color{orange}
+}
+
+% Python als Sprache definieren
+\lstdefinelanguage{Python}{
+	keywords={def, return, print, for, while, if, else, elif, import, from},
+	sensitive=true,
+	morecomment=[l]\#,
+	morestring=[b]",
+	morestring=[b]'
+}
+
+% LaTeX definieren
+\lstdefinelanguage{LaTeXcode}{
+	keywords={documentclass, usepackage, begin, end, section, item, label, ref},
+	morecomment=[l]{\%},
+	sensitive=true,
+	morestring=[b]",
+	morestring=[b]'
+}
+% Umbenennung und Verzeichnis
+\renewcommand{\lstlistingname}{Quelltextausschnitt}
+\renewcommand{\lstlistlistingname}{Verzeichnis der Quelltextausschnitte}
+
+% ---- Makro für Section, Subsectionm, SubSubSection mit Autor ---------------------
+\newcommand{\authorSection}[2]{
+	\section[#1 {\mdseries\footnotesize(#2)}]{
+		\hspace*{-1ex}\textbf{#1}\\[-0.75ex]
+		{\normalfont\small\texttt{#2}}
+	}
+}
+
+\newcommand{\authorSubSection}[2]{
+	\subsection[#1 {\mdseries\footnotesize(#2)}]{
+		\hspace*{-1ex}\textbf{#1}\\[-0.75ex]
+		{\normalfont\small\texttt{#2}}
+	}
+}
+
+\newcommand{\authorSubSubSection}[2]{
+	\subsubsection[#1 {\mdseries\footnotesize(#2)}]{
+		\hspace*{-1ex}\textbf{#1}\\[-0.75ex]
+		{\normalfont\small\texttt{#2}}
+	}
+}
+% -------
+
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+\title{
+		{\LARGE \textbf{E-Commerce Webshop Prototype
+	Requirements Dokument}}\\[5ex]
+	{\large Frontend Systems – SS 25}\\[5ex]
+}
+
+\author{K. Popov; E. Ebert; O. Mazreku; G. Doci}
+
+\date{\today}
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyhead[L]{\hspace*{-0.68cm}\includegraphics[width=2cm]{../Mockup/pictures/logo/THWS}}
+	\fancyhead[R]{\small Mockup}
+	\fancyhead[C]{\small \theauthor}
+	\fancyfoot[C]{\thepage}
+	\setlength{\headheight}{24pt}
+}
+\pagestyle{plain} %% use the new page style for every page
+
+%% Title style
+\makeatletter
+\def\@maketitle{%
+	\newpage
+	\null
+	\vskip 0em%
+	\begin{center}%
+		\let \footnote \thanks
+		{\LARGE \@title \par}%
+		\vskip 0em%
+			{\large \@date} %\@date
+		\vskip 32em
+	\end{center}%
+	\par
+	\vskip 1em}
+\makeatother
+
+\newenvironment{spmatrix}[1]
+{\def\mysubscript{#1}\mathop\bgroup\begin{pmatrix}}
+{\end{pmatrix}\egroup_{\textstyle\mathstrut\mysubscript}}
+
+\begin{document}
+
+%% ----- Titelseite -----
+	\pagenumbering{gobble} %% remove the pagenumber
+	\maketitle
+	\noindent\begin{tabular}{@{}lllr}
+				 \textbf{Studenten}:
+				 & Kristian Popov         &\href{mailto:kristian.popov@study.thws.de}{kristian.popov@study.thws.de}           & 5123029
+				 \\[2ex]& Enrico Ebert     &\href{mailto:enrico.ebert@study.thws.de}{enrico.ebert@study.thws.de} 			  & 5123098
+				 \\[2ex]& Orik Mazreku        &\href{mailto:orik.mazreku@study.thws.de}{orik.mazreku@study.thws.de}           & 5123144
+				 \\[2ex]& Glison Doci        &\href{mailto:glison.doci@study.thws.de}{glison.doci@study.thws.de}              & 5123136
+				 \\[4ex]\textbf{Dozent}:      & Prof. Dr. Peter Braun
+	\end{tabular}
+	\newpage
+
+%% ----- Inhalt -----
+	\tableofcontents
+	\newpage
+
+\lstdefinestyle{defaultLSTStyle}{
+    basicstyle=\ttfamily\small,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=10pt,
+    stepnumber=1,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    tabsize=2,
+    captionpos=b,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange}
+}
+
+\maketitle
+\newpage
+\section{Project Overview}\label{sec:project-overview}
+
+Our e-commerce webshop has a focus on a simple and modern shopping experience.
+There are the essential shopping features implemented, such as searching for products, filtering by category and adding them to the cart, and we want to include some extras that improve the user experience, like the option to switch between light and dark mode.
+
+The shop should work smoothly on both mobile devices and desktop computers, so users can shop on both devices.
+Also, we are planning to add user logins so people can sign up and log in.
+
+Our main features will be things like category filtering and a search function, so users can quickly search and find what they're looking for.
+The user is able to add products to the cart, update the quantities, and remove items.
+There will also be a checkout page.
+For better user experience, we will implement a switch where the user can choose between light and dark mode.
+
+\textbf{Target Users:}
+Our target groups are \emph{regular online shoppers}—people browsing on their laptops or smartphones—and \emph{store administrators} who manage catalog and user data.
+
+\textbf{Application Goals:}
+\begin{itemize}
+	\item Build a clean, user‑friendly webshop with a modern design.
+	\item Make product search and category filtering fast and intuitive.
+	\item Allow shoppers to create accounts and log in securely.
+	\item Enable full shopping‑cart functionality: add, update, and delete items.
+	\item Provide an \emph{admin panel} to create, update, and delete products and to manage (or remove) user accounts.
+	\item Support both light mode and dark mode for better user comfort.
+	\item Ensure a fully responsive design for mobile and desktop views.
+\end{itemize}
+
+\section{Key Features}\label{sec:key-features}
+
+The following features define the core and extended functionality of our webshop.
+Each feature is marked as either \textbf{Must-} (essential for MVP) or \textbf{Nice-to-Have} (optional improvements).
+
+\begin{itemize}
+    \item \textbf{Product Search and Filters (Must-Have):}
+    Users can search for products using keywords and filter by categories, price range, or other attributes.
+    \item \textbf{Shopping Cart (Must-Have):}
+    Allows users to add products, update quantities, and remove items.
+    A live total cost is shown and updated dynamically.
+    \item \textbf{Checkout Process (Must-Have):}
+    A guided, multistep form to collect shipping and payment information.
+    Ends with an order confirmation page.
+    \item \textbf{Responsive Design (Must-Have):}
+    Full support for both mobile and desktop views, ensuring a smooth and consistent experience across devices.
+    \item \textbf{Light/Dark Mode Toggle (Must-Have):}
+    Users can switch between light and dark themes for improved visual comfort.
+    \item \textbf{User Authentication (Must-to-Have):}
+    Includes user sign-up, login, and personalized account management.
+    \item \textbf{Admin Dashboard (Must-to-Have):}
+    Admins can manage products (CRUD operations).
+    \item \textbf{Wishlist / Favorites (Nice-to-Have):}
+    Allows users to save products for later or mark as favorites.
+    \item \textbf{Product Reviews and Ratings (Nice-to-Have):}
+    Enable users to leave product reviews and ratings for community feedback.
+    \item \textbf{Multi-language Support (Nice-to-Have):}
+    Adds support for multiple languages using localization files.
+\end{itemize}
+
+\section{User Roles and Interactions}\label{sec:user-roles-and-interactions}
+
+This section explains the different types of users who interact with our e-commerce webshop, their permissions, and the actions they can typically perform.
+
+\subsection*{Administrator/Admin}
+The Administrator oversees the overall management of the webshop.
+This role has the highest level of access and can modify nearly every aspect of the site.
+
+\textbf{Typical Actions and Expected Outcomes:}
+
+\begin{itemize}
+		\item The admin can add, update, and remove products from the catalog, any changes are instantly visible to customers.
+		For example, the admin might add a new product, such as  \textit{wireless headphones}, with a price of \textit{129.99\$}.
+		\item The admin can also manage user accounts – such as viewing user information or deleting accounts if it's needed.
+\end{itemize}
+
+\subsection*{Customer (Registered User)}
+
+Customers are users who have registered an account on the webshop.
+They can explore products, place orders, and manage their personal details and order history.
+
+\textbf{Typical Actions and Expected Outcomes:}
+	\begin{itemize}
+  		\item Customers can browse all available products, read detailed descriptions, and check their prices.
+		\item They can also use the search bar or apply filters, such as by category to narrow down the results.
+		\item Add products to the shopping cart for quick purchase.
+		\item Can proceed to checkout, choose a payment method, and complete their order easily.
+		\item Update personal information, including name, email, and password.
+\item \end{itemize}
+
+\subsection*{Guest User (Unregistered User)}
+
+A guest user can browse the webshop without creating an account, though their access is limited.
+
+\textbf{Typical Actions and Expected Outcomes:}
+\begin{itemize}
+	\item Can browse the products without logging in.
+	\item Can register or Sign In.
+	\item Can add products to the cart, but the cart will remain active only while they are on the website.
+	Once they leave, everything will be removed.
+	The users must have an account to purchase the products otherwise it will be not possible.
+\end{itemize}
+
+\section{User Stories/Use Cases}\label{sec:user-stories/use-cases}
+
+\subsection*{Use Case 1: Register a New User}
+\textbf{Actor(s):} Visitor
+
+\textbf{Description:} A visitor creates a new account to access personalized features
+
+\textbf{Preconditions:} The user is not logged in.
+
+\textbf{Main Flow:}
+\begin{enumerate}
+    	\item The user clicks on the ``Sign Up'' button.
+    	\item The system presents a registration form.
+    	\item The user enters their username, email, and password.
+    	\item The system validates the data.
+    	\item The system creates a new user account.
+		\item A confirmation message is sent to the user.
+\end{enumerate}
+\textbf{Postconditions:} A new user is registered.
+
+\textbf{Alternative Flows:} If the email exists, the system shows an error message.
+
+\subsection*{Use Case 2: Log in to the Account}
+
+\textbf{Actor(s):} Registered User
+
+\textbf{Description:} A user logs into their account to access their profile.
+
+\textbf{Preconditions:} User is registered.
+
+\textbf{Main Flow:}
+\begin{enumerate}
+  	\item The user clicks on the ``Login'' button.
+  	\item The system displays the login form.
+  	\item The user provides email and password.
+  	\item The system authenticates the user.
+	\item On success, the user is redirected to the dashboard/homepage.
+\end{enumerate}
+
+	\textbf{Postconditions:} User is logged in.
+
+	\textbf{Alternative Flows:} If login credentials are invalid, an error message is shown.
+
+\subsection*{Use Case 3: Add/Remove Product to/from the Cart}
+
+\textbf{Actor(s):} Logged-in or guest user
+
+\textbf{Description:} The user adds/removes a product to/from the shopping cart.
+
+\textbf{Preconditions:} The product needs to exist/needs to be added or removed.
+
+\textbf{Main Flow:}
+\begin{enumerate}
+  	\item The user clicks on a product.
+  	\item The system shows product details.
+  	\item The user selects size/quantity if applicable.
+	\item The user clicks ``Add to Cart'' or ``Remove from Cart''.
+  	\item The system adds or removes the item from the cart accordingly.
+\end{enumerate}
+
+\textbf{Postconditions:} Product is either added or removed from the cart.
+
+\subsection*{Use Case 4: Checkout and Place Order}
+
+\textbf{Actor(s):} Logged-in user
+
+\textbf{Description:} The user completes the purchase of products in their cart.
+
+\textbf{Preconditions:} User has one or more items in the cart and is logged in.
+
+\textbf{Main Flow:}
+\begin{enumerate}
+  	\item The user views the cart and clicks ``Checkout.''
+  	\item The user waits for 5 seconds while the system processes the order.
+  	\item An order confirmation page is displayed.
+\end{enumerate}
+
+\textbf{Postconditions:} The order is saved, and a confirmation message is sent to the user.
+
+\subsection*{Use Case 5: Manage Product Catalog}
+
+\textbf{Actor(s):} Admin
+
+\textbf{Description:} The admin can add new products to the catalog or remove existing ones.
+
+\textbf{Preconditions:} The admin is logged in and has the necessary permissions to manage products.
+
+\textbf{Main Flow:}
+
+\begin{enumerate}
+\item The admin navigates to the Product Management section in the admin dashboard.
+\item To add a product, the admin clicks on ``Add New Product,'' fills in the product details (such as name, price, description, and category), and submits the form.
+\item To remove a product, the admin selects an existing product from the list, clicks on ``Delete,'' and confirms the action.
+\item The system updates the product catalog, reflecting the changes immediately on the customer facing site.
+\end{enumerate}
+
+\textbf{Postconditions:} New products are added to the catalog or existing products are removed, and changes are visible to customers.
+
+\subsection*{Use Case 6: Search for a Product}
+
+\textbf{Actor(s):} Any user (guest or registered)
+
+\textbf{Description:} The user searches for a specific product using a search bar.
+
+\textbf{Preconditions:} None
+
+\textbf{Main Flow:}
+
+\begin{enumerate}
+  	\item The user types a keyword in the search bar.
+  	\item The system displays matching products.
+  	\item The user clicks on one to see details.
+\end{enumerate}
+
+\textbf{Postconditions:} Matching products are shown.
+
+\textbf{Alternative Flows:} If no matches are found, the system displays the message: ``No products found.''
+
+\subsection*{Use Case 7: Update User Profile}
+
+\textbf{Actor(s):} Logged-in user
+
+\textbf{Description:} The user updates their account information such as name, email, or password.
+
+\textbf{Preconditions:} The user is logged in.
+
+\textbf{Main Flow:}
+\begin{enumerate}
+	\item The user navigates to the `My Account' or `Profile' section.
+	\item The user clicks on `Edit Profile.'
+	\item The user updates the necessary fields (e.g., name, email, password).
+	\item The user clicks `Save Changes.'
+	\item The system saves the updated details and confirms the changes.
+\end{enumerate}
+
+\textbf{Postconditions:} The user's profile is updated with new information.
+
+\section{Non-Functional Requirements}\label{sec:non-functional-requirements}
+
+Our E-Commerce WebShop is designed to offer a stable, secure, and user-friendly experience.
+The following non-functional requirements describe the quality standards we aim to follow throughout the development:
+
+\begin{itemize}
+ \item \textbf{Usability:}
+\begin{itemize}
+    \item \textbf{Intuitive Navigation:}
+	We want users to find their way around easily.
+	That’s why we’re going for clear and consistent menus.
+
+    \item \textbf{User-Friendly Design:}
+    The design will be clean and modern, with a focus on readability.
+	We’ll stick to a consistent color scheme, readable fonts, and buttons that look and feel familiar, so users don’t have to think twice about how to interact with the site.
+ \end{itemize}
+
+\item \textbf{Responsiveness:}
+    It doesn't matter if users are shopping on a desktop, tablet, or phone, the webshop should feel natural to use.
+	Everything should adapt cleanly to different screen sizes without breaking the layout.
+
+    \item \textbf{Response Time:}
+    The system shall respond to 95\% of user requests within 2 seconds under normal load.
+
+    \item \textbf{Maintainability:}
+    We’re keeping things modular and organized.
+	Reusable components and a clean file structure will make it easier to make changes later or onboard new team members if needed.
+
+    \item \textbf{Error Handling:}
+        When something goes wrong, we'll show helpful messages like “Item out of stock—try similar products” instead of confusing errors.
+\end{itemize}
+
+\section{Technology Assumptions}\label{sec:technology-assumptions}
+
+To build a responsive, maintainable, and feature‑rich e-commerce
+application, we adopt a modern React‑based stack that balances developer
+productivity, performance, and industry best practices.
+The key technologies are:
+
+\begin{itemize}
+	\item \textbf{React + TypeScript} – modern SPA framework with compile‑time type safety
+	\item \textbf{Vite} – fast dev server and lightweight production builds
+	\item \textbf{Tailwind CSS} + \textbf{React-Bootstrap} – utility-first styling combined with ready-made, accessible components
+	\item \textbf{Lucide} and \textbf{FontAwesome} for a consistent and accessible iconography system, and \textbf{Recharts} for flexible and visually appealing data visualizations in React.
+	\item \textbf{Axios} over HTTPS REST‑JSON – promise‑based HTTP client
+\end{itemize}
+
+\section{Project Constraints}\label{sec:project-constraints}
+\begin{itemize}
+	\item \textbf{Time Constraint:}  The project must be completed by the end of the semester.
+	Because of the limited time, we'll focus on implementing the core features first.
+	If there's still time left, we can start working on optional features.
+	\item \textbf{Resource Constraint:} Small team size, limited development hours per week.
+	\item \textbf{Technical Constraint:} The front-end of the application must be developed using
+	\textbf{React.js}, as per course guidelines.
+	The back-end technology stack choice is flexible.
+	\item \textbf{Knowledge Constraint:} Team members are still in the learning phase for some
+	technologies, which may impact the speed of implementation and require additional time for
+	research and troubleshooting.
+	\item \textbf{Open Questions:}
+	\begin{itemize}
+		\item Will we integrate a real payment gateway (e.g., Stripe, PayPal) or simulate payments
+		for the purpose of the project?
+		\item Should we implement a loyalty program where users can earn points for each purchase
+		that can later be redeemed for discounts, exclusive offers, or early access to sales?
+		\item Should we integrate an AI chatbot to guide users through the shopping process, offer
+		product recommendations, or help with issues like order tracking, or should we rely on
+		traditional customer service?
+	\end{itemize}
+\end{itemize}
+
+\section{Acknowledgment of AI Technologies}\label{sec:acknowledgment-of-ai-technologies}
+This document was drafted and refined using GPT-4o based on an outline containing related information.
+The authors reviewed, revised, and enhanced the GPT-4o output with additional content.
+The document was then edited for improved readability and active tense, partially using Grammarly.
+
+\end{document}
