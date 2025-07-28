@@ -4,8 +4,10 @@
     "baseUrl": "src",
     "paths": {
       "services/*": ["services/*"],
-      "types/*": ["types/*"]
-    }
+      "types/*": ["types/*"],
+      "typeRoots": ["./node_modules/@types", "./src/types"]
+    },
+    "include": ["src"]
   },
   "files": [],
   "references": [

@@ -1,6 +1,4 @@
 import './index.css';
-import './ProductListPage.css';
-
 
 export interface Product {
     id: number;
@@ -12,7 +10,7 @@ export interface Product {
     rating: number;
     stock: number;
     tags: string[];
-    brand?: string; // Optional
+    brand?: string;
     sku: string;
     weight?: number;
     dimensions?: {
@@ -81,7 +79,7 @@ export interface CartProductDetail {
 
 // Für die /cart API Antwort
 export interface Cart {
-    id: string | number; //normal number, but see in progress
+    id: string | number;
     userId: number;
     products: CartProductDetail[];
     total: number;
