@@ -13,6 +13,14 @@ interface RegisterForm {
   confirmPassword: string;
 }
 
+interface PasswordValidationStatus {
+  minLength: boolean;
+  hasUppercase: boolean;
+  hasLowercase: boolean;
+  hasNumber: boolean;
+  hasSpecialChar: boolean;
+}
+
 const Register: React.FC = () => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
@@ -27,16 +35,53 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [passwordValidationStatus, setPasswordValidationStatus] = useState<PasswordValidationStatus>({
+    minLength: false,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasNumber: false,
+    hasSpecialChar: false,
+  });
+  const [showPasswordValidation, setShowPasswordValidation] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "password") {
+      validatePassword(value);
+      if (!showPasswordValidation) {
+        setShowPasswordValidation(true);
+      }
+    }
+  };
+
+  const validatePassword = (password: string): boolean => {
+    const newStatus: PasswordValidationStatus = {
+      minLength: password.length >= 8,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasNumber: /[0-9]/.test(password),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+    setPasswordValidationStatus(newStatus);
+
+    return Object.values(newStatus).every(status => status === true);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setShowPasswordValidation(true);
+
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match");
+      return;
+    }
+
+    const isPasswordValid = validatePassword(form.password);
+    if (!isPasswordValid) {
+      setError("Please ensure your password meets all requirements.");
       return;
     }
 
@@ -70,6 +115,8 @@ const Register: React.FC = () => {
   const inputStyle = isDarkMode
       ? "bg-gray-700 border-gray-600 text-gray-100"
       : "bg-gray-100 border-gray-300 text-gray-900";
+
+  const hasValidationErrors = !Object.values(passwordValidationStatus).every(status => status === true);
 
   return (
       <div className={`${bg} min-h-screen flex items-center justify-center relative px-4`}>
@@ -137,10 +184,31 @@ const Register: React.FC = () => {
                   placeholder="Password"
                   value={form.password}
                   onChange={handleChange}
+                  onFocus={() => setShowPasswordValidation(true)}
+                  onBlur={() => setShowPasswordValidation(false)}
                   required
                   className={`w-full px-6 py-4 rounded-xl border text-lg sm:text-2xl ${inputStyle} focus:outline-none focus:ring-2 focus:ring-blue-500 transition`}
               />
             </div>
+            {showPasswordValidation && form.password.length > 0 && (
+                <ul className="mb-4 text-sm list-disc pl-5">
+                  <li className={passwordValidationStatus.minLength ? "text-green-500" : "text-red-400"}>
+                    Password must be at least 8 characters long.
+                  </li>
+                  <li className={passwordValidationStatus.hasUppercase ? "text-green-500" : "text-red-400"}>
+                    Password must contain at least one uppercase letter.
+                  </li>
+                  <li className={passwordValidationStatus.hasLowercase ? "text-green-500" : "text-red-400"}>
+                    Password must contain at least one lowercase letter.
+                  </li>
+                  <li className={passwordValidationStatus.hasNumber ? "text-green-500" : "text-red-400"}>
+                    Password must contain at least one number.
+                  </li>
+                  <li className={passwordValidationStatus.hasSpecialChar ? "text-green-500" : "text-red-400"}>
+                    Password must contain at least one special character.
+                  </li>
+                </ul>
+            )}
 
             {/* Confirm Password */}
             <div className="mb-6">
@@ -187,7 +255,7 @@ const Register: React.FC = () => {
             {/* Submit button */}
             <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || hasValidationErrors}
                 className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 text-lg sm:text-xl hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing Up…" : "Sign Up"}
