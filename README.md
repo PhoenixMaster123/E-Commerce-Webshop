@@ -289,14 +289,14 @@ Here are some screenshots showcasing different aspects of the webshop applicatio
 ### Login and Sign-up and Forgot Password
 
 <p>
-  <img src="assets/screenshots/login_page.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/screenshots/signup_page.png" width="250" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/screenshots/forgotpassword_page.png" width="300" />
+  <img src="assets/screenshots/main/login_page.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/main/signup_page.png" width="250" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/main/forgotpassword_page.png" width="300" />
 </p>
 
 ### 404 (Not Found) page
 <p>
-    <img src="assets/screenshots/3D_404_page.png" width="300" />
+    <img src="assets/screenshots/main/3D_404_page.png" width="300" />
 </p>
 
 **For more screenshots and visual representations of the project's look and feel, please check the [`assets/screenshots`](./assets/screenshots) and [`Mockup/pictures`](./Mockup/pictures) directories.**
