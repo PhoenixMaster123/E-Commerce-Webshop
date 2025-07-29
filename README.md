@@ -1,4 +1,66 @@
 # E-Commerce Webshop Prototype
+# 🐳 Get Started with Docker
+
+### Prerequisites
+
+- [Docker installed](https://docs.docker.com/get-docker/)
+
+---
+
+## Backend Dependency
+
+This frontend expects a running backend at:
+
+➡️ `http://<BACKEND_HOST>:5000`
+
+→ For example, start the backend like this:
+
+```bash
+git clone https://github.com/CodeWizard2001/dummyBackendWebShop.git
+cd dummyBackendWebShop
+docker build -t webshop-backend .
+docker run -p 5000:5000 webshop-backend
+```
+
+---
+
+## Start the Frontend
+
+### 1. Build Docker Image
+
+```bash
+docker build -t webshop-frontend .
+```
+
+### 2. Start Container
+
+```bash
+docker run -p 8080:8080 webshop-frontend
+
+```
+The app will then be accessible at:
+➡️ `http://<FRONTEND_HOST>:3000`
+
+Replace `<FRONTEND_HOST>` with, for example:
+- `localhost` (on your local machine)
+- `192.168.x.x` (for LAN access, e.g., via mobile phone)
+- `host.docker.internal` (for Docker-internal access)
+
+---
+
+#### 🧩 Optional: Start with Environment Variable
+
+If the backend is accessible at a specific IP or domain (e.g., in a LAN or on a server), you can set the API URL via an environment variable:
+
+```bash
+docker run -p 8080:8080   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-frontend
+```
+
+➡️ Replace `<BACKEND_HOST>` with, for example, `192.168.178.118`, `api.meine-seite.de` or `host.docker.internal` (for host access on Desktop).
+
+➡️ The frontend will then use this API address on startup (works with `import.meta.env.VITE_API_URL` in the code).
+
+---
 
 ## Tech Stack
 
@@ -141,68 +203,6 @@ frontend_development/
 ```
 
 
-
----
-# 🐳 Get Started with Docker
-
-### Prerequisites
-
-- [Docker installed](https://docs.docker.com/get-docker/)
-
----
-
-## Backend Dependency
-
-This frontend expects a running backend at:
-
-➡️ `http://<BACKEND_HOST>:5000`
-
-→ For example, start the backend like this:
-
-```bash
-git clone https://github.com/CodeWizard2001/dummyBackendWebShop.git
-cd dummyBackendWebShop
-docker build -t webshop-backend .
-docker run -p 5000:5000 webshop-backend
-```
-
----
-
-## Start the Frontend
-
-### 1. Build Docker Image
-
-```bash
-docker build -t webshop-frontend .
-```
-
-### 2. Start Container
-
-```bash
-docker run -p 8080:8080 webshop-frontend
-
-```
-The app will then be accessible at:
-➡️ `http://<FRONTEND_HOST>:3000`
-
-Replace `<FRONTEND_HOST>` with, for example:
-- `localhost` (on your local machine)
-- `192.168.x.x` (for LAN access, e.g., via mobile phone)
-- `host.docker.internal` (for Docker-internal access)
-
----
-
-#### 🧩 Optional: Start with Environment Variable
-
-If the backend is accessible at a specific IP or domain (e.g., in a LAN or on a server), you can set the API URL via an environment variable:
-
-```bash
-docker run -p 8080:8080   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-frontend
-```
-
-➡️ Replace `<BACKEND_HOST>` with, for example, `192.168.178.118`, `api.meine-seite.de` or `host.docker.internal` (for host access on Desktop).
-
-➡️ The frontend will then use this API address on startup (works with `import.meta.env.VITE_API_URL` in the code).
 
 ---
 
