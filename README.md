@@ -35,7 +35,7 @@ docker build -t webshop-frontend .
 ### 2. Start Container
 
 ```bash
-docker run -p 8080:8080 webshop-frontend
+docker run -p 8080:80 webshop-frontend
 
 ```
 The app will then be accessible at:
@@ -53,7 +53,7 @@ Replace `<FRONTEND_HOST>` with, for example:
 If the backend is accessible at a specific IP or domain (e.g., in a LAN or on a server), you can set the API URL via an environment variable:
 
 ```bash
-docker run -p 8080:8080   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-frontend
+docker run -p 8080:80   -e VITE_API_URL=http://<BACKEND_HOST>:5000   webshop-frontend
 ```
 
 ➡️ Replace `<BACKEND_HOST>` with, for example, `192.168.178.118`, `api.meine-seite.de` or `host.docker.internal` (for host access on Desktop).
