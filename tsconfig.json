@@ -3,11 +3,9 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "services/*": ["services/*"],
-      "types/*": ["types/*"],
-      "typeRoots": ["./node_modules/@types", "./src/types"]
-    },
-    "include": ["src"]
+      "services/": ["services/"],
+      "types/": ["types/"]
+    }
   },
   "files": [],
   "references": [
