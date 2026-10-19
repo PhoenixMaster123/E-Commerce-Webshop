@@ -1,0 +1,8 @@
+# `docker compose up --build` builds the frontend image (see Dockerfile) and serves it on
+# http://localhost:8080, so the image never has to be built by hand first.
+services:
+  frontend:
+    build: .
+    image: webshop-frontend
+    ports:
+      - "8080:80"

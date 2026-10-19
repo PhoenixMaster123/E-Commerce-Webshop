@@ -26,20 +26,30 @@ docker run -p 5000:5000 webshop-backend
 
 ## Start the Frontend
 
-### 1. Build Docker Image
+### With Docker Compose (builds the image for you)
+
+```bash
+docker compose up --build
+```
+
+The app is then at `http://localhost:8080`. Stop it with `docker compose down`.
+
+### Or by hand
+
+#### 1. Build Docker Image
 
 ```bash
 docker build -t webshop-frontend .
 ```
 
-### 2. Start Container
+#### 2. Start Container
 
 ```bash
 docker run -p 8080:80 webshop-frontend
 
 ```
 The app will then be accessible at:
-➡️ `http://<FRONTEND_HOST>:3000`
+➡️ `http://<FRONTEND_HOST>:8080`
 
 Replace `<FRONTEND_HOST>` with, for example:
 - `localhost` (on your local machine)
